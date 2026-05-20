@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# PreCompact hook — saves a marker before auto-compaction.
+# The post-compact-resume.sh hook reads this marker to restore context.
+
+[ -z "${CLAUDE_PROJECT_DIR:-}" ] && exit 0
+
+TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+LOG_DIR="$CLAUDE_PROJECT_DIR/.claude/logs"
+INCIDENT_LOG="$LOG_DIR/incident-log.md"
+
+mkdir -p "$LOG_DIR"
+
+echo "$TIMESTAMP" > "$LOG_DIR/.compaction-occurred"
+echo "- \`$TIMESTAMP\` | COMPACTION | INFO | Auto-compaction triggered — state saved" >> "$INCIDENT_LOG"
+
+exit 0

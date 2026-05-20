@@ -1,0 +1,71 @@
+{
+  "_comment": "k0d3 hooks — ALL DISABLED BY DEFAULT. Enable one at a time during Phase 6 cutover per docs/hooks-migration.md.",
+  "hooks": {
+    "PreToolUse": [],
+    "PostToolUse": [],
+    "Stop": [],
+    "ToolError": [],
+    "SessionStart": [],
+    "PreCompact": []
+  },
+  "_disabled_examples": {
+    "_doc": "These show how each hook would be wired when enabled. Move from _disabled_examples into the matching hooks.<event> array to activate.",
+    "validate-skill-frontmatter": {
+      "event": "PreToolUse",
+      "matcher": "Write|Edit",
+      "command": "$CLAUDE_PROJECT_DIR/hooks/validate-skill-frontmatter.sh"
+    },
+    "guard-bash": {
+      "event": "PreToolUse",
+      "matcher": "Bash",
+      "command": "$CLAUDE_PROJECT_DIR/hooks/guard-bash.sh"
+    },
+    "completeness-gate": {
+      "event": "PreToolUse",
+      "matcher": "Write|Edit",
+      "command": "$CLAUDE_PROJECT_DIR/hooks/completeness-gate.sh"
+    },
+    "backup-before-write": {
+      "event": "PreToolUse",
+      "matcher": "Write|Edit",
+      "command": "$CLAUDE_PROJECT_DIR/hooks/backup-before-write.sh"
+    },
+    "log-changes": {
+      "event": "PostToolUse",
+      "matcher": "Write|Edit",
+      "command": "$CLAUDE_PROJECT_DIR/hooks/log-changes.sh"
+    },
+    "log-failures": {
+      "event": "ToolError",
+      "command": "$CLAUDE_PROJECT_DIR/hooks/log-failures.sh"
+    },
+    "log-stop-verdict": {
+      "event": "Stop",
+      "command": "$CLAUDE_PROJECT_DIR/hooks/log-stop-verdict.sh"
+    },
+    "pre-compact-handoff": {
+      "event": "PreCompact",
+      "command": "$CLAUDE_PROJECT_DIR/hooks/pre-compact-handoff.sh"
+    },
+    "post-compact-resume": {
+      "event": "SessionStart",
+      "matcher": "compact",
+      "command": "$CLAUDE_PROJECT_DIR/hooks/post-compact-resume.sh"
+    },
+    "session-reset": {
+      "event": "SessionStart",
+      "matcher": "startup",
+      "command": "$CLAUDE_PROJECT_DIR/hooks/session-reset.sh"
+    },
+    "check-name-collisions": {
+      "event": "SessionStart",
+      "matcher": "startup",
+      "command": "$CLAUDE_PROJECT_DIR/hooks/check-name-collisions.sh"
+    },
+    "block-deferred-issues": {
+      "event": "PreToolUse",
+      "matcher": "Bash",
+      "command": "$CLAUDE_PROJECT_DIR/hooks/block-deferred-issues.sh"
+    }
+  }
+}
