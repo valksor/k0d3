@@ -1,0 +1,40 @@
+{
+  "name": "k0d3",
+  "description": "valksor's consolidated Claude Code skills, agents, commands, and hooks — single source of truth.",
+  "version": "0.1.0",
+  "author": {
+    "name": "valksor",
+    "email": "noreply@valksor.com"
+  },
+  "homepage": "https://github.com/valksor/k0d3",
+  "repository": "https://github.com/valksor/k0d3",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "agents",
+    "commands",
+    "hooks",
+    "go",
+    "python",
+    "typescript",
+    "react",
+    "rust",
+    "gdscript",
+    "godot",
+    "bun",
+    "pnpm",
+    "postgres",
+    "sql",
+    "graphql",
+    "websocket",
+    "security",
+    "testing",
+    "code-review",
+    "frontend",
+    "ux",
+    "ci",
+    "tailwind",
+    "daisyui",
+    "shadcn"
+  ]
+}

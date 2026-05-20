@@ -1,0 +1,7 @@
+{
+  "name": "k0d3",
+  "private": true,
+  "devDependencies": {
+    "prettier": "latest"
+  }
+}

@@ -1,0 +1,21 @@
+# VCS / editor / OS cruft
+.git/
+.vscode/
+.idea/
+
+# Already-gitignored runtime state
+.claude/
+backups/
+node_modules/
+__pycache__/
+*.archive-*
+
+# Auto-generated
+docs/skill-graph.md
+
+# Intentionally malformed (validator test corpus)
+tests/validator-fixtures/
+
+# Out of scope for Prettier (handled by shfmt / ruff)
+*.sh
+*.py

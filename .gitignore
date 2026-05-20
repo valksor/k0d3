@@ -1,0 +1,30 @@
+# k0d3 — ignore project-local Claude state, logs, backups, archives
+.claude/
+backups/
+*.archive-*
+# Narrowed from `*.log` global: only auto-generated logs under known dirs.
+# Future reference logs (e.g., docs/error-codes.log examples) won't be silently hidden.
+.claude/logs/*.log
+backups/**/*.log
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Editor cruft
+.vscode/
+.idea/
+*.swp
+*~
+
+# Node (in case anything needs JS later)
+node_modules/
+
+# Python (validator + skill helpers use python3 yaml)
+__pycache__/
+**/__pycache__/
+*.pyc
+.venv/
+
+# Loader-spike probes (kept un-versioned)
+skills/_probe-*/
