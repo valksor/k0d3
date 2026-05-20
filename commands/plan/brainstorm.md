@@ -1,0 +1,14 @@
+---
+name: brainstorm
+description: Open a brainstorming session for any new feature, component, or behavior change before writing code.
+argument-hint: "[topic]"
+allowed-tools: [Read, Grep, Glob, Skill]
+---
+
+# /brainstorm
+
+Invokes `Skill(k0d3:brainstorming)` and starts the design-before-code dialogue.
+
+Argument `[topic]` (optional): seed text for the brainstorming session ("e.g. add notifications", "rate-limit the orders API"). If omitted, the assistant asks what you want to design.
+
+Terminal state: an approved spec and an invocation of `Skill(k0d3:planning)` to write the implementation plan.
