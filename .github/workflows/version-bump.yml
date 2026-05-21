@@ -3,20 +3,27 @@ name: Version Bump
 on:
   push:
     branches: [master]
+  workflow_dispatch:
 
-permissions:
-  contents: write
+concurrency:
+  group: version-bump
+  cancel-in-progress: false
 
 jobs:
   version-bump:
     runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    timeout-minutes: 5
+    permissions:
+      contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Determine bump type
         id: bump_type
         env:
+          # Via env, not interpolation — commit messages with special chars won't break the shell
           COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
           if [[ "$COMMIT_MSG" =~ \[major\] ]]; then
@@ -31,6 +38,7 @@ jobs:
         id: bump
         run: |
           CURRENT=$(jq -r '.version' .claude-plugin/plugin.json)
+          [[ "$CURRENT" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Bad version: $CURRENT"; exit 1; }
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
           case "${{ steps.bump_type.outputs.BUMP_TYPE }}" in
             major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
@@ -38,14 +46,16 @@ jobs:
             *)     PATCH=$((PATCH + 1)) ;;
           esac
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          echo "Bumping $CURRENT -> $NEW_VERSION"
           jq --arg v "$NEW_VERSION" '.version = $v' .claude-plugin/plugin.json > /tmp/plugin.json
           mv /tmp/plugin.json .claude-plugin/plugin.json
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
 
       - name: Commit and push
         run: |
-          git config user.email "action@github.com"
-          git config user.name "GitHub Action"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
           git add .claude-plugin/plugin.json
           git commit -m "Bump version to ${{ steps.bump.outputs.NEW_VERSION }} [skip ci]"
-          git push
+          git pull --rebase origin master
+          git push origin HEAD:master
