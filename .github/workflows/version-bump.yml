@@ -2,7 +2,8 @@ name: Version Bump
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
   workflow_dispatch:
 
 concurrency:
