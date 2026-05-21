@@ -4,7 +4,7 @@
     "PreToolUse": [],
     "PostToolUse": [],
     "Stop": [],
-    "ToolError": [],
+    "PostToolUseFailure": [],
     "SessionStart": [],
     "PreCompact": []
   },
@@ -36,7 +36,7 @@
       "command": "$CLAUDE_PROJECT_DIR/hooks/log-changes.sh"
     },
     "log-failures": {
-      "event": "ToolError",
+      "event": "PostToolUseFailure",
       "command": "$CLAUDE_PROJECT_DIR/hooks/log-failures.sh"
     },
     "log-stop-verdict": {
