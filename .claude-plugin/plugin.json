@@ -36,6 +36,7 @@
     "tailwind",
     "daisyui",
     "shadcn",
-    "memory"
+    "memory",
+    "reasoning"
   ]
 }

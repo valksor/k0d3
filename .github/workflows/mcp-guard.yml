@@ -1,4 +1,4 @@
-name: MCP memory guard
+name: MCP guard
 
 on:
   push:
@@ -7,31 +7,40 @@ on:
       - ".mcp.json"
       - "scripts/check-mcp-pin.sh"
       - "scripts/smoke-mcp-memory.sh"
-      - ".github/workflows/mcp-memory-guard.yml"
+      - "scripts/smoke-mcp-sequentialthinking.sh"
+      - ".github/workflows/mcp-guard.yml"
   pull_request:
     paths:
       - ".mcp.json"
       - "scripts/check-mcp-pin.sh"
       - "scripts/smoke-mcp-memory.sh"
-      - ".github/workflows/mcp-memory-guard.yml"
+      - "scripts/smoke-mcp-sequentialthinking.sh"
+      - ".github/workflows/mcp-guard.yml"
   schedule:
     # Weekly — catches a republished version tag even when nothing changed here.
     - cron: "17 6 * * 1"
   workflow_dispatch:
 
+# Least privilege: this job only reads the repo and queries npm — no writes.
+permissions:
+  contents: read
+
 jobs:
   guard:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
 
-      - name: Supply-chain integrity (pinned tarball)
+      - name: Supply-chain integrity (pinned tarballs)
         run: bash scripts/check-mcp-pin.sh
 
-      - name: Smoke (server self-init + path resolution)
+      - name: Smoke — memory (self-init + path resolution)
         run: bash scripts/smoke-mcp-memory.sh
+
+      - name: Smoke — sequential-thinking (launch + tool result)
+        run: bash scripts/smoke-mcp-sequentialthinking.sh

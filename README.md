@@ -26,7 +26,7 @@ After install, in any Claude Code session, type `Skill(k0d3:using-k0d3)` as a me
 - **PyYAML** (Python) — required by the lint/smoke/skill-graph scripts. Install with `pip install pyyaml`. The scripts use `yaml.safe_load()` only — never `yaml.load()` — so the historical PyYAML deserialization CVEs do not apply.
 - **jq** — used by hooks for JSON parsing. Install via your package manager (`brew install jq`, `apt install jq`).
 - **bash 3.2+** — the project targets the macOS system bash, so hooks and scripts avoid bash 4+ features (associative arrays, `mapfile`).
-- **Node.js / `npx`** — _only_ for the bundled `memory` MCP server (`@modelcontextprotocol/server-memory`). Install via your package manager (`brew install node`). Fails soft: if Node is absent (or the very first run is offline), only the memory server is unavailable — memory features are disabled and everything else in k0d3 works.
+- **Node.js / `npx`** — for the bundled stdio MCP servers (`memory` = `@modelcontextprotocol/server-memory`, `sequential-thinking` = `@modelcontextprotocol/server-sequential-thinking`). Install via your package manager (`brew install node`). Fails soft: if Node is absent (or the very first run is offline), only those two stdio servers are unavailable — their features are disabled and everything else in k0d3 (including the HTTP-based context7) works.
 
 ## Prefix
 
@@ -36,7 +36,7 @@ When another installed plugin defines the same name, **type the explicit `k0d3:`
 
 ```
 .claude-plugin/plugin.json    — manifest
-.mcp.json                     — bundled MCP servers (context7 + memory, auto-enabled)
+.mcp.json                     — bundled MCP servers (context7 + memory + sequential-thinking, auto-enabled)
 skills/                       — ~145 active at one level (slug == directory)
 agents/                       — workflow/, reviewers/, experts/
 commands/                     — workflow/, plan/, execute/, review/, analyze/
@@ -49,7 +49,7 @@ references/                   — long-form material linked from skills
 
 ## MCP servers
 
-k0d3 bundles two MCP servers, both defined in the top-level `.mcp.json`. Because they ship with the plugin, they **auto-enable when k0d3 is installed** — no per-server approval prompt, unlike a project-level `.mcp.json`.
+k0d3 bundles three MCP servers, all defined in the top-level `.mcp.json`. Because they ship with the plugin, they **auto-enable when k0d3 is installed** — no per-server approval prompt, unlike a project-level `.mcp.json`.
 
 **context7** (Upstash's hosted up-to-date library-docs service) is a remote HTTP server (`https://mcp.context7.com/mcp`), so there is nothing to install locally and no per-project index to build.
 
@@ -66,6 +66,8 @@ export CONTEXT7_API_KEY=<your-key>   # bash/zsh
 The key is never committed — `.mcp.json` references `${CONTEXT7_API_KEY:-}`, which falls back to empty (anonymous) when the variable is unset. To disable the server entirely, run `/mcp` in a session, or remove the context7 block from your installed plugin's `.mcp.json`.
 
 **memory** is a local stdio server — the official, Anthropic-maintained `@modelcontextprotocol/server-memory`, launched via `npx`. It gives Claude a persistent **knowledge graph (JSONL)** — entities, observations, relations — that survives across sessions. Storage is **project-local**: it writes to `${CLAUDE_PROJECT_DIR}/.claude/memory.jsonl`, one store per project. k0d3's `ensure-memory-gitignore` SessionStart hook adds that file to `.claude/.gitignore` automatically, so the plaintext store is never committed by accident. There is **no runtime external service** — no network calls once cached, no embeddings, no API key; the only network use is the one-time `npx` package fetch on first run. If Node is absent or the first run is offline, the server simply doesn't start (memory features disabled) and the rest of k0d3 is unaffected. Type `/mcp` in a session (a Claude Code command that lists and toggles servers) to confirm it's connected or to disable it; you can also remove the memory block from `.mcp.json`. The skill `project-memory` covers when to store versus recall — and the iron rule: never put secrets or personal data in the store.
+
+**sequential-thinking** is a local stdio server — the official, Anthropic-maintained `@modelcontextprotocol/server-sequential-thinking`, launched via `npx`. It gives Claude a structured **reasoning scratchpad**: a single `sequentialthinking` tool through which it logs revisable, branchable thought steps. It is **stateless** — no store, no API key, **nothing written to disk** (so, unlike memory, there is no file to gitignore) — and the only network use is the one-time `npx` package fetch on first run. If Node is absent or the first run is offline, it simply doesn't start and the rest of k0d3 is unaffected. It overlaps with the native extended thinking available on current Claude models; bundle it for the inspectable branch/revise workflow and parity with models that lack native thinking. Type `/mcp` to confirm it's connected or to disable it; you can also remove the sequential-thinking block from your installed plugin's `.mcp.json`.
 
 ## Editorial conventions (skill voice)
 
@@ -88,8 +90,9 @@ bash scripts/test-hooks.sh        # CI for guard-bash.sh (catastrophic-rm, secre
 bash scripts/smoke-skills.sh      # iterate every status:active skill, write pass/fail log
 bash scripts/sharpness-check.sh   # advisory: iron-rule, anti-pattern section, body length, opinion signal
 bash scripts/test-memory-gitignore.sh  # CI for ensure-memory-gitignore.sh (parent-dir + gitignore enforcement)
-bash scripts/check-mcp-pin.sh          # supply-chain: pinned memory-server tarball integrity (needs network)
-bash scripts/smoke-mcp-memory.sh       # launches the memory server, asserts store self-init (needs Node+network; skips otherwise)
+bash scripts/check-mcp-pin.sh                  # supply-chain: pinned tarball integrity for every bundled stdio server (needs network)
+bash scripts/smoke-mcp-memory.sh               # launches the memory server, asserts store self-init (needs Node+network; skips otherwise)
+bash scripts/smoke-mcp-sequentialthinking.sh   # launches the sequential-thinking server, asserts the tool returns a result (needs Node+network; skips otherwise)
 ```
 
 All of these wrappers either exit 0 (success) or non-zero (failure with stderr explaining). The advisory `sharpness-check.sh` always exits 0. The wrappers themselves are thin shells around Python helpers (`scripts/_*.py`) — `validate-skills.sh` and `new-skill.sh` use `set -euo pipefail`; the test wrappers use `set -uo pipefail` because they tally per-fixture PASS/FAIL counters rather than failing on the first error.
