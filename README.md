@@ -1,6 +1,6 @@
 # k0d3
 
-valksor's consolidated Claude Code skills, agents, commands, and hooks. Single source of truth — replaces the legacy `~/.shared/`, `toolkit`, `pr-review-toolkit`, `code-simplifier`, and `superpowers` plugin sprawl. Zero plugin dependencies.
+valksor's consolidated Claude Code skills, agents, commands, and hooks. Single source of truth. Zero plugin dependencies.
 
 ## Install
 
@@ -28,25 +28,9 @@ After install, in any Claude Code session, type `Skill(k0d3:using-k0d3)` as a me
 - **bash 3.2+** — the project targets the macOS system bash, so hooks and scripts avoid bash 4+ features (associative arrays, `mapfile`).
 - **Node.js / `npx`** — _only_ for the bundled `memory` MCP server (`@modelcontextprotocol/server-memory`). Install via your package manager (`brew install node`). Fails soft: if Node is absent (or the very first run is offline), only the memory server is unavailable — memory features are disabled and everything else in k0d3 works.
 
-## Coexistence
+## Prefix
 
-While k0d3 sits alongside the legacy plugins (Phases 1–5), **always type the explicit `k0d3:` prefix** for k0d3 commands, agents, and skills. Bare `/review` is ambiguous and Claude resolves by plugin load order. Once the legacy plugins are uninstalled (Phase 6), the prefix becomes optional. See `CLAUDE.md`.
-
-**What "Phase 6" means**: the cutover point at which the legacy plugins (listed below) are uninstalled and k0d3 is the sole installed plugin in your Claude Code config. Walk-through in `docs/hooks-migration.md`.
-
-## Supersession matrix
-
-| Legacy plugin                                 | What it does                                                                                           | Replaced by                                              | Status                                |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- | ------------------------------------- |
-| `~/.shared/` (personal commands/hooks/skills) | valksor's pre-k0d3 personal toolkit                                                                    | every k0d3 category                                      | replaced at Phase 6                   |
-| `toolkit`                                     | calibrated multi-perspective code review (`/review`, `/review-plan`, `/review-impl`) + reviewer agents | `commands/review/`, `agents/reviewers/`                  | replaced at Phase 6                   |
-| `pr-review-toolkit`                           | code-quality cohort of read-only review agents (code-reviewer, silent-failure-hunter, etc.)            | `agents/experts/` (code-quality cohort, read-only tools) | replaced at Phase 6                   |
-| `code-simplifier`                             | refactor-for-clarity agent                                                                             | `agents/experts/code-simplifier.md`                      | replaced at Phase 6                   |
-| `superpowers`                                 | process skills (TDD, debugging, brainstorming, etc.)                                                   | `skills/{tdd,debugging,brainstorming,…}`                 | replaced at Phase 6                   |
-| `coderabbit`                                  | AI-powered PR review via CodeRabbit                                                                    | none                                                     | optional — keep if you use CodeRabbit |
-| `ralph-loop`, `claude-md-management`          | loop and CLAUDE.md maintenance utilities                                                               | none                                                     | optional                              |
-
-Phase 6 cutover is mandatory but reversible at every step boundary. The per-hook ordering and rollback procedure live in `docs/hooks-migration.md`.
+When another installed plugin defines the same name, **type the explicit `k0d3:` prefix** for k0d3 commands, agents, and skills. Bare `/review` is ambiguous — Claude resolves it by plugin load order. See `CLAUDE.md`.
 
 ## Layout
 
@@ -59,7 +43,7 @@ commands/                     — workflow/, plan/, execute/, review/, analyze/
 hooks/                        — 13 shell hooks (10 enabled by default in hooks.json; rest opt-in)
 scripts/                      — validators, smoke runner, graph generator
 tests/                        — fixtures for validator + hook tests
-docs/                         — conventions, architecture, hooks-migration, …
+docs/                         — conventions, architecture, hooks, …
 references/                   — long-form material linked from skills
 ```
 
@@ -122,7 +106,7 @@ All of these wrappers either exit 0 (success) or non-zero (failure with stderr e
 
 `make lint` runs **ShellCheck** over all tracked `*.sh` files (install: `brew install shellcheck`). Linting is separate from formatting — `shfmt` owns shell style, ShellCheck owns shell correctness.
 
-The initial setup intentionally did **not** reformat or fix the existing tree. Files get formatted on first touch, so `make format-check` and `make lint` will report pre-existing drift on day one; that's expected.
+Files get formatted on first touch rather than in a tree-wide sweep, so `make format-check` and `make lint` report pre-existing drift on files nothing has touched yet; that's expected.
 
 ## Authoring a new skill
 
@@ -142,4 +126,4 @@ Open an issue at `https://github.com/valksor/k0d3/issues` (once the repo is publ
 
 ## License
 
-MIT. A `LICENSE` file will be added when the repo is published; until then `plugin.json` is the canonical license declaration. Borrowed content is one-line credited in `docs/borrowed-from.md`.
+MIT. A `LICENSE` file will be added when the repo is published; until then `plugin.json` is the canonical license declaration.

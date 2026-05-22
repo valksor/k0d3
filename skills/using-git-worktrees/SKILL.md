@@ -14,7 +14,7 @@ metadata:
 
 # Using Git Worktrees
 
-Ensure work happens in an isolated workspace. Prefer your platform's native worktree tools. Fall back to manual git worktrees only when no native tool is available. Adapted from `obra/superpowers:using-git-worktrees`.
+Ensure work happens in an isolated workspace. Prefer your platform's native worktree tools. Fall back to manual git worktrees only when no native tool is available.
 
 **Core principle:** detect existing isolation first. Then use native tools. Then fall back to git. Never fight the harness.
 

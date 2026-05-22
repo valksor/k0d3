@@ -14,7 +14,7 @@ metadata:
 
 # Test-Driven Development (TDD)
 
-Write the test first. Watch it fail. Write minimal code to pass. Adapted from `obra/superpowers:test-driven-development`.
+Write the test first. Watch it fail. Write minimal code to pass.
 
 **Core principle:** if you didn't watch the test fail, you don't know if it tests the right thing.
 

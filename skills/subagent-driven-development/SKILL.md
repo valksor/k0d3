@@ -15,7 +15,7 @@ metadata:
 
 # Subagent-Driven Development
 
-Execute plan by dispatching fresh subagent per task, with two-stage review after each: spec compliance review first, then code quality review. Adapted from `obra/superpowers:subagent-driven-development`.
+Execute plan by dispatching fresh subagent per task, with two-stage review after each: spec compliance review first, then code quality review.
 
 **Why subagents:** isolated context per task. You construct exactly what each agent needs — they should never inherit your session's history. Preserves your own context for coordination.
 

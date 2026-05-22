@@ -1,6 +1,6 @@
 # k0d3 — Claude session guide
 
-k0d3 is valksor's consolidated Claude Code plugin: skills, agents, commands, and hooks in one place. It supersedes `~/.shared/`, `toolkit`, `pr-review-toolkit`, `code-simplifier`, and (after Phase 6 cutover) `superpowers`. Single source of truth.
+k0d3 is valksor's consolidated Claude Code plugin: skills, agents, commands, and hooks in one place. Single source of truth.
 
 ## Required action at session start
 
@@ -20,16 +20,16 @@ k0d3 is valksor's consolidated Claude Code plugin: skills, agents, commands, and
 - **Topic → skills routing**: `Skill(skill-discovery)` returns a keyword table you can scan.
 - **Per-skill body cap**: ~200 lines. Long-form lives in `references/<topic>.md`.
 
-## Coexistence rule (Phases 1–5)
+## Prefix rule
 
-While k0d3 is being built alongside the existing plugins, **always type the explicit `k0d3:` prefix** for k0d3 commands, agents, and skills:
+When another installed plugin defines the same name, **type the explicit `k0d3:` prefix** for k0d3 commands, agents, and skills:
 
 ```
 ✅ /k0d3:review        Skill(k0d3:tdd)        Agent(k0d3:python-expert)
 ❌ /review             Skill(tdd)             Agent(python-expert)
 ```
 
-Bare names are ambiguous — Claude Code resolves by load order. No in-session warning exists for this; discipline is yours. After Phase 6 cutover the old plugins are uninstalled and the prefix becomes optional.
+Bare names are ambiguous — Claude Code resolves by load order. No in-session warning exists for this; discipline is yours.
 
 ## Recommended tool permissions
 
@@ -52,12 +52,11 @@ See `docs/conventions.md § Validator bypass` for the full procedure.
 
 ## Where to file things
 
-| You're working on…                   | Goes in…                                                      |
-| ------------------------------------ | ------------------------------------------------------------- |
-| A new domain-agnostic skill          | `skills/<slug>/SKILL.md`                                      |
-| Long-form reference material         | `references/<topic>.md`, linked from the skill                |
-| A new agent persona                  | `agents/{workflow,reviewers,experts}/<name>.md`               |
-| A new slash command                  | `commands/<category>/<name>.md`                               |
-| A bundled MCP server                 | `.mcp.json` at the repo root (auto-enabled on install)        |
-| Borrowed content credit              | one line in `docs/borrowed-from.md`                           |
-| Build decisions / structural choices | `docs/architecture.md` (one-time orientation; rarely revised) |
+| You're working on…           | Goes in…                                                      |
+| ---------------------------- | ------------------------------------------------------------- |
+| A new domain-agnostic skill  | `skills/<slug>/SKILL.md`                                      |
+| Long-form reference material | `references/<topic>.md`, linked from the skill                |
+| A new agent persona          | `agents/{workflow,reviewers,experts}/<name>.md`               |
+| A new slash command          | `commands/<category>/<name>.md`                               |
+| A bundled MCP server         | `.mcp.json` at the repo root (auto-enabled on install)        |
+| Conceptual layout / grouping | `docs/architecture.md` (one-time orientation; rarely revised) |

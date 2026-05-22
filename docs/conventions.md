@@ -34,7 +34,7 @@ metadata:
 - **Cross-refs use slugs, not paths.** `related: [python-testing]`, never `related: [skills/python-testing/]`.
 - **Domain owns concept; language owns dialect.** A language skill must link upward (e.g., `python-testing.related: [testing-unit]`) instead of redefining the concept.
 - **`invokes_shell` is a reviewer attestation, not a factual descriptor**: setting `invokes_shell: false` AND `status: active` AND omitting `shell_reviewed:` makes `validate-skills.sh` **fail**. The flag means "an author has read every Bash invocation in this skill and attests they are safe" — not "this skill contains no shell commands." A skill with undeclared Bash content masquerading as `invokes_shell: false` is actively misleading to any caller that uses the flag to assess trust. Setting `invokes_shell: true` produces only a warn (the risk is self-evident).
-- **Borrowed skills** from external sources default to `invokes_shell: true` and stay `draft` until you read their Bash invocations line-by-line, then flip `invokes_shell: false` with a `shell_reviewed:` stamp.
+- **Skills brought in from outside** default to `invokes_shell: true` and stay `draft` until you read their Bash invocations line-by-line, then flip `invokes_shell: false` with a `shell_reviewed:` stamp.
 
 ## Agent frontmatter
 
@@ -79,7 +79,7 @@ allowed-tools: [Read, Grep, Glob, Bash, Agent]
 ---
 ```
 
-## CLAUDE.md content (Phase 0 deliverable — authored, not just specced)
+## CLAUDE.md content
 
 Required content (see repo-root `CLAUDE.md`):
 
@@ -88,7 +88,7 @@ Required content (see repo-root `CLAUDE.md`):
 3. Slug convention summary
 4. Navigation map (architecture.md + skill-graph.md)
 5. One-skill-per-use rule (no packs, no multi-chunk splits of a single topic)
-6. Coexistence rule: explicit `k0d3:` prefix during Phases 1–5
+6. Prefix rule: use the explicit `k0d3:` prefix to disambiguate from other installed plugins
 7. Tool permissions block
 
 ## References naming

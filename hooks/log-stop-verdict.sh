@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 # Stop hook — logs a session-ended event for trend analysis across sessions.
-#
-# History: this hook used to consume a verdict (block/ended) from a haiku
-# review prompt and maintain a quality-gate counter. The prompt hook was
-# removed; DECISION is now always "ended". The block-tracking logic was dead
-# code and has been deleted. If verdict tracking is reintroduced, the design
-# needs to specify how DECISION is sourced (stdin envelope, env var, etc.).
+# Writes one JSONL line per session end; `decision` is always "ended"
+# (no verdict or quality-gate logic).
 
 [ -z "${CLAUDE_PROJECT_DIR:-}" ] && exit 0
 

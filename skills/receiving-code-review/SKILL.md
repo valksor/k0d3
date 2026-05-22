@@ -14,7 +14,7 @@ metadata:
 
 # Code Review Reception
 
-Code review requires technical evaluation, not emotional performance. Adapted from `obra/superpowers:receiving-code-review`.
+Code review requires technical evaluation, not emotional performance.
 
 **Core principle:** verify before implementing. Ask before assuming. Technical correctness over social comfort.
 

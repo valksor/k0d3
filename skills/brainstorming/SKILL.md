@@ -14,7 +14,7 @@ metadata:
 
 # Brainstorming
 
-Help turn ideas into fully-formed designs through natural collaborative dialogue. Adapted from `obra/superpowers:brainstorming`.
+Help turn ideas into fully-formed designs through natural collaborative dialogue.
 
 ## Hard gate
 

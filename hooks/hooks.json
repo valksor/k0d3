@@ -1,5 +1,5 @@
 {
-  "_comment": "k0d3 hooks. The 10 wired below are enabled by default (old-claude parity + ensure-memory-gitignore, all safe globally). The 3 in _disabled_examples are k0d3-repo-dev-specific and opt-in. Paths use ${CLAUDE_PLUGIN_ROOT} so they resolve in any project regardless of the user's cwd. See docs/hooks-migration.md.",
+  "_comment": "k0d3 hooks. The 10 wired below are enabled by default (old-claude parity + ensure-memory-gitignore, all safe globally). The 3 in _disabled_examples are k0d3-repo-dev-specific and opt-in. Paths use ${CLAUDE_PLUGIN_ROOT} so they resolve in any project regardless of the user's cwd. See docs/hooks.md.",
   "hooks": {
     "PreToolUse": [
       {

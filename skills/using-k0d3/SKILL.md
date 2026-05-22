@@ -22,15 +22,13 @@ You are working in (or with) k0d3 — valksor's consolidated Claude Code plugin.
 3. **Live graph**: `docs/skill-graph.md` is auto-generated and reflects current skill relationships.
 4. **Architecture orientation**: `docs/architecture.md` is a one-time read explaining the conceptual grouping.
 
-## Coexistence rule (Phases 1–5 only)
+## Prefix rule
 
-Type the explicit `k0d3:` prefix for k0d3 commands, agents, and skills while other plugins (`toolkit`, `pr-review-toolkit`, `code-simplifier`, `superpowers`) are still installed:
+Type the explicit `k0d3:` prefix for k0d3 commands, agents, and skills when another installed plugin defines the same name — bare names resolve by plugin load order, so they collide silently:
 
 - `Skill(k0d3:tdd)` not `Skill(tdd)`
 - `Agent(k0d3:python-expert)` not `Agent(python-expert)`
 - `/k0d3:review` not `/review`
-
-After Phase 6 cutover the old plugins are gone and the prefix becomes optional.
 
 ## When to invoke an agent vs a skill
 

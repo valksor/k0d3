@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # SessionStart hook — warns when k0d3 skill/agent/command names also exist in
 # other installed plugins. Bare names (e.g. /review) resolve by plugin load
-# order, so silent shadowing is a real failure mode during Phases 1–5.
+# order, so silent shadowing is a real failure mode when multiple plugins are installed.
 #
 # This hook is ADVISORY ONLY. It always exits 0 and never blocks the session.
 # Output is written to .claude/logs/collision-report.log; warnings are also
 # echoed to stderr for visibility on session start.
 #
 # To enable: move this entry from hooks.json's _disabled_examples into the
-# active SessionStart array. Safe to keep enabled past Phase 6 — once legacy
-# plugins are uninstalled, the report stays empty.
+# active SessionStart array. When no other plugin defines colliding names,
+# the report stays empty.
 
 set -uo pipefail
 

@@ -14,7 +14,7 @@ metadata:
 
 # Systematic Debugging
 
-Random fixes waste time and create new bugs. Quick patches mask underlying issues. Adapted from `obra/superpowers:systematic-debugging`.
+Random fixes waste time and create new bugs. Quick patches mask underlying issues.
 
 **Core principle:** ALWAYS find the root cause before attempting fixes. Symptom fixes are failure.
 

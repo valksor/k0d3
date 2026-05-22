@@ -8,7 +8,7 @@
 #   - Bypass: K0D3_SKIP_VALIDATOR=1 → exit 0 immediately (logged to bypass log)
 #   - Manual disable: chmod -x this file
 #
-# Disabled-by-default in hooks/hooks.json. Enable in Phase 6 cutover after test-validator.sh passes.
+# Opt-in in hooks/hooks.json; enable after test-validator.sh passes.
 
 set -uo pipefail
 

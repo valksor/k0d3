@@ -1,6 +1,6 @@
-# Phase 6 hooks migration
+# Hooks: enabling & operating
 
-Procedure for the Phase 6 cutover. **As of the cutover, hooks #1–9 below ship _enabled by default_** in `hooks/hooks.json`; hooks #10–12 (`validate-skill-frontmatter`, `check-name-collisions`, `block-deferred-issues`) remain **opt-in** because they are k0d3-repo-development-specific (they'd misfire in unrelated projects). This doc covers the per-hook ordering, how to enable the remaining opt-in hooks, the correct config shape, and rollback.
+Hooks #1–9 below ship **enabled by default** in `hooks/hooks.json`. Hooks #10–12 (`validate-skill-frontmatter`, `check-name-collisions`, `block-deferred-issues`) are **opt-in** because they are k0d3-repo-development-specific and would misfire in unrelated projects. This doc covers how to enable the opt-in hooks, the correct config shape, the enable order, bypass, and rollback.
 
 > **Config shape & paths (read before editing `hooks.json`).** A live hook entry is the **nested** form
 > `hooks.<event>: [ { "matcher": "…", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/<name>.sh" } ] } ]`.
@@ -8,11 +8,10 @@ Procedure for the Phase 6 cutover. **As of the cutover, hooks #1–9 below ship 
 
 ## TL;DR
 
-1. Verify Batch 1 (`hooks/` + `scripts/`) is reviewed and `bash scripts/test-hooks.sh && bash scripts/test-validator.sh` returns 0.
+1. Confirm `bash scripts/test-hooks.sh && bash scripts/test-validator.sh` returns 0.
 2. Hooks #1–9 are already wired in `hooks.<event>`. To enable an opt-in hook (#10–12), add a **nested** entry to the matching `hooks.<event>` array (see the config-shape note above) — do not paste the flat catalog object.
-3. After each move, restart your Claude Code session and observe `.claude/logs/incident-log.md` and `.claude/logs/audit-trail.md` for at least one work session.
+3. After each change, restart your Claude Code session and observe `.claude/logs/incident-log.md` and `.claude/logs/audit-trail.md` for at least one work session.
 4. If anything misbehaves, move the entry back to `_disabled_examples` and revert.
-5. Once all hooks are healthy and the legacy plugin set has been uninstalled, k0d3 is the sole plugin.
 
 ## Per-hook activation order
 
@@ -21,7 +20,7 @@ Some hooks depend on artifacts produced by other hooks (`session-reset` reads wh
 | #   | Hook                         | Event                        | Why this position                                                                                                                                                                                                    |
 | --- | ---------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1   | `backup-before-write`        | PreToolUse Write\|Edit       | Pure side-effect (file copy). No deps. Safest to enable first — gives you rollback for the next hooks.                                                                                                               |
-| 2   | `log-changes`                | PostToolUse Write\|Edit      | Append-only audit. No deps. Pairs well with backups for the cutover.                                                                                                                                                 |
+| 2   | `log-changes`                | PostToolUse Write\|Edit      | Append-only audit. No deps. Pairs well with backups.                                                                                                                                                                 |
 | 3   | `log-failures`               | PostToolUseFailure           | Append-only failure log. No deps. Independent of any other hook.                                                                                                                                                     |
 | 4   | `pre-compact-handoff`        | PreCompact                   | Writes `.compaction-occurred` marker. Must be enabled **before** `post-compact-resume`.                                                                                                                              |
 | 5   | `post-compact-resume`        | SessionStart matcher=compact | Reads + deletes the marker from #4. Enable after #4 is confirmed healthy.                                                                                                                                            |
@@ -64,7 +63,7 @@ All four must exit 0 before flipping hooks #8–#11.
 
 The `chmod -x` bypass for the validator is supported but produces no audit log — prefer the env-var path for one-off needs.
 
-## Rollback (entire migration)
+## Rollback
 
 To unwind any subset of activations:
 
@@ -73,8 +72,6 @@ To unwind any subset of activations:
 git checkout hooks/hooks.json
 ```
 
-If old plugins were uninstalled and you need them back: `/plugin install <name>` (Claude Code's plugin manager remembers prior installs).
-
 ## Hard sequencing (read-after-write pairs)
 
 - `pre-compact-handoff` (write marker) → `post-compact-resume` (read + delete marker). Pair must move together; never enable resume without handoff.
@@ -82,7 +79,7 @@ If old plugins were uninstalled and you need them back: `/plugin install <name>`
 - `log-changes` and `log-failures` are independent — enable separately or together.
 - `backup-before-write` has no dependency — always safe to enable first.
 
-## Health checks after full activation
+## Health checks after enabling hooks
 
 ```bash
 # 1. No syntax errors in hook config

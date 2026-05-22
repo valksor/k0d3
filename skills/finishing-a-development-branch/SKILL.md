@@ -14,7 +14,7 @@ metadata:
 
 # Finishing a Development Branch
 
-Guide completion of development work by presenting clear options and handling chosen workflow. Adapted from `obra/superpowers:finishing-a-development-branch`.
+Guide completion of development work by presenting clear options and handling chosen workflow.
 
 **Core principle:** verify tests → detect environment → present options → execute choice → clean up.
 

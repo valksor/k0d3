@@ -14,7 +14,7 @@ metadata:
 
 # Planning
 
-Write comprehensive implementation plans assuming the engineer has zero context for your codebase and questionable taste. Adapted from `obra/superpowers:writing-plans`.
+Write comprehensive implementation plans assuming the engineer has zero context for your codebase and questionable taste.
 
 **Announce at start:** "I'm using the planning skill to create the implementation plan."
 

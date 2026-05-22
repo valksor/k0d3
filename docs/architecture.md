@@ -2,7 +2,7 @@
 
 > This doc is a **one-time orientation** to k0d3's conceptual layout. It is NOT a live reference — for that, see `docs/skill-graph.md` (auto-generated) and `Skill(skill-discovery)` (auto-regenerated routing table). It will not be revised every time a new skill lands.
 >
-> **Numbers in this doc are aspirational from an earlier phase and may not match the live catalogue.** Use this doc for the _conceptual grouping_; rely on `docs/skill-graph.md` and `ls skills/` for current counts.
+> **Counts here are illustrative and may not match the live catalogue.** Use this doc for the _conceptual grouping_; rely on `docs/skill-graph.md` and `ls skills/` for current counts.
 
 ## Layout decision: flat skills/, slug-prefixed namespace
 
@@ -12,7 +12,7 @@ Skills sit at one level under `skills/<slug>/SKILL.md`. The slug carries the nam
 - `frontend-tailwind` lives at `skills/frontend-tailwind/SKILL.md`
 - `postgres` lives at `skills/postgres/SKILL.md`
 
-**Why flat?** The only proven Claude Code plugin layout (used by `superpowers`, `toolkit`) is one-level-deep `skills/<name>/SKILL.md`. CC's plugin loader behavior at deeper nesting is unknown. The Phase 0 loader spike confirmed this — deeper nesting was tested and rejected; the flat layout is the project's stable choice.
+**Why flat?** The proven Claude Code plugin layout is one-level-deep `skills/<name>/SKILL.md`. CC's plugin loader behavior at deeper nesting is unsupported, so k0d3 keeps every skill flat.
 
 ## Conceptual grouping (not directory structure)
 
@@ -26,7 +26,7 @@ The slug prefix encodes the conceptual group:
 ### Core (cross-cutting process skills)
 
 - Workflow primitives: `brainstorming`, `planning`, `tdd`, `debugging`, `refactoring`, `requirements-gathering`, `code-review`, `root-cause`, `commit-writer`, `pr-description`
-- Ported from superpowers: `using-git-worktrees`, `dispatching-parallel-agents`, `subagent-driven-development`, `receiving-code-review`, `finishing-a-development-branch`
+- Collaboration & isolation: `using-git-worktrees`, `dispatching-parallel-agents`, `subagent-driven-development`, `receiving-code-review`, `finishing-a-development-branch`
 
 ### Languages (you write code in)
 
@@ -101,23 +101,23 @@ Five categories under `commands/`:
 
 ## Hooks
 
-11 shell hooks under `hooks/` (10 ported from `~/.shared/hooks/` + 1 new):
+Shell hooks under `hooks/`:
 
-- Ported: `backup-before-write`, `block-deferred-issues`, `completeness-gate`, `guard-bash` (with fixes), `log-changes`, `log-failures`, `log-stop-verdict`, `pre-compact-handoff`, `post-compact-resume`, `session-reset`
-- New: `validate-skill-frontmatter` (PreToolUse on `/skills/`, fail-open + stderr echo)
+- `backup-before-write`, `block-deferred-issues`, `completeness-gate`, `guard-bash`, `log-changes`, `log-failures`, `log-stop-verdict`, `pre-compact-handoff`, `post-compact-resume`, `session-reset`
+- `validate-skill-frontmatter` — PreToolUse on `/skills/`, fail-open + stderr echo
 
-All ship disabled-by-default in `hooks/hooks.json`. Enabled one-at-a-time during Phase 6 cutover per the per-hook interleave procedure.
+Most ship enabled by default in `hooks/hooks.json`; the repo-development-specific ones are opt-in. See `docs/hooks.md` for the per-hook enable order and rollback.
 
 ## Hard sequencing
 
-A few hooks have read-after-write dependencies. When enabling during cutover:
+A few hooks have read-after-write dependencies. When enabling the opt-in hooks:
 
 - `post-compact-resume` must be live in k0d3 before `session-reset` is moved (session-reset reads what resume wrote).
 - `pre-compact-handoff` and `post-compact-resume` are a pair — both should be live together.
 - `log-changes` and `log-failures` are independent.
 - `backup-before-write` has no dependency.
 
-See `docs/hooks-migration.md` for the full per-hook ordering.
+See `docs/hooks.md` for the full per-hook ordering.
 
 ## Bundled MCP servers
 
@@ -126,7 +126,7 @@ k0d3 ships two MCP servers, declared in the top-level `.mcp.json` (the conventio
 - **context7** — Upstash's hosted library-docs service, over **remote HTTP** (`https://mcp.context7.com/mcp`).
 - **memory** — the official `@modelcontextprotocol/server-memory`, a **local stdio** server (`npx -y @modelcontextprotocol/server-memory@<pinned>`). Gives Claude a persistent knowledge graph (entities, observations, relations) across sessions. Storage is **project-local and self-initializing**: `MEMORY_FILE_PATH` points at `${CLAUDE_PROJECT_DIR}/.claude/memory.jsonl`, so each project gets its own store under the (gitignored) `.claude/`. **Zero external service** — no network, no embeddings, no API key.
 
-**On bundling a stdio server.** An earlier draft reserved bundling for HTTP and kept stdio servers (codegraph) in the user's own config. The durable rule is sharper than "transport": **bundle a server iff it can start and return a valid (if empty) response with zero pre-installed _project_ artifacts.** codegraph fails that test — it needs a locally-installed binary _and_ a pre-built per-repo index, so it errors or no-ops wherever either is missing. The memory server passes it: `npx` fetches the code on first use (cached after) and it self-initializes its store per project. The accepted costs — a Node/`npx` prerequisite and a one-time first-run download — are tolerable for a capability that fails soft (Node absent or an offline first run just means the server doesn't start) and is opt-out via `/mcp`.
+**On bundling a stdio server.** The rule isn't about transport: **bundle a server iff it can start and return a valid (if empty) response with zero pre-installed _project_ artifacts.** codegraph fails that test — it needs a locally-installed binary _and_ a pre-built per-repo index, so it errors or no-ops wherever either is missing. The memory server passes it: `npx` fetches the code on first use (cached after) and it self-initializes its store per project. The accepted costs — a Node/`npx` prerequisite and a one-time first-run download — are tolerable for a capability that fails soft (Node absent or an offline first run just means the server doesn't start) and is opt-out via `/mcp`.
 
 Two operational notes. (1) The server self-initializes its store _file_ but **not** the parent directory — a write to a missing `.claude/` returns `ENOENT`. k0d3's `ensure-memory-gitignore` SessionStart hook guarantees `.claude/` exists and adds `memory.jsonl` to `.claude/.gitignore`, since the store is plaintext and must never be committed. (2) Unlike context7 (HTTP, no local code), a bundled stdio server auto-runs local code on every install — and npm version tags are not immutable. The pin is therefore vetted by `scripts/check-mcp-pin.sh` (CI plus a weekly schedule), which asserts the published tarball integrity still matches the vetted value; bumping the pin is a deliberate step that updates that expected hash. The trust basis for auto-enabling is that the package is the official, Anthropic-maintained `@modelcontextprotocol/server-memory`.
 
