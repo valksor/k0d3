@@ -118,3 +118,13 @@ A few hooks have read-after-write dependencies. When enabling during cutover:
 - `backup-before-write` has no dependency.
 
 See `docs/hooks-migration.md` for the full per-hook ordering.
+
+## Bundled MCP servers
+
+k0d3 ships one MCP server, declared in the top-level `.mcp.json` (the conventional location for a plugin-bundled server; preferred over inlining `mcpServers` in `plugin.json`, and it stays clear of the `version-bump.yml` CI step, which only touches `plugin.json`'s `version` field). Plugin-bundled servers auto-enable on install with no approval prompt.
+
+- **context7** — Upstash's hosted library-docs service, over **remote HTTP** (`https://mcp.context7.com/mcp`).
+
+**Why remote HTTP, not a local/stdio server.** A hosted endpoint has no local dependency: no binary to install, no `npx` download, no per-project index. That's the right shape for something that auto-starts on _every_ machine that installs k0d3. A codegraph-style stdio server, by contrast, would error or no-op wherever its binary or index is absent — so it is intentionally **not** bundled and stays in the user's own config.
+
+The API key is per-user, never committed: `.mcp.json` references `${CONTEXT7_API_KEY:-}`. The `:-` empty default is load-bearing — Claude Code refuses to start a server that references an unset variable with no default, so the fallback is what keeps anonymous (keyless) use working.

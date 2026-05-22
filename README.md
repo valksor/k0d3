@@ -51,6 +51,7 @@ Phase 6 cutover is mandatory but reversible at every step boundary. The per-hook
 
 ```
 .claude-plugin/plugin.json    — manifest
+.mcp.json                     — bundled MCP servers (context7, auto-enabled)
 skills/                       — ~145 active at one level (slug == directory)
 agents/                       — workflow/, reviewers/, experts/
 commands/                     — workflow/, plan/, execute/, review/, analyze/
@@ -60,6 +61,22 @@ tests/                        — fixtures for validator + hook tests
 docs/                         — conventions, architecture, hooks-migration, …
 references/                   — long-form material linked from skills
 ```
+
+## MCP servers
+
+k0d3 bundles one MCP server, **context7** (Upstash's hosted up-to-date library-docs service), defined in the top-level `.mcp.json`. Because it ships with the plugin, it **auto-enables when k0d3 is installed** — no per-server approval prompt, unlike a project-level `.mcp.json`. It is a remote HTTP server (`https://mcp.context7.com/mcp`), so there is nothing to install locally and no per-project index to build.
+
+By default it talks to context7's anonymous tier (rate-limited). To raise the limits, get a free key at <https://context7.com> and export it before launching Claude Code:
+
+```fish
+set -x CONTEXT7_API_KEY <your-key>   # fish
+```
+
+```bash
+export CONTEXT7_API_KEY=<your-key>   # bash/zsh
+```
+
+The key is never committed — `.mcp.json` references `${CONTEXT7_API_KEY:-}`, which falls back to empty (anonymous) when the variable is unset. To disable the server entirely, run `/mcp` in a session, or remove the context7 block from your installed plugin's `.mcp.json`.
 
 ## Editorial conventions (skill voice)
 

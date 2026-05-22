@@ -58,5 +58,6 @@ See `docs/conventions.md § Validator bypass` for the full procedure.
 | Long-form reference material         | `references/<topic>.md`, linked from the skill                |
 | A new agent persona                  | `agents/{workflow,reviewers,experts}/<name>.md`               |
 | A new slash command                  | `commands/<category>/<name>.md`                               |
+| A bundled MCP server                 | `.mcp.json` at the repo root (auto-enabled on install)        |
 | Borrowed content credit              | one line in `docs/borrowed-from.md`                           |
 | Build decisions / structural choices | `docs/architecture.md` (one-time orientation; rarely revised) |
