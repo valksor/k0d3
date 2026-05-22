@@ -133,6 +133,15 @@ for d in skill_dirs:
 # --- skill-discovery freshness ---
 disc = SKILLS_DIR / "skill-discovery" / "SKILL.md"
 if disc.exists():
+    # Guard against Prettier (or any formatter) re-padding the generated table.
+    # Clean output is ~67 KB; column-aligning the markdown table blows it past 2 MB.
+    # The fix is the .prettierignore entry; this catches the regression if it's lost.
+    size = disc.stat().st_size
+    if size > 262_144:
+        err(
+            f"{disc}: {size} bytes > 256 KB cap — likely Prettier re-padded the table; "
+            f"ensure it is listed in .prettierignore, then rerun generate-skill-graph.sh"
+        )
     text = disc.read_text(encoding="utf-8")
     m = re.search(r"^last-generated:\s*[\"']?([^\"'\n]+)[\"']?", text, re.MULTILINE)
     if m:

@@ -12,6 +12,7 @@ __pycache__/
 
 # Auto-generated
 docs/skill-graph.md
+skills/skill-discovery/SKILL.md
 
 # Intentionally malformed (validator test corpus)
 tests/validator-fixtures/
