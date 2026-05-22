@@ -61,4 +61,4 @@ Sessions have finite context; heavy operations burn it fast. Run `/k0d3:workflow
 - output quality degrades (repetition, dropped details);
 - a clean task boundary, before switching to an unrelated task.
 
-**Automatic safety net.** With k0d3's hooks active you also get this for free: `pre-compact-handoff` writes a state marker before auto-compaction and `post-compact-resume` restores it on the next `SessionStart(compact)`; `session-reset` clears stale gate files on each fresh `startup`. `safe-clear` is the *deliberate* version you trigger yourself before quality slips.
+**Automatic safety net.** With k0d3's hooks active you also get this for free: `pre-compact-handoff` writes a state marker before auto-compaction and `post-compact-resume` restores it on the next `SessionStart(compact)`; `session-reset` clears stale gate files on each fresh `startup`. `safe-clear` is the _deliberate_ version you trigger yourself before quality slips.
