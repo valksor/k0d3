@@ -1,71 +1,81 @@
 {
-  "_comment": "k0d3 hooks — ALL DISABLED BY DEFAULT. Enable one at a time during Phase 6 cutover per docs/hooks-migration.md.",
+  "_comment": "k0d3 hooks. The 9 wired below are enabled by default (old-claude parity, all safe globally). The 3 in _disabled_examples are k0d3-repo-dev-specific and opt-in. Paths use ${CLAUDE_PLUGIN_ROOT} so they resolve in any project regardless of the user's cwd. See docs/hooks-migration.md.",
   "hooks": {
-    "PreToolUse": [],
-    "PostToolUse": [],
-    "Stop": [],
-    "PostToolUseFailure": [],
-    "SessionStart": [],
-    "PreCompact": []
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/guard-bash.sh" }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/backup-before-write.sh" },
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/completeness-gate.sh" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/log-changes.sh" }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/log-failures.sh" }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/pre-compact-handoff.sh" }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/session-reset.sh" }
+        ]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/post-compact-resume.sh" }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/log-stop-verdict.sh" }
+        ]
+      }
+    ]
   },
   "_disabled_examples": {
-    "_doc": "These show how each hook would be wired when enabled. Move from _disabled_examples into the matching hooks.<event> array to activate.",
+    "_doc": "Opt-in / k0d3-repo-dev-specific hooks. To enable one, add a nested entry under the matching hooks.<event> array above: a matcher plus a hooks[] list whose command is \"${CLAUDE_PLUGIN_ROOT}\"/hooks/<name>.sh. The flat objects below are catalog notation, NOT valid live config.",
     "validate-skill-frontmatter": {
       "event": "PreToolUse",
       "matcher": "Write|Edit",
-      "command": "$CLAUDE_PROJECT_DIR/hooks/validate-skill-frontmatter.sh"
-    },
-    "guard-bash": {
-      "event": "PreToolUse",
-      "matcher": "Bash",
-      "command": "$CLAUDE_PROJECT_DIR/hooks/guard-bash.sh"
-    },
-    "completeness-gate": {
-      "event": "PreToolUse",
-      "matcher": "Write|Edit",
-      "command": "$CLAUDE_PROJECT_DIR/hooks/completeness-gate.sh"
-    },
-    "backup-before-write": {
-      "event": "PreToolUse",
-      "matcher": "Write|Edit",
-      "command": "$CLAUDE_PROJECT_DIR/hooks/backup-before-write.sh"
-    },
-    "log-changes": {
-      "event": "PostToolUse",
-      "matcher": "Write|Edit",
-      "command": "$CLAUDE_PROJECT_DIR/hooks/log-changes.sh"
-    },
-    "log-failures": {
-      "event": "PostToolUseFailure",
-      "command": "$CLAUDE_PROJECT_DIR/hooks/log-failures.sh"
-    },
-    "log-stop-verdict": {
-      "event": "Stop",
-      "command": "$CLAUDE_PROJECT_DIR/hooks/log-stop-verdict.sh"
-    },
-    "pre-compact-handoff": {
-      "event": "PreCompact",
-      "command": "$CLAUDE_PROJECT_DIR/hooks/pre-compact-handoff.sh"
-    },
-    "post-compact-resume": {
-      "event": "SessionStart",
-      "matcher": "compact",
-      "command": "$CLAUDE_PROJECT_DIR/hooks/post-compact-resume.sh"
-    },
-    "session-reset": {
-      "event": "SessionStart",
-      "matcher": "startup",
-      "command": "$CLAUDE_PROJECT_DIR/hooks/session-reset.sh"
+      "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/validate-skill-frontmatter.sh"
     },
     "check-name-collisions": {
       "event": "SessionStart",
       "matcher": "startup",
-      "command": "$CLAUDE_PROJECT_DIR/hooks/check-name-collisions.sh"
+      "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/check-name-collisions.sh"
     },
     "block-deferred-issues": {
       "event": "PreToolUse",
       "matcher": "Bash",
-      "command": "$CLAUDE_PROJECT_DIR/hooks/block-deferred-issues.sh"
+      "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/block-deferred-issues.sh"
     }
   }
 }

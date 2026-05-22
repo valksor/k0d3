@@ -51,3 +51,14 @@ If a write to `skills/**` gets blocked by `validate-skill-frontmatter.sh`:
 - Persistent disable (last resort — silent, no audit trail): `chmod -x hooks/validate-skill-frontmatter.sh`. **Re-enable immediately** with `chmod +x hooks/validate-skill-frontmatter.sh` after the sweep finishes.
 
 See `docs/conventions.md § Validator bypass` for the full procedure.
+
+## Context health
+
+Sessions have finite context; heavy operations burn it fast. Run `/k0d3:workflow:safe-clear` proactively when you notice any of:
+
+- ~30+ tool calls deep, or after 3+ large file reads;
+- a "compacting conversation" warning appears — clear immediately;
+- output quality degrades (repetition, dropped details);
+- a clean task boundary, before switching to an unrelated task.
+
+**Automatic safety net.** With k0d3's hooks active you also get this for free: `pre-compact-handoff` writes a state marker before auto-compaction and `post-compact-resume` restores it on the next `SessionStart(compact)`; `session-reset` clears stale gate files on each fresh `startup`. `safe-clear` is the *deliberate* version you trigger yourself before quality slips.

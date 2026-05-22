@@ -1,11 +1,15 @@
 # Phase 6 hooks migration
 
-Procedure for enabling k0d3 hooks during the Phase 6 cutover. All hooks ship **disabled by default** in `hooks/hooks.json`; this doc explains how to turn them on safely, the per-hook ordering, and rollback at each step.
+Procedure for the Phase 6 cutover. **As of the cutover, hooks #1–9 below ship _enabled by default_** in `hooks/hooks.json`; hooks #10–12 (`validate-skill-frontmatter`, `check-name-collisions`, `block-deferred-issues`) remain **opt-in** because they are k0d3-repo-development-specific (they'd misfire in unrelated projects). This doc covers the per-hook ordering, how to enable the remaining opt-in hooks, the correct config shape, and rollback.
+
+> **Config shape & paths (read before editing `hooks.json`).** A live hook entry is the **nested** form
+> `hooks.<event>: [ { "matcher": "…", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/<name>.sh" } ] } ]`.
+> Always reference scripts via **`${CLAUDE_PLUGIN_ROOT}`** (the plugin's install dir) — **not** `$CLAUDE_PROJECT_DIR` (the user's current project), or the hook won't be found once k0d3 is installed in some other project. The flat `{event, matcher, command}` objects in `_disabled_examples` are a **catalog**, not valid live config.
 
 ## TL;DR
 
 1. Verify Batch 1 (`hooks/` + `scripts/`) is reviewed and `bash scripts/test-hooks.sh && bash scripts/test-validator.sh` returns 0.
-2. Enable one hook at a time by moving its entry from `_disabled_examples` to the matching `hooks.<event>` array in `hooks/hooks.json`.
+2. Hooks #1–9 are already wired in `hooks.<event>`. To enable an opt-in hook (#10–12), add a **nested** entry to the matching `hooks.<event>` array (see the config-shape note above) — do not paste the flat catalog object.
 3. After each move, restart your Claude Code session and observe `.claude/logs/incident-log.md` and `.claude/logs/audit-trail.md` for at least one work session.
 4. If anything misbehaves, move the entry back to `_disabled_examples` and revert.
 5. Once all hooks are healthy and the legacy plugin set has been uninstalled, k0d3 is the sole plugin.
@@ -32,7 +36,7 @@ Some hooks depend on artifacts produced by other hooks (`session-reset` reads wh
 
 1. **Read the hook's source.** All hooks are short (≤200 lines). Confirm you understand the deny conditions before flipping it on.
 2. **Open `hooks/hooks.json`.** Locate the matching entry in `_disabled_examples`.
-3. **Move the entry to `hooks.<event>`.** Copy the object (including `event`, `matcher` if present, `command`) into the corresponding array. Leave `_disabled_examples` as a reference catalog.
+3. **Add a nested entry to `hooks.<event>`.** Don't paste the flat catalog object — write the nested form: `{ "matcher": "<matcher, or omit for all>", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/<name>.sh" } ] }`. Leave `_disabled_examples` as the reference catalog.
 4. **Validate JSON syntax.** Run `jq empty hooks/hooks.json` — must exit 0.
 5. **Restart Claude Code.** The new session picks up the hook config at startup.
 6. **Observe for one work session.** Check `.claude/logs/incident-log.md` and `.claude/logs/audit-trail.md` (or `.claude/logs/failure-log.md` for #3).
