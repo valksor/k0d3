@@ -1,9 +1,11 @@
 ---
 name: review
-description: Single-pass code review (security + performance + architecture) with optional auto-fix — quick & lightweight. For multi-agent calibrated PR review use /k0d3:review-impl instead.
+description: Single-pass code review (security + performance + architecture) with auto-fix — quick & lightweight. For multi-agent calibrated PR review use /k0d3:review-impl instead.
 argument-hint: "[file, directory, or PR]"
 allowed-tools:
   - Read
+  - Edit
+  - Write
   - Agent
   - Glob
   - Grep
@@ -109,8 +111,6 @@ Output a structured review:
 [One sentence rationale]
 ```
 
-### Step 6: Offer to fix
+### Step 6: Disposition the findings
 
-Ask the user: "Want me to fix the critical and high-priority issues now?"
-
-If yes, apply fixes directly. If no, the review stands as documentation.
+Do **not** ask whether to fix. **Read `references/review-finding-disposition.md` and follow it**: validate each finding against the actual code, fix **every** valid finding directly (all tiers — Critical/High/Medium/Low), skip false positives with a one-line reason, never push, then report what was fixed and skipped. The reference covers the validation standard, the report format, and the plan-mode / remote-PR guard clauses. The disposition report supersedes the Step 5 verdict (which was computed before any fixes).

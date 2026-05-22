@@ -1,8 +1,8 @@
 ---
 name: review-impl
-description: Dispatch the 4 calibrated reviewer agents in parallel against an implementation diff.
+description: Dispatch the 4 calibrated reviewer agents in parallel against an implementation diff, then validate and auto-fix the findings.
 argument-hint: "[base-ref] [requirements-path]"
-allowed-tools: [Read, Glob, Bash(git:*), Agent, Skill]
+allowed-tools: [Read, Edit, Write, Glob, Bash(git:*), Agent, Skill]
 ---
 
 # /review-impl
@@ -38,6 +38,8 @@ Process:
    - Each reviewer self-applies its own calibration before returning output; the orchestrator does NOT re-classify findings.
    - The orchestrator's job is to: (a) dedupe findings reported by multiple reviewers, (b) preserve the highest severity assigned to any duplicate, (c) attribute each consolidated finding to the reviewers that flagged it, (d) compute the overall verdict (NEEDS WORK if any reviewer has confirmed blockers; CONCERNS REMAIN if only concerns; PASS if all four are clean).
 
-Each reviewer emits all four sections (Blockers / Concerns / Advisories / Verdict) — empty sections are written as `- None` so the orchestrator's parse stays predictable.
+   Each reviewer emits all four sections (Blockers / Concerns / Advisories / Verdict) — empty sections are written as `- None` so the orchestrator's parse stays predictable.
+
+7. Disposition the findings: **Read `references/review-finding-disposition.md` and follow it** — validate each against the actual code, fix **every** valid finding directly (all tiers), skip false positives with a one-line reason, never push, and **do not ask for permission**. The reference covers the validation standard, the report format, and the plan-mode / remote-PR guard clauses.
 
 Pattern: the four reviewers are calibrated for implementation-diff review (real bugs, regression risk, security in code, end-user impact). For plan-document review use `/k0d3:review-plan`.
