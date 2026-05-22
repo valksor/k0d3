@@ -14,7 +14,7 @@ Create well-structured git commits for all uncommitted changes in the current re
 
 ## Requirements
 
-- **Commit everything**: "all uncommitted changes" means ALL — every modified, staged, and untracked path in `git status`. Never leave a file out because you judge it incidental, tooling-generated, or "not part of my change"; if it doesn't belong with the main commit, give it its own commit. The only files you may skip are (a) genuine secrets/credentials or (b) files the user explicitly named — and you must say which you skipped and why. Done = a clean working tree.
+- **Commit everything**: "all uncommitted changes" means ALL — every modified, staged, and untracked path in `git status`. Never leave a file out, **and never pause to ask whether to commit one**, because you judge it incidental, tooling-generated, "not part of my change," **a separate feature, or code you didn't write** — none of those is a reason to skip *or to ask*. If it doesn't belong with the main commit, give it its own commit. Invoking `/commit` IS the authorization to commit everything; there is no further confirmation step. The only files you may skip are (a) genuine secrets/credentials or (b) files the user explicitly named — and you must say which you skipped and why. Done = a clean working tree.
 - **File-based commits**: commit whole files only, never partial files or line hunks
 - **Gradual commits**: limit each commit to **20–25 files maximum**. Split larger changesets into multiple focused commits. Improves reviewability, makes `git bisect` effective, keeps history readable.
 - **No push**: only commit locally, never push to remote
@@ -39,7 +39,7 @@ Before any other action, check for plan mode:
    - `git diff` — understand what changed
    - `git log -5 | cat` — match existing commit style
 2. Extract style dimensions from `git log` (see Step 1 below).
-3. Group related files logically.
+3. Group related files logically — every uncommitted file lands in some commit; grouping distributes them across commits, it never drops any.
 4. Append a Commit Plan to the active plan file:
 
 ```
@@ -96,7 +96,7 @@ If `git log -5 | cat` returns nothing (truly empty repo), default to: imperative
 
 1. `git status` — see all uncommitted changes. **If the working tree is clean** (no untracked, no modified, no staged), STOP and tell the user "Nothing to commit, working tree clean." Do NOT proceed; do NOT invent files to stage; do NOT create an empty commit.
 2. `git diff` — understand what changed
-3. Group related files logically per commit (20–25 file cap)
+3. Group related files logically per commit (20–25 file cap) — this distributes ALL uncommitted files across commits; it never excludes any.
 4. `git add <specific-files>` (never `-A` or `.`)
 5. Create the commit using HEREDOC format for proper message formatting:
 
@@ -122,3 +122,4 @@ EOF
 - NEVER skip hooks (`--no-verify`) unless explicitly requested
 - NEVER invent a commit style — match the repo's existing one
 - NEVER leave a changed file uncommitted because you deemed it "unintended" or "unrelated" — commit it (its own commit if needed). Only genuine secrets/credentials or user-named files may be skipped, and you must say so.
+- NEVER pause to ask the user whether to commit a file, and NEVER treat committing something as an "editorial call." The permitted stops are exactly two: (1) a clean working tree, (2) a detected secret/credential. **Every other reason to stop or ask is invalid** — "I didn't write it," "it's a separate feature," "it looks unrelated" all mean *commit it in its own commit*, not *ask first*.
