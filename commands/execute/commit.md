@@ -14,11 +14,12 @@ Create well-structured git commits for all uncommitted changes in the current re
 
 ## Requirements
 
+- **Commit everything**: "all uncommitted changes" means ALL — every modified, staged, and untracked path in `git status`. Never leave a file out because you judge it incidental, tooling-generated, or "not part of my change"; if it doesn't belong with the main commit, give it its own commit. The only files you may skip are (a) genuine secrets/credentials or (b) files the user explicitly named — and you must say which you skipped and why. Done = a clean working tree.
 - **File-based commits**: commit whole files only, never partial files or line hunks
 - **Gradual commits**: limit each commit to **20–25 files maximum**. Split larger changesets into multiple focused commits. Improves reviewability, makes `git bisect` effective, keeps history readable.
 - **No push**: only commit locally, never push to remote
 - **No `git -C`**: operate from the repo's working directory
-- **No `git add -A` / `git add .`**: always specify files explicitly so credentials and unintended files don't slip in
+- **Enumerate paths, don't bulk-add**: stage with explicit `git add <path> …`, never `git add -A` / `git add .`. This is a safety mechanism so a stray credential file can't be swept in silently — **not** license to leave files out. Every uncommitted change still gets committed (see _Commit everything_ above).
 - **No amend**: create new commits; only amend if the user explicitly asks
 - **Co-author**: match existing style. Include a `Co-Authored-By` line only if recent commits include one. Do not introduce it on a solo project that has never used it.
 
@@ -109,7 +110,7 @@ EOF
 ```
 
 6. Repeat for remaining changes
-7. Final `git status` to confirm everything is committed
+7. Final `git status` — the tree MUST be clean. Anything still uncommitted is a bug unless it is an allowed exclusion (secret/credential or user-named); name any skipped file and the reason. "Done" means a clean tree, not "the files I judged relevant are committed."
 
 ## Restrictions
 
@@ -120,3 +121,4 @@ EOF
 - NEVER `git commit --amend` unless explicitly requested
 - NEVER skip hooks (`--no-verify`) unless explicitly requested
 - NEVER invent a commit style — match the repo's existing one
+- NEVER leave a changed file uncommitted because you deemed it "unintended" or "unrelated" — commit it (its own commit if needed). Only genuine secrets/credentials or user-named files may be skipped, and you must say so.
