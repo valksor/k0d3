@@ -1,0 +1,37 @@
+name: MCP memory guard
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - ".mcp.json"
+      - "scripts/check-mcp-pin.sh"
+      - "scripts/smoke-mcp-memory.sh"
+      - ".github/workflows/mcp-memory-guard.yml"
+  pull_request:
+    paths:
+      - ".mcp.json"
+      - "scripts/check-mcp-pin.sh"
+      - "scripts/smoke-mcp-memory.sh"
+      - ".github/workflows/mcp-memory-guard.yml"
+  schedule:
+    # Weekly — catches a republished version tag even when nothing changed here.
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Supply-chain integrity (pinned tarball)
+        run: bash scripts/check-mcp-pin.sh
+
+      - name: Smoke (server self-init + path resolution)
+        run: bash scripts/smoke-mcp-memory.sh

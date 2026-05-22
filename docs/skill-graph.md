@@ -277,6 +277,8 @@ graph LR
   pr-description --> commit-writer
   pr-description --> finishing-a-development-branch
   pr-description --> code-review
+  project-memory --> agent-design
+  project-memory --> using-k0d3
   python-data-pipeline --> python-essentials
   python-data-pipeline --> python-django
   python-data-pipeline --> python-fastapi

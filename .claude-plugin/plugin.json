@@ -35,6 +35,7 @@
     "ci",
     "tailwind",
     "daisyui",
-    "shadcn"
+    "shadcn",
+    "memory"
   ]
 }
