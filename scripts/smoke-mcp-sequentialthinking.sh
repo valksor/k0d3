@@ -23,7 +23,10 @@ if ! command -v jq > /dev/null 2>&1; then
 fi
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SPEC="$(jq -r '.mcpServers."sequential-thinking".args[-1] // empty' "$REPO_ROOT/.mcp.json")"
+# Shared package-spec selector (see scripts/test-mcp-spec-extraction.sh): the arg shaped
+# like [@scope/]name@<version>, not args[-1] — so it stays correct if the server ever
+# gains trailing subcommand args.
+SPEC="$(jq -r '.mcpServers."sequential-thinking".args[]? | select(type == "string" and test("^(@[A-Za-z0-9._-]+/)?[A-Za-z0-9._-]+@[0-9]"))' "$REPO_ROOT/.mcp.json" | head -1)"
 if [ -z "$SPEC" ]; then
   echo "SKIP smoke-mcp-sequentialthinking: could not read sequential-thinking server spec from .mcp.json" >&2
   exit 0

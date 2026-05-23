@@ -1,6 +1,6 @@
 # Hooks: enabling & operating
 
-Hooks #1–9 below ship **enabled by default** in `hooks/hooks.json`. Hooks #10–12 (`validate-skill-frontmatter`, `check-name-collisions`, `block-deferred-issues`) are **opt-in** because they are k0d3-repo-development-specific and would misfire in unrelated projects. This doc covers how to enable the opt-in hooks, the correct config shape, the enable order, bypass, and rollback.
+Most hooks in `hooks/hooks.json` ship **enabled by default** — old-claude parity (#1–9 in the table below), plus `ensure-memory-gitignore` and the two codegraph hooks (`codegraph-autoindex`, `prefer-codegraph`, described after the table); all are fail-soft and safe in any project. Three further hooks (`validate-skill-frontmatter`, `check-name-collisions`, `block-deferred-issues`) are **opt-in** because they are k0d3-repo-development-specific and would misfire in unrelated projects. This doc covers how to enable the opt-in hooks, the correct config shape, the enable order, bypass, and rollback.
 
 > **Config shape & paths (read before editing `hooks.json`).** A live hook entry is the **nested** form
 > `hooks.<event>: [ { "matcher": "…", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/<name>.sh" } ] } ]`.
@@ -30,6 +30,18 @@ Some hooks depend on artifacts produced by other hooks (`session-reset` reads wh
 | 9   | `completeness-gate`          | PreToolUse Write\|Edit       | **Behavior-changing.** Blocks writes containing TBD/TODO/FIXME markers and detected secrets. Test on a throwaway file first.                                                                                         |
 | 10  | `validate-skill-frontmatter` | PreToolUse Write\|Edit       | **Behavior-changing.** Validates frontmatter when writing to `skills/`. Fail-open (always exit 0), so a misfire is annoying but not blocking.                                                                        |
 | 11  | `block-deferred-issues`      | PreToolUse Bash              | Blocks `gh issue create` on `work/*` branches. Only fires on that one command path.                                                                                                                                  |
+| 12  | `check-name-collisions`      | SessionStart matcher=startup | Independent (no deps). Warns when a skill/command/agent name collides with another installed plugin. Safe to enable any time; opt-in only because the collision set is k0d3-repo-development-specific.                |
+
+## Default codegraph hooks (fail-soft, outside the order table)
+
+Two hooks back the bundled **codegraph** MCP server. Both ship enabled, are independent of the dependency chain above, and **fail soft**, so they sit here rather than in the activation-order table.
+
+- **`codegraph-autoindex`** (SessionStart, `startup`) — codegraph's `serve --mcp` serves an index but never builds one. This hook launches `codegraph init -i` / `index` in a **detached background** process when a git repo has source but no `.codegraph/`, so session start never blocks. No-ops when there's no git repo, the index already exists, or `npx`/`jq` are missing; an atomic lock **directory** `.claude/logs/.codegraph-indexing` prevents stacked runs (and a partial `.codegraph/` self-heals by falling back from `index` to `init`), with output to `.claude/logs/codegraph-index.log`.
+- **`prefer-codegraph`** (PreToolUse, `Grep`) — **advisory only, never blocks.** When the agent greps for a bare identifier in a repo that has a codegraph index, it injects a note (via `additionalContext`) to prefer `codegraph_search` / `codegraph_context` / `codegraph_callers`. Silent for regex/phrase searches and in repos without a codegraph index — so it nudges only on bare-symbol greps in an indexed repo (there is no per-session dedup, so it can recur for the same symbol within a session).
+
+Neither needs the supply-chain enable ceremony below — they take no destructive action.
+
+**First run & opt-out.** On a fresh install the background `npx` fetch + initial index take a little time; until they finish, `codegraph_*` tools answer "not initialized" (fail-soft) — watch progress in `.claude/logs/codegraph-index.log`. To opt out: disable the server via `/mcp`, and/or remove the `codegraph-autoindex` / `prefer-codegraph` entries from `hooks/hooks.json` and restart. The index lives in each repo's `.codegraph/`. codegraph's own `.codegraph/.gitignore` ignores only the index **data** (`*.db`, `cache/`, `*.log`) — it leaves `.codegraph/config.json` and the `.gitignore` itself committable, so on its own the directory is only *partially* ignored. The hook therefore adds `.codegraph/` to `.git/info/exclude` (repo-local, never committed), keeping the **whole** directory out of your `git status`. Remove the index with `rm -rf .codegraph/` or `npx @colbymchenry/codegraph uninit`.
 
 ## Step-by-step procedure (per hook)
 

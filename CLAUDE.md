@@ -60,3 +60,14 @@ See `docs/conventions.md § Validator bypass` for the full procedure.
 | A new slash command          | `commands/<category>/<name>.md`                               |
 | A bundled MCP server         | `.mcp.json` at the repo root (auto-enabled on install)        |
 | Conceptual layout / grouping | `docs/architecture.md` (one-time orientation; rarely revised) |
+
+## Bundling an MCP server — the criterion (read before judging a server "can't be bundled")
+
+Bundle a server in `.mcp.json` (auto-enabled on install) **iff it imposes no third-party account and no local language toolchain** (rust/go/compilers/etc.) on the user. Explicitly fine, not disqualifying:
+
+- fetching a **self-contained package via `npx`/`curl`** (a one-time first-run download is acceptable);
+- needing a **per-repo artifact** (e.g. codegraph's index) **when k0d3 provisions it itself via a hook**.
+
+The bar is NOT "useful with zero setup" and NOT "no fetch-on-use" — it is "no account, no toolchain prerequisite." k0d3 ships no binaries. (Common misread: treating an `npx`-fetched tool or one that needs a provisioned index as automatically un-bundleable. It isn't.)
+
+All four bundled servers qualify: context7 (HTTP), and memory / sequential-thinking / **codegraph** (self-contained `npx` packages). codegraph is **third-party** and auto-runs its code, so its pin in `scripts/check-mcp-pin.sh` (thin launcher **plus every** per-platform package it publishes — any unpinned platform fails closed) + `scripts/smoke-mcp-codegraph.sh` are the load-bearing trust control, and its index is provisioned by the `codegraph-autoindex` SessionStart hook. Full rationale: `docs/architecture.md § Bundled MCP servers`.

@@ -8,6 +8,11 @@ on:
       - "scripts/check-mcp-pin.sh"
       - "scripts/smoke-mcp-memory.sh"
       - "scripts/smoke-mcp-sequentialthinking.sh"
+      - "scripts/smoke-mcp-codegraph.sh"
+      - "scripts/test-mcp-spec-extraction.sh"
+      - "scripts/test-prefer-codegraph.sh"
+      - "hooks/codegraph-autoindex.sh"
+      - "hooks/prefer-codegraph.sh"
       - ".github/workflows/mcp-guard.yml"
   pull_request:
     paths:
@@ -15,10 +20,16 @@ on:
       - "scripts/check-mcp-pin.sh"
       - "scripts/smoke-mcp-memory.sh"
       - "scripts/smoke-mcp-sequentialthinking.sh"
+      - "scripts/smoke-mcp-codegraph.sh"
+      - "scripts/test-mcp-spec-extraction.sh"
+      - "scripts/test-prefer-codegraph.sh"
+      - "hooks/codegraph-autoindex.sh"
+      - "hooks/prefer-codegraph.sh"
       - ".github/workflows/mcp-guard.yml"
   schedule:
-    # Weekly — catches a republished version tag even when nothing changed here.
-    - cron: "17 6 * * 1"
+    # Daily — codegraph is a single-maintainer third-party package auto-enabled on every
+    # install, so a republished tarball should be caught within a day, not a week.
+    - cron: "17 6 * * *"
   workflow_dispatch:
 
 # Least privilege: this job only reads the repo and queries npm — no writes.
@@ -28,7 +39,9 @@ permissions:
 jobs:
   guard:
     runs-on: ubuntu-slim
-    timeout-minutes: 10
+    # codegraph's vendored-Node bundle is a heavier first fetch than the
+    # @modelcontextprotocol servers, so the job needs more than the default headroom.
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
 
@@ -44,3 +57,12 @@ jobs:
 
       - name: Smoke — sequential-thinking (launch + tool result)
         run: bash scripts/smoke-mcp-sequentialthinking.sh
+
+      - name: Smoke — codegraph (launch + advertises tools)
+        run: bash scripts/smoke-mcp-codegraph.sh
+
+      - name: Test — MCP spec extraction (selector parity across consumers)
+        run: bash scripts/test-mcp-spec-extraction.sh
+
+      - name: Test — prefer-codegraph Grep nudge
+        run: bash scripts/test-prefer-codegraph.sh
