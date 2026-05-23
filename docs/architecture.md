@@ -34,7 +34,8 @@ The slug prefix encodes the conceptual group:
 - `python-*` (8): idioms, typing, async, testing, packaging, fastapi, django, pydantic
 - `ts-*` (6): strict-mode, async, types, testing, node-interop, esm-cjs
 - `react-*` (5): hooks, composition, performance, server-components, testing
-- `rust-*` (8): ownership, async-tokio, errors, cargo, traits, concurrency, axum-actix, testing
+- `rust-*` (8+): ownership, async-tokio, errors, cargo, traits, concurrency, axum-actix, testing, cli
+- `php-*` (6): essentials, composer, symfony, doctrine, testing, quality (FrankenPHP app server → `infra-frankenphp`; Twig depth → `references/twig.md`)
 - `gdscript-*` (5): fundamentals, types, signals, performance, godot-api
 
 ### Runtimes

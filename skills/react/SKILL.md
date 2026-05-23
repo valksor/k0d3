@@ -165,6 +165,10 @@ Async: `findBy*` (waits for appearance), `waitForElementToBeRemoved` (disappeara
 
 Full testing workflow (query priority table, MSW setup + per-test overrides, `renderHook`, snapshot rules, accessibility checks): `references/react-testing.md`.
 
+## Preact compatibility
+
+Preact 10 is a 3 KB runtime that mirrors the React API: hooks, function components, and JSX transfer unchanged once the bundler aliases `react`/`react-dom` to `preact/compat`. Watch the gaps — event timing and some `react-dom` internals are not byte-identical, and Suspense/RSC are not first-class. `@preact/signals` is Preact's reactive primitive (finer-grained than `useState`) but a Preact-specific API, not React. Reach for Preact when bundle size dominates (embedded widgets, an Electron tray UI — `Skill(k0d3:ts-electron)`); stay on React for the full ecosystem (RSC, React Native). Everything else in this skill applies unchanged.
+
 ## Anti-patterns
 
 - `useEffect` to derive state from props — compute inline or `useMemo`

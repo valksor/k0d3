@@ -9,7 +9,7 @@ metadata:
   status: active
   invokes_shell: false
   shell_reviewed: "valksor 2026-05-17"
-  related: [rust-async-tokio, rust-axum-actix, rust-testing]
+  related: [rust-async-tokio, rust-axum-actix, rust-testing, rust-cli]
 ---
 
 # Rust Essentials

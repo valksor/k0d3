@@ -153,6 +153,7 @@ graph LR
   go-cobra --> go-essentials
   go-cobra --> go-testing
   go-cobra --> go-slog
+  go-cobra --> rust-cli
   go-concurrency --> go-essentials
   go-concurrency --> go-testing
   go-essentials --> go-concurrency
@@ -216,6 +217,10 @@ graph LR
   infra-docker-swarm --> infra-docker-compose
   infra-docker-swarm --> infra-prometheus-grafana
   infra-docker-swarm --> observability-essentials
+  infra-frankenphp --> infra-nginx
+  infra-frankenphp --> infra-docker-images
+  infra-frankenphp --> php-symfony
+  infra-frankenphp --> security
   infra-gotenberg --> infra-docker-compose
   infra-gotenberg --> infra-nginx
   infra-gotenberg --> python-document-pipeline
@@ -225,6 +230,7 @@ graph LR
   infra-nginx --> security
   infra-nginx --> websocket-essentials
   infra-nginx --> observability-essentials
+  infra-nginx --> infra-frankenphp
   infra-prometheus-grafana --> observability-essentials
   infra-prometheus-grafana --> infra-docker-compose
   infra-prometheus-grafana --> infra-docker-swarm
@@ -263,6 +269,27 @@ graph LR
   orm-overview --> sql
   orm-overview --> postgres
   orm-overview --> migrations-overview
+  orm-overview --> php-doctrine
+  php-composer --> php-essentials
+  php-composer --> php-symfony
+  php-composer --> security
+  php-doctrine --> orm-overview
+  php-doctrine --> postgres
+  php-doctrine --> sql
+  php-doctrine --> php-symfony
+  php-essentials --> php-composer
+  php-essentials --> php-symfony
+  php-essentials --> security
+  php-quality --> php-essentials
+  php-quality --> ci-github-actions
+  php-symfony --> php-essentials
+  php-symfony --> php-doctrine
+  php-symfony --> php-testing
+  php-symfony --> infra-frankenphp
+  php-symfony --> rest-essentials
+  php-testing --> tdd
+  php-testing --> testing-strategy
+  php-testing --> php-symfony
   planning --> brainstorming
   planning --> tdd
   planning --> subagent-driven-development
@@ -367,9 +394,13 @@ graph LR
   rust-axum-actix --> rust-essentials
   rust-axum-actix --> rust-async-tokio
   rust-axum-actix --> rust-testing
+  rust-cli --> rust-essentials
+  rust-cli --> rust-async-tokio
+  rust-cli --> go-cobra
   rust-essentials --> rust-async-tokio
   rust-essentials --> rust-axum-actix
   rust-essentials --> rust-testing
+  rust-essentials --> rust-cli
   rust-gdext --> rust-essentials
   rust-gdext --> rust-testing
   rust-gdext --> godot
@@ -458,6 +489,17 @@ graph LR
   tooling-shell-fish --> tooling-fzf
   tooling-shell-fish --> tooling-ripgrep
   tooling-shell-fish --> tooling-jq
+  ts-capacitor --> ts-electron
+  ts-capacitor --> react
+  ts-capacitor --> frontend-pwa-workbox
+  ts-electron --> typescript
+  ts-electron --> node-essentials
+  ts-electron --> ts-vite
+  ts-electron --> security
+  ts-jest --> typescript
+  ts-jest --> ts-vitest
+  ts-jest --> tdd
+  ts-jest --> testing-strategy
   ts-tauri --> ts-vite
   ts-tauri --> rust-essentials
   ts-tauri --> react
@@ -469,6 +511,7 @@ graph LR
   ts-vitest --> react
   ts-vitest --> tdd
   ts-vitest --> testing-strategy
+  ts-vitest --> ts-jest
   ts-zod --> typescript
   ts-zod --> react
   ts-zustand --> react

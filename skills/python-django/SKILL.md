@@ -173,7 +173,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 ## Async + version upgrades
 
-Django 4.1+ has async views; 4.2+ adds async ORM (`aget`, `acreate`, `aall`); 5.x extends further. Mix sync via `sync_to_async`/`async_to_sync`. Django remains primarily sync — if async-everything matters, pick FastAPI.
+Django 4.1+ has async views; 4.2+ adds async ORM (`aget`, `acreate`, `aall`); 5.x extends further. Mix sync via `sync_to_async`/`async_to_sync`. Django remains primarily sync — if async-everything matters, pick FastAPI. For a fast type-hinted REST layer over Django (an alternative to DRF), see `references/django-ninja.md`.
 
 Don't jump 4.2 → 5.2 in one PR — walk the minors (`4.2 → 5.0 → 5.1 → 5.2`), suite green at each hop, deprecation warnings as errors on the current version _before_ bumping (`python -W error::DeprecationWarning -m pytest`). Real breakage is third-party pins (DRF, django-stubs, channels), not Django itself. DB floor: 5.2 needs Postgres 14+. **Full workflow** (hop breakdowns, third-party matrix, rollback): `references/django-upgrade-path.md`.
 

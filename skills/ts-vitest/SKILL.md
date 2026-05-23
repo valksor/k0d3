@@ -9,7 +9,7 @@ metadata:
   status: active
   invokes_shell: false
   shell_reviewed: "valksor 2026-05-18"
-  related: [typescript, ts-vite, react, tdd, testing-strategy]
+  related: [typescript, ts-vite, react, tdd, testing-strategy, ts-jest]
 ---
 
 # Vitest

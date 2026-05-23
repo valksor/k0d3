@@ -8,7 +8,15 @@ metadata:
   status: active
   invokes_shell: false
   shell_reviewed: "valksor 2026-05-18"
-  related: [infra-docker-compose, infra-docker-swarm, security, websocket-essentials, observability-essentials]
+  related:
+    [
+      infra-docker-compose,
+      infra-docker-swarm,
+      security,
+      websocket-essentials,
+      observability-essentials,
+      infra-frankenphp,
+    ]
 ---
 
 # Infra Nginx

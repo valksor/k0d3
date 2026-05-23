@@ -1,12 +1,12 @@
 ---
 name: skill-discovery
 description: Routing table — given a topic keyword, returns recommended skill slugs to load. Auto-generated; do not edit body.
-last-generated: "2026-05-22T12:09:41Z"
+last-generated: "2026-05-23T20:04:36Z"
 metadata:
   type: meta
   status: active
   invokes_shell: false
-  shell_reviewed: "valksor 2026-05-22"
+  shell_reviewed: "valksor 2026-05-23"
   related: [using-k0d3]
 ---
 
@@ -43,6 +43,8 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | alembic | migrations-overview |
 | alerting | infra-prometheus-grafana |
 | all | finishing-a-development-branch |
+| allow-plugin | php-composer |
+| allow-plugins | php-composer |
 | alloy | observability-loki-alloy |
 | alpine | infra-docker-images |
 | already | requirements-gathering |
@@ -54,22 +56,24 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | analyses | dispatching-parallel-agents |
 | analysi | debugging |
 | analysis | debugging |
+| android | ts-capacitor |
 | annotation | go-sqlc |
 | annotations | go-sqlc |
 | ant | frontend-ant-design, frontend-react-hook-form |
 | antd | frontend-ant-design |
 | anthropic | claude-api, go-anthropic |
 | anthropic-sdk-go | go-anthropic |
-| any | brainstorming, debugging, go-essentials, llm-essentials, python-essentials, rust-essentials, security, tdd, typescript |
+| any | brainstorming, debugging, go-essentials, llm-essentials, php-essentials, python-essentials, rust-essentials, security, tdd, typescript |
+| anyhow | rust-cli |
 | aof | database-redis |
 | api | bun-essentials, claude-api, frontend-msw, gdscript, go-anthropic, graphql-essentials, infra-gotenberg, python-django, python-fastapi, python-openai-sdk, python-strawberry-graphql, rest-essentials, secrets-kms |
 | apis | bun-essentials, frontend-msw, gdscript, graphql-essentials, python-django, python-fastapi, python-strawberry-graphql, rest-essentials |
-| app | frontend-feature-sliced-design, infra-docker-compose, ts-tauri |
+| app | frontend-feature-sliced-design, infra-docker-compose, php-symfony, ts-capacitor, ts-electron, ts-tauri |
 | apply | frontend-tailwind |
 | applying | frontend-feature-sliced-design |
 | approle | secrets-vault |
 | approved | brainstorming, planning, subagent-driven-development |
-| apps | infra-docker-compose, ts-tauri |
+| apps | infra-docker-compose, php-symfony, ts-electron, ts-tauri |
 | apscheduler | python-job-queues |
 | arbitrary | frontend-tailwind |
 | architecting | agent-design |
@@ -81,7 +85,11 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | artifacts | ci-gitlab-ci |
 | aschild | frontend-radix-ui |
 | ask | receiving-code-review |
-| asset | game-dev-essentials |
+| asset | game-dev-essentials, rust-cli |
+| asset-mapper | php-symfony |
+| assets | rust-cli |
+| association | php-doctrine |
+| associations | php-doctrine |
 | assume | requirements-gathering |
 | assumes | requirements-gathering |
 | assuming | receiving-code-review |
@@ -90,15 +98,19 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | atla | migrations-overview |
 | atlas | migrations-overview |
 | attr | go-slog |
-| attribute | observability-opentelemetry |
-| attributes | observability-opentelemetry |
+| attribute | observability-opentelemetry, php-essentials, php-symfony, php-testing |
+| attribute-mapped | php-doctrine |
+| attributes | observability-opentelemetry, php-essentials, php-testing |
 | attrs | go-slog |
 | audio | game-dev-essentials |
 | auditing | ux-wcag-a11y |
 | auth | python-gcp-clients, python-keycloak-oidc, secrets-vault, security |
 | authn | security |
 | authz | graphql-essentials, security |
-| avoidance | python-strawberry-graphql |
+| auto-update | ts-electron |
+| autoload | php-composer |
+| autowiring | php-symfony |
+| avoidance | php-doctrine, python-strawberry-graphql |
 | aws | secrets-kms |
 | axum | rust-axum-actix |
 | axum-first | rust-axum-actix |
@@ -143,7 +155,8 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | brands | typescript |
 | breadcrumb | observability-sentry |
 | breadcrumbs | observability-sentry |
-| break | go-essentials, python-essentials |
+| break | go-essentials, php-essentials, python-essentials |
+| bridge | ts-capacitor |
 | brotli | infra-nginx |
 | browser | frontend-msw, tooling-playwright-cli, ts-vitest |
 | bubble | go-bubbletea-charm |
@@ -152,12 +165,12 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | bug | debugging, root-cause, testing-fuzzing-mutation |
 | bugfix | tdd |
 | bugs | testing-fuzzing-mutation |
-| build | agent-design, ci-github-actions, infra-docker-images, requirements-gathering, rust-gdext, ts-vite |
-| building | frontend-ant-design, frontend-pwa-workbox, frontend-radix-ui, frontend-react-hook-form, frontend-tiptap, go-bubbletea-charm, go-chi, go-cobra, go-grpc, go-mcp, godot, graphql-essentials, infra-prometheus-grafana, python-fastapi, python-strawberry-graphql, rust-axum-actix, ts-tauri, ts-zustand, unix-socket-essentials, ux-wcag-a11y |
+| build | agent-design, ci-github-actions, infra-docker-images, requirements-gathering, rust-gdext, ts-capacitor, ts-vite |
+| building | frontend-ant-design, frontend-pwa-workbox, frontend-radix-ui, frontend-react-hook-form, frontend-tiptap, go-bubbletea-charm, go-chi, go-cobra, go-grpc, go-mcp, godot, graphql-essentials, infra-prometheus-grafana, php-symfony, python-fastapi, python-strawberry-graphql, rust-axum-actix, rust-cli, ts-electron, ts-tauri, ts-zustand, unix-socket-essentials, ux-wcag-a11y |
 | builds | ci-github-actions, infra-docker-images |
 | bun | bun-essentials |
 | bundle | bun-essentials |
-| bundled | project-memory |
+| bundled | project-memory, rust-cli |
 | bunx | bun-essentials |
 | bus | architecture-event-driven-cqrs |
 | busy | database-sqlite-pure-go |
@@ -165,6 +178,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | cache | ci-gitlab-ci, database-redis |
 | caches | ci-gitlab-ci |
 | caching | ci-github-actions, claude-api, frontend-pwa-workbox, go-anthropic, infra-nginx |
+| caddy | infra-frankenphp |
 | call | secrets-kms |
 | calling | go-anthropic, python-openai-sdk |
 | calls | secrets-kms |
@@ -173,6 +187,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | capabilitie | ts-tauri |
 | capabilities | ts-tauri |
 | capability | acp-protocol, mcp-protocol |
+| capacitor | ts-capacitor |
 | cardinality | observability-essentials, observability-loki-alloy |
 | cargo | rust-essentials |
 | cat | commit-writer |
@@ -205,12 +220,13 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | citation | claude-api |
 | citations | claude-api |
 | cjs | node-essentials, typescript |
-| classe | frontend-daisyui |
-| classes | frontend-daisyui |
+| clap | rust-cli |
+| classe | frontend-daisyui, php-essentials |
+| classes | frontend-daisyui, php-essentials |
 | claude | ci-github-actions, ci-gitlab-ci, claude-api, project-memory, unix-socket-essentials |
 | clean | finishing-a-development-branch |
 | clear | brainstorming |
-| cli | ci-gitlab-ci, frontend-shadcn-ui, go-cobra, observability-sentry, tooling-playwright-cli |
+| cli | ci-gitlab-ci, frontend-shadcn-ui, go-cobra, observability-sentry, rust-cli, tooling-playwright-cli |
 | client | acp-protocol, go-anthropic, mcp-protocol, python-gcp-clients |
 | client-provided | acp-protocol |
 | clients | mcp-protocol, python-gcp-clients |
@@ -241,23 +257,25 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | component | brainstorming, frontend-daisyui, frontend-design-essentials, frontend-radix-ui |
 | components | brainstorming, frontend-radix-ui |
 | compose | infra-docker-compose, infra-gotenberg |
+| composer | php-composer |
 | composition | frontend-msw, frontend-radix-ui, go-chi, react, ts-zustand |
 | comprehensive | planning |
 | concurrency | database-sqlite-pure-go, go-concurrency, rust-async-tokio |
 | concurrent | go-concurrency, rust-testing, subagent-driven-development |
 | concurrently | dispatching-parallel-agents |
-| config | frontend-tailwind, go-sqlc, infra-docker-swarm, infra-prometheus-grafana, observability-loki-alloy, observability-opentelemetry, python-pydantic-v2, tooling-eslint-prettier, ts-vitest |
+| config | frontend-tailwind, go-sqlc, infra-docker-swarm, infra-frankenphp, infra-prometheus-grafana, observability-loki-alloy, observability-opentelemetry, python-pydantic-v2, tooling-eslint-prettier, ts-jest, ts-vitest |
 | configprovider | frontend-ant-design |
 | configs | infra-docker-swarm, infra-prometheus-grafana |
 | configuring | infra-nginx, python-ruff-mypy, tooling-eslint-prettier, tooling-shell-fish, ts-vite |
 | consistency | architecture-event-driven-cqrs |
-| constraint | ux-essentials |
-| constraints | ux-essentials |
+| console | php-symfony |
+| constraint | php-composer, ux-essentials |
+| constraints | php-composer, ux-essentials |
 | container | go-testcontainers, infra-distroless |
 | containers | go-testcontainers, infra-distroless |
 | content | frontend-tiptap |
 | content-disposition | storage-object-s3 |
-| context | go-anthropic, go-concurrency, go-slog, observability-sentry |
+| context | go-anthropic, go-concurrency, go-slog, observability-sentry, ts-electron |
 | context-first | go-chi |
 | context-window | llm-essentials |
 | contract | rest-essentials |
@@ -269,6 +287,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | conventions | observability-opentelemetry, project-memory |
 | copy | go-pgx |
 | copy-paste | frontend-shadcn-ui |
+| core | ts-capacitor |
 | correctness | receiving-code-review |
 | correlation | go-slog |
 | cost | go-testcontainers, llm-essentials, python-gcp-clients, python-openai-sdk, secrets-kms |
@@ -296,7 +315,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | daily | tooling-jq, typescript |
 | daisyui | frontend-daisyui, frontend-shadcn-ui |
 | dashboard | infra-prometheus-grafana |
-| data | frontend-react-router, python-data-pipeline, ts-zod |
+| data | frontend-react-router, php-testing, python-data-pipeline, ts-zod |
 | database | database-redis, database-sqlite-pure-go, orm-overview, postgres |
 | dataloader | graphql-essentials |
 | dataset | frontend-charts |
@@ -316,23 +335,26 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | defining | infra-docker-compose |
 | dep | pnpm-essentials, python-uv |
 | depend | python-fastapi |
+| dependencie | php-composer |
+| dependencies | php-composer |
 | dependency | python-uv |
 | depends | python-fastapi |
 | deploy | infra-docker-compose |
 | deployment | infra-cloudflare-workers, infra-docker-compose |
 | deps | pnpm-essentials, python-uv |
 | depth | security |
-| derive | rust-gdext |
+| derive | rust-cli, rust-gdext |
 | descent | tooling-jq |
 | description | pr-description |
 | design | agent-design, brainstorming, database-redis, frontend-ant-design, frontend-design-essentials, frontend-feature-sliced-design, frontend-react-hook-form, graphql-essentials |
 | designing | acp-protocol, architecture-event-driven-cqrs, claude-api, game-dev-essentials, llm-essentials, mcp-protocol, postgres, rest-essentials, ux-essentials, websocket-essentials |
-| desktop | ts-tauri |
+| desktop | ts-electron, ts-tauri |
 | detect | finishing-a-development-branch, using-git-worktrees |
 | detects | using-git-worktrees |
 | dev | game-dev-essentials, infra-cloudflare-workers, ts-vite |
 | development | finishing-a-development-branch, subagent-driven-development |
 | dialogue | brainstorming |
+| dialoguer | rust-cli |
 | diff | code-review |
 | difference | tooling-shell-fish |
 | differences | tooling-shell-fish |
@@ -350,9 +372,10 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | django-stubs | python-ruff-mypy |
 | django-upgrade-path | python-django |
 | doc | rust-testing |
-| docker | infra-docker-compose, infra-docker-images, infra-docker-swarm, infra-gotenberg |
+| docker | infra-docker-compose, infra-docker-images, infra-docker-swarm, infra-frankenphp, infra-gotenberg |
 | dockerfile | infra-docker-images |
 | dockerfiles | infra-docker-images |
+| doctrine | php-doctrine |
 | document | python-document-pipeline |
 | docx | python-document-pipeline |
 | docxcompose | python-document-pipeline |
@@ -360,7 +383,10 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | doe | pr-description |
 | does | pr-description |
 | domain | dispatching-parallel-agents, unix-socket-essentials |
-| don | go-essentials, python-essentials, root-cause |
+| don | go-essentials, php-essentials, python-essentials, root-cause |
+| double | php-testing |
+| doubles | php-testing |
+| dql | php-doctrine |
 | dramatiq | python-job-queues |
 | drf | python-django, python-keycloak-oidc |
 | driven | architecture-event-driven-cqrs, subagent-driven-development |
@@ -378,14 +404,19 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | edge | testing-strategy |
 | edges | testing-strategy |
 | editor | acp-protocol, frontend-tiptap |
+| electron | ts-electron |
+| electron-builder | ts-electron |
 | embedding | go-langchaingo |
 | embeddings | go-langchaingo |
 | encryption | secrets-kms, storage-object-s3 |
 | engine | infra-gotenberg |
 | engine-agnostic | game-dev-essentials |
 | engines | infra-gotenberg |
-| entitie | frontend-feature-sliced-design, project-memory |
-| entities | frontend-feature-sliced-design, project-memory |
+| entitie | frontend-feature-sliced-design, php-doctrine, project-memory |
+| entities | frontend-feature-sliced-design, php-doctrine, project-memory |
+| entitymanager | php-doctrine |
+| enum | php-essentials |
+| enums | php-essentials |
 | env | tooling-shell-fish, ts-vite |
 | envelope | acp-protocol, mcp-protocol, secrets-kms |
 | environment | finishing-a-development-branch |
@@ -394,7 +425,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | eslint | tooling-eslint-prettier |
 | esm | node-essentials, typescript |
 | especially | receiving-code-review |
-| essentials | architecture-essentials, bun-essentials, frontend-design-essentials, game-dev-essentials, go-essentials, graphql-essentials, llm-essentials, node-essentials, observability-essentials, pnpm-essentials, python-essentials, rest-essentials, rust-essentials, unix-socket-essentials, ux-essentials, websocket-essentials |
+| essentials | architecture-essentials, bun-essentials, frontend-design-essentials, game-dev-essentials, go-essentials, graphql-essentials, llm-essentials, node-essentials, observability-essentials, php-essentials, pnpm-essentials, python-essentials, rest-essentials, rust-essentials, unix-socket-essentials, ux-essentials, websocket-essentials |
 | eval | agent-design, llm-essentials |
 | evaluating | ux-essentials |
 | event | architecture-event-driven-cqrs, node-essentials |
@@ -454,8 +485,8 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | fixe | debugging, sql |
 | fixed | game-dev-essentials, root-cause |
 | fixes | debugging, sql |
-| fixture | python-testing |
-| fixtures | python-testing |
+| fixture | php-testing, python-testing |
+| fixtures | php-testing, python-testing |
 | flag | go-cobra, tooling-fzf, typescript |
 | flags | go-cobra, typescript |
 | flaky | testing-strategy |
@@ -466,14 +497,16 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | focused | pr-description |
 | force | root-cause |
 | forces | root-cause |
-| form | frontend-ant-design, frontend-react-hook-form |
+| form | frontend-ant-design, frontend-react-hook-form, php-symfony |
 | format | python-ruff-mypy |
 | forms | frontend-react-hook-form |
 | four | debugging, dispatching-parallel-agents |
 | frame | python-data-pipeline |
 | frames | python-data-pipeline |
 | framework | python-django |
+| framework-bundle | php-symfony |
 | framing | websocket-essentials |
+| frankenphp | infra-frankenphp, php-symfony |
 | free-form | go-slog |
 | frequent | refactoring |
 | fresh | subagent-driven-development |
@@ -559,8 +592,9 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | heuristics | ux-essentials |
 | hexagonal | architecture-essentials |
 | hold | testing-property-based |
-| hook | frontend-react-hook-form, frontend-react-router, react |
-| hooks | frontend-react-router, react |
+| hook | frontend-react-hook-form, frontend-react-router, php-essentials, react |
+| hooks | frontend-react-router, php-essentials, react |
+| hot | infra-frankenphp |
 | how | code-review, finishing-a-development-branch, pr-description |
 | html | infra-gotenberg, ux-wcag-a11y |
 | http | go-chi, infra-gotenberg, python-document-pipeline, python-fastapi, rust-axum-actix |
@@ -573,8 +607,8 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | idempotency | go-stripe-sdk |
 | identity | python-gcp-clients |
 | ids | go-slog |
-| image | infra-distroless, infra-docker-images, python-document-pipeline |
-| images | infra-docker-images, python-document-pipeline |
+| image | infra-distroless, infra-docker-images, infra-frankenphp, python-document-pipeline |
+| images | infra-docker-images, infra-frankenphp, python-document-pipeline |
 | imperative | commit-writer |
 | implementation | brainstorming, debugging, dispatching-parallel-agents, finishing-a-development-branch, planning, subagent-driven-development, tdd, using-git-worktrees |
 | implementing | receiving-code-review, tdd |
@@ -588,7 +622,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | inference | ts-zustand |
 | infinite | frontend-tanstack-query |
 | information | ux-essentials |
-| infra | infra-cloudflare-workers, infra-distroless, infra-docker-compose, infra-docker-images, infra-docker-swarm, infra-gotenberg, infra-nginx, infra-prometheus-grafana |
+| infra | infra-cloudflare-workers, infra-distroless, infra-docker-compose, infra-docker-images, infra-docker-swarm, infra-frankenphp, infra-gotenberg, infra-nginx, infra-prometheus-grafana |
 | init | go-anthropic, observability-sentry, rust-gdext |
 | input | testing-property-based |
 | inputs | testing-property-based |
@@ -608,12 +642,13 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | investigate | dispatching-parallel-agents |
 | investigation | debugging, dispatching-parallel-agents, subagent-driven-development |
 | investigations | dispatching-parallel-agents |
-| ipc | ts-tauri, unix-socket-essentials |
+| ipc | ts-electron, ts-tauri, unix-socket-essentials |
 | iron | commit-writer, tdd |
-| isolation | architecture-essentials, sql, using-git-worktrees |
+| isolation | architecture-essentials, sql, ts-electron, using-git-worktrees |
 | its | refactoring |
 | itself | brainstorming |
 | java | infra-distroless |
+| jest | ts-jest |
 | job | python-job-queues |
 | join | sql |
 | joins | sql |
@@ -632,6 +667,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | keepalive | go-pgx |
 | keepalives | go-pgx |
 | keeps | root-cause |
+| kerneltestcase | php-testing |
 | key | frontend-tanstack-query, go-stripe-sdk, python-gcp-clients, secrets-kms, tooling-fzf |
 | keyboard | ux-wcag-a11y |
 | keycloak | python-keycloak-oidc |
@@ -661,6 +697,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | line | tooling-jq, tooling-playwright-cli |
 | lint | python-ruff-mypy |
 | linter | frontend-feature-sliced-design |
+| linting | php-quality |
 | lipgloss | go-bubbletea-charm |
 | listen | postgres, python-job-queues |
 | llm | agent-design, go-langchaingo, llm-essentials |
@@ -685,12 +722,13 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | lts-upgrade | python-django |
 | machine | game-dev-essentials |
 | machines | game-dev-essentials |
+| main | ts-electron |
 | make | tooling-fzf |
 | makes | tooling-fzf |
 | making | architecture-essentials |
 | management | ux-wcag-a11y |
 | manager | tooling-shell-fish |
-| managing | python-uv |
+| managing | php-composer, python-uv |
 | mandatory | brainstorming |
 | manifest | frontend-pwa-workbox |
 | manual | ts-vite, using-git-worktrees |
@@ -723,14 +761,17 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | metrics | observability-essentials |
 | middleware | go-chi, rust-axum-actix, ts-zustand |
 | might | requirements-gathering |
-| migration | bun-essentials, database-sqlite-pure-go, go-sqlc, migrations-overview, observability-loki-alloy, python-django, python-pydantic-v2 |
-| migrations | go-sqlc, migrations-overview, python-django, python-pydantic-v2 |
+| migration | bun-essentials, database-sqlite-pure-go, go-sqlc, migrations-overview, observability-loki-alloy, php-doctrine, python-django, python-pydantic-v2 |
+| migrations | go-sqlc, migrations-overview, php-doctrine, python-django, python-pydantic-v2 |
+| minimum-stability | php-composer |
 | minio | storage-object-s3 |
 | missing | code-review |
+| mobile | ts-capacitor |
 | mobile-first | ux-essentials |
 | mock | frontend-msw |
-| mocking | frontend-msw, python-testing, ts-vitest |
-| mode | agent-design, database-redis, database-sqlite-pure-go, go-stripe-sdk, python-ruff-mypy, ts-vite, ts-vitest |
+| mockery | php-testing |
+| mocking | frontend-msw, python-testing, ts-jest, ts-vitest |
+| mode | agent-design, database-redis, database-sqlite-pure-go, go-stripe-sdk, infra-frankenphp, python-ruff-mypy, ts-vite, ts-vitest |
 | model | claude-api, database-sqlite-pure-go, frontend-feature-sliced-design, frontend-shadcn-ui, go-bubbletea-charm, go-grpc, python-django, python-pydantic-v2 |
 | modeling | rest-essentials |
 | models | go-bubbletea-charm, python-django |
@@ -758,7 +799,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | named | project-memory |
 | naming | go-essentials, python-essentials |
 | narrative | project-memory |
-| native | bun-essentials, using-git-worktrees |
+| native | bun-essentials, ts-capacitor, using-git-worktrees |
 | navigation | frontend-react-router, tooling-playwright-cli |
 | need | finishing-a-development-branch, pr-description, project-memory, using-git-worktrees |
 | needed | requirements-gathering |
@@ -770,7 +811,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | never | commit-writer |
 | new | brainstorming |
 | next | react |
-| nginx | infra-nginx |
+| nginx | infra-frankenphp, infra-nginx |
 | nielsen | ux-essentials |
 | node | bun-essentials, frontend-msw, frontend-tiptap, node-essentials, observability-opentelemetry, typescript |
 | nodej | infra-distroless |
@@ -783,8 +824,8 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | note | python-strawberry-graphql |
 | notify | postgres, python-job-queues |
 | null | sql |
-| object | infra-cloudflare-workers, python-gcp-clients, storage-object-s3 |
-| objects | infra-cloudflare-workers |
+| object | infra-cloudflare-workers, php-doctrine, python-gcp-clients, storage-object-s3 |
+| objects | infra-cloudflare-workers, php-doctrine |
 | observability | infra-cloudflare-workers, infra-prometheus-grafana, observability-essentials, observability-loki-alloy, observability-opentelemetry, observability-sentry |
 | observations | project-memory |
 | occurred | root-cause |
@@ -811,7 +852,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | options | finishing-a-development-branch |
 | orchestration | pnpm-essentials |
 | org | database-sqlite-pure-go |
-| orm | orm-overview, python-django |
+| orm | orm-overview, php-doctrine, python-django |
 | orms | orm-overview |
 | oss-fuzz | testing-fuzzing-mutation |
 | output | go-anthropic, llm-essentials, python-openai-sdk, tooling-ripgrep |
@@ -825,7 +866,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | owasp-categories | security |
 | ownership | rust-essentials |
 | package | go-testing, tooling-shell-fish |
-| packaging | godot, python-essentials |
+| packaging | godot, python-essentials, ts-electron |
 | page | frontend-feature-sliced-design |
 | pages | frontend-feature-sliced-design |
 | panda | python-data-pipeline |
@@ -846,7 +887,8 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | past | root-cause |
 | patch | pnpm-essentials |
 | patching | pnpm-essentials |
-| path | python-django |
+| path | php-composer, python-django, rust-cli |
+| paths | rust-cli |
 | pattern | agent-design, architecture-essentials, database-redis, database-sqlite-pure-go, debugging, frontend-charts, frontend-tailwind, gdscript, go-langchaingo, python-django, python-gcp-clients, python-testing, tooling-ripgrep, typescript |
 | patterns | agent-design, architecture-essentials, database-redis, database-sqlite-pure-go, frontend-charts, frontend-tailwind, gdscript, go-langchaingo, python-django, python-gcp-clients, python-testing, tooling-ripgrep, typescript |
 | pdf | infra-gotenberg, python-document-pipeline |
@@ -861,10 +903,16 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | persist | project-memory |
 | persistence | database-redis |
 | persistent | go-cobra, project-memory |
+| persisting | php-doctrine |
 | pgx | go-pgx |
 | pgxpool | go-pgx |
 | phase | debugging |
 | phases | debugging |
+| php | infra-frankenphp, php-composer, php-doctrine, php-essentials, php-quality, php-symfony, php-testing |
+| php-cs-fixer | php-quality |
+| php-fpm | infra-frankenphp |
+| phpstan | php-quality |
+| phpunit | php-testing |
 | physic | game-dev-essentials, rust-gdext |
 | physics | game-dev-essentials, rust-gdext |
 | picker | infra-distroless |
@@ -887,8 +935,8 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | plans | using-git-worktrees |
 | playwright | tooling-playwright-cli |
 | playwright-cli | tooling-playwright-cli |
-| plugin | frontend-tailwind, tooling-eslint-prettier, ts-tauri, ts-vite |
-| plugins | frontend-tailwind, ts-tauri, ts-vite |
+| plugin | frontend-tailwind, tooling-eslint-prettier, ts-capacitor, ts-tauri, ts-vite |
+| plugins | frontend-tailwind, ts-capacitor, ts-tauri, ts-vite |
 | pnpm | pnpm-essentials |
 | poetry | python-uv |
 | polar | python-data-pipeline |
@@ -908,6 +956,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | pre-commit | python-ruff-mypy |
 | prefer | using-git-worktrees |
 | prefers | using-git-worktrees |
+| preload | ts-electron |
 | prepared | go-pgx |
 | present | finishing-a-development-branch |
 | presigned | storage-object-s3 |
@@ -927,13 +976,13 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | project-local | project-memory |
 | prometheu | infra-prometheus-grafana, observability-essentials |
 | prometheus | infra-prometheus-grafana, observability-essentials |
-| prompt | acp-protocol, claude-api, frontend-pwa-workbox, go-anthropic, go-mcp, mcp-protocol |
-| prompts | go-mcp, mcp-protocol |
+| prompt | acp-protocol, claude-api, frontend-pwa-workbox, go-anthropic, go-mcp, mcp-protocol, rust-cli |
+| prompts | go-mcp, mcp-protocol, rust-cli |
 | promtail | observability-loki-alloy |
 | propagation | go-slog, observability-opentelemetry |
 | propertie | testing-property-based |
 | properties | testing-property-based |
-| property | testing-property-based |
+| property | php-essentials, testing-property-based |
 | property-based | python-testing |
 | proportion | testing-strategy |
 | proportions | testing-strategy |
@@ -941,16 +990,17 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | proptest | rust-testing, testing-property-based |
 | protobuf | go-grpc |
 | protocol | acp-protocol, mcp-protocol |
-| provider | go-langchaingo, llm-essentials, ts-vitest |
-| providers | go-langchaingo, ts-vitest |
+| provider | go-langchaingo, llm-essentials, php-testing, ts-vitest |
+| providers | go-langchaingo, php-testing, ts-vitest |
 | provisioning | infra-prometheus-grafana |
 | proxy | infra-nginx, ts-vite |
+| psr-4 | php-composer |
 | pub-sub | websocket-essentials |
 | pubsub | database-redis |
 | pull | pr-description |
 | pure | database-sqlite-pure-go |
 | pure-go | database-sqlite-pure-go |
-| pwa | frontend-pwa-workbox |
+| pwa | frontend-pwa-workbox, ts-capacitor |
 | pyarrow | python-data-pipeline |
 | pydantic | python-fastapi, python-pydantic-v2 |
 | pydantic-setting | python-pydantic-v2 |
@@ -961,12 +1011,13 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | python-jose | python-keycloak-oidc |
 | pyvip | python-document-pipeline |
 | pyvips | python-document-pipeline |
-| quality | subagent-driven-development |
+| quality | php-quality, subagent-driven-development |
 | querie | frontend-tanstack-query |
 | queries | frontend-tanstack-query |
 | query | frontend-tanstack-query, go-sqlc, observability-loki-alloy, project-memory, python-gcp-clients |
 | query-builder | orm-overview |
 | query-builders | orm-overview |
+| querybuilder | php-doctrine |
 | question | requirements-gathering |
 | questionable | receiving-code-review |
 | questions | requirements-gathering |
@@ -989,6 +1040,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | reader | ux-wcag-a11y |
 | readers | ux-wcag-a11y |
 | reading | sql |
+| readonly | php-essentials |
 | real-time | websocket-essentials |
 | recall | project-memory |
 | receiving | receiving-code-review |
@@ -1016,18 +1068,23 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | relationships | project-memory |
 | release | observability-sentry |
 | releases | observability-sentry |
+| reload | infra-frankenphp |
 | remediation | security |
 | remember | project-memory |
+| renderer | ts-electron |
 | renewal | secrets-vault |
 | replacement | tooling-ripgrep |
 | replacing | python-uv |
 | replication | postgres |
 | reportlab | python-document-pipeline |
+| repositorie | php-composer |
+| repositories | php-composer |
 | request | brainstorming, frontend-msw, pr-description, requirements-gathering |
 | requesting | code-review |
 | requirement | brainstorming |
 | requirements | brainstorming, requirements-gathering |
 | requirements-gathering | brainstorming, requirements-gathering |
+| reqwest | rust-cli |
 | rerere | tooling-git-advanced |
 | resolver | frontend-react-hook-form |
 | resolvers | frontend-react-hook-form |
@@ -1058,17 +1115,18 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | route | frontend-react-router |
 | router | frontend-react-router, python-fastapi |
 | routers | python-fastapi |
-| routing | frontend-react-router, go-chi, rust-axum-actix |
+| routing | frontend-react-router, go-chi, php-symfony, rust-axum-actix |
 | rsc | react |
 | rtl | react |
 | ruff | python-ruff-mypy |
-| rule | commit-writer, dispatching-parallel-agents, go-essentials, infra-prometheus-grafana, python-essentials, subagent-driven-development, tooling-eslint-prettier |
-| rules | go-essentials, infra-prometheus-grafana, python-essentials, tooling-eslint-prettier |
+| rule | commit-writer, dispatching-parallel-agents, go-essentials, infra-prometheus-grafana, php-essentials, python-essentials, subagent-driven-development, tooling-eslint-prettier |
+| rules | go-essentials, infra-prometheus-grafana, php-essentials, python-essentials, tooling-eslint-prettier |
 | run | bun-essentials, dispatching-parallel-agents, go-testing, python-uv |
 | runner | ci-gitlab-ci |
 | runners | ci-gitlab-ci |
-| running | infra-docker-swarm, infra-gotenberg |
-| rust | godot, rust-async-tokio, rust-axum-actix, rust-essentials, rust-gdext, rust-testing, ts-tauri |
+| running | infra-docker-swarm, infra-frankenphp, infra-gotenberg |
+| runtime | php-symfony |
+| rust | godot, rust-async-tokio, rust-axum-actix, rust-cli, rust-essentials, rust-gdext, rust-testing, ts-tauri |
 | safety | rust-async-tokio |
 | saga | architecture-event-driven-cqrs |
 | sagas | architecture-event-driven-cqrs |
@@ -1086,14 +1144,16 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | scrape | infra-prometheus-grafana |
 | scratch | infra-docker-images, project-memory |
 | screen | ux-wcag-a11y |
+| script | php-composer |
 | scripting | tooling-shell-fish |
+| scripts | php-composer |
 | sdd | dispatching-parallel-agents, subagent-driven-development |
 | sdk | go-stripe-sdk, observability-opentelemetry, observability-sentry, python-openai-sdk |
 | search | frontend-react-router |
 | searching | tooling-ripgrep |
 | secret | ci-github-actions, infra-docker-compose, infra-docker-swarm, security |
 | secrets | ci-github-actions, infra-docker-compose, infra-docker-swarm, secrets-kms, secrets-vault, security |
-| security | postgres, security, testing-fuzzing-mutation, unix-socket-essentials |
+| security | postgres, security, testing-fuzzing-mutation, ts-electron, unix-socket-essentials |
 | see | gdscript, godot, postgres, react, security, sql, typescript |
 | seem | receiving-code-review |
 | seems | receiving-code-review |
@@ -1107,6 +1167,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | sequence | brainstorming, requirements-gathering |
 | sequential | dispatching-parallel-agents, subagent-driven-development |
 | serialization | frontend-tiptap |
+| serializer | php-symfony |
 | serie | commit-writer |
 | series | commit-writer |
 | server | frontend-tanstack-query, go-mcp, mcp-protocol, project-memory, rust-axum-actix, ts-vite |
@@ -1143,8 +1204,8 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | sliced | frontend-feature-sliced-design |
 | slog | go-slog |
 | small | refactoring |
-| snapshot | tooling-playwright-cli, ts-vitest |
-| snapshots | tooling-playwright-cli |
+| snapshot | tooling-playwright-cli, ts-jest, ts-vitest |
+| snapshots | tooling-playwright-cli, ts-jest |
 | social | receiving-code-review |
 | socket | unix-socket-essentials |
 | sockets | unix-socket-essentials |
@@ -1175,6 +1236,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | statement | go-pgx |
 | statements | go-pgx |
 | static | infra-distroless |
+| static-analysing | php-quality |
 | stay | refactoring |
 | steiger | frontend-feature-sliced-design |
 | step | refactoring |
@@ -1190,7 +1252,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | stream | database-redis |
 | streaming | claude-api, go-anthropic, go-grpc, python-openai-sdk |
 | streams | database-redis |
-| strict | python-ruff-mypy |
+| strict | php-essentials, python-ruff-mypy |
 | strict-mode | typescript |
 | stripe | go-stripe-sdk |
 | structure | ci-gitlab-ci, refactoring |
@@ -1200,6 +1262,8 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | sub-routers | go-chi |
 | subagent | subagent-driven-development |
 | subagent-driven-development | dispatching-parallel-agents |
+| subcommand | rust-cli |
+| subcommands | rust-cli |
 | subject | commit-writer |
 | subjects | commit-writer |
 | subscription | go-stripe-sdk, graphql-essentials, python-strawberry-graphql |
@@ -1214,6 +1278,8 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | surfaces | requirements-gathering |
 | suspense | frontend-tanstack-query |
 | swarm | infra-docker-swarm |
+| swc | ts-jest |
+| symfony | php-symfony, php-testing |
 | symptom | root-cause |
 | sync | go-anthropic, go-concurrency, project-memory, python-openai-sdk, python-uv |
 | syntax | gdscript, tooling-shell-fish |
@@ -1238,10 +1304,10 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | technically | receiving-code-review |
 | terminal | acp-protocol |
 | termination | infra-nginx |
-| test | bun-essentials, code-review, debugging, finishing-a-development-branch, go-stripe-sdk, go-testcontainers, go-testing, python-testing, refactoring, rust-testing, tdd, testing-fuzzing-mutation, testing-strategy, ts-vitest |
+| test | bun-essentials, code-review, debugging, finishing-a-development-branch, go-stripe-sdk, go-testcontainers, go-testing, php-testing, python-testing, refactoring, rust-testing, tdd, testing-fuzzing-mutation, testing-strategy, ts-vitest |
 | testcontainers | go-testcontainers |
 | testcontainers-go | go-testcontainers |
-| testing | debugging, go-testing, python-django, python-fastapi, python-testing, react, rust-testing, testing-fuzzing-mutation, testing-property-based, testing-strategy |
+| testing | debugging, go-testing, php-testing, python-django, python-fastapi, python-testing, react, rust-testing, testing-fuzzing-mutation, testing-property-based, testing-strategy, ts-jest |
 | tests | code-review, finishing-a-development-branch, go-testcontainers, go-testing, python-testing, refactoring, rust-testing, testing-fuzzing-mutation, ts-vitest |
 | that | dispatching-parallel-agents, gdscript, testing-property-based, tooling-fzf, tooling-jq, using-git-worktrees |
 | their | project-memory |
@@ -1252,6 +1318,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | thing | requirements-gathering |
 | things | requirements-gathering |
 | thinking | claude-api |
+| thiserror | rust-cli |
 | those | project-memory |
 | three | dispatching-parallel-agents |
 | through | brainstorming |
@@ -1284,7 +1351,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | traits | rust-essentials |
 | transaction | go-pgx, sql |
 | transactions | go-pgx, sql |
-| transform | ts-zod |
+| transform | ts-jest, ts-zod |
 | transformation | refactoring |
 | transforms | ts-zod |
 | transit | secrets-vault |
@@ -1301,12 +1368,14 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | tuis | go-bubbletea-charm |
 | turn | acp-protocol, brainstorming |
 | turns | acp-protocol, brainstorming |
+| twig | php-symfony |
+| twig-cs-fixer | php-quality |
 | two-stage | subagent-driven-development |
-| type | code-review, gdscript, tooling-ripgrep, ts-zod, typescript |
+| type | code-review, gdscript, php-essentials, tooling-ripgrep, ts-zod, typescript |
 | type-check | python-ruff-mypy |
 | type-level | typescript |
 | typed | go-sqlc |
-| types | code-review, gdscript, tooling-ripgrep, ts-zod |
+| types | code-review, gdscript, php-essentials, tooling-ripgrep, ts-zod |
 | typescript | react, ts-zod, ts-zustand, typescript |
 | typescript-types-advanced | typescript |
 | typing | python-essentials |
@@ -1335,17 +1404,18 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | vague | requirements-gathering |
 | validating | ts-zod |
 | validation | frontend-react-hook-form, go-cobra, python-fastapi, python-keycloak-oidc |
-| validator | python-pydantic-v2 |
+| validator | php-symfony, python-pydantic-v2 |
 | validators | python-pydantic-v2 |
 | value | frontend-tailwind |
 | values | frontend-tailwind |
 | var | tooling-shell-fish, ts-vite |
 | vars | tooling-shell-fish, ts-vite |
 | vault | secrets-vault |
+| vcs | php-composer |
 | vector | go-langchaingo |
 | verification | go-stripe-sdk |
 | verify | finishing-a-development-branch, pr-description, receiving-code-review |
-| version | infra-distroless, python-django |
+| version | infra-distroless, php-composer, python-django |
 | version-specific | postgres |
 | versioning | rest-essentials |
 | view | python-django |
@@ -1355,19 +1425,20 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | visual | frontend-design-essentials |
 | visx | frontend-charts |
 | vite | ts-vite |
-| vitest | react, ts-vitest |
+| vitest | react, ts-jest, ts-vitest |
 | vocabulary | architecture-essentials |
 | wal | database-sqlite-pure-go |
 | watch | pr-description |
 | wcag | ux-wcag-a11y |
 | weak | code-review |
-| web | ts-tauri, ux-wcag-a11y |
+| web | ts-capacitor, ts-tauri, ux-wcag-a11y |
 | webhook | go-stripe-sdk |
 | webhooks | go-stripe-sdk |
 | websocket | infra-nginx, websocket-essentials |
 | websockets | infra-nginx |
+| webtestcase | php-testing |
 | what | code-review, commit-writer, pr-description, requirements-gathering, testing-strategy |
-| when | acp-protocol, agent-design, architecture-essentials, architecture-event-driven-cqrs, bun-essentials, ci-github-actions, ci-gitlab-ci, claude-api, code-review, commit-writer, database-redis, database-sqlite-pure-go, dispatching-parallel-agents, finishing-a-development-branch, frontend-ant-design, frontend-charts, frontend-daisyui, frontend-feature-sliced-design, frontend-msw, frontend-pwa-workbox, frontend-radix-ui, frontend-react-hook-form, frontend-react-router, frontend-shadcn-ui, frontend-tailwind, frontend-tanstack-query, frontend-tiptap, game-dev-essentials, gdscript, go-anthropic, go-bubbletea-charm, go-chi, go-cobra, go-concurrency, go-essentials, go-grpc, go-langchaingo, go-mcp, go-pgx, go-slog, go-sqlc, go-stripe-sdk, go-testcontainers, go-testing, godot, graphql-essentials, infra-cloudflare-workers, infra-distroless, infra-docker-compose, infra-docker-images, infra-docker-swarm, infra-gotenberg, infra-nginx, infra-prometheus-grafana, llm-essentials, mcp-protocol, migrations-overview, node-essentials, observability-essentials, observability-loki-alloy, observability-opentelemetry, observability-sentry, orm-overview, pnpm-essentials, postgres, pr-description, project-memory, python-data-pipeline, python-django, python-document-pipeline, python-essentials, python-fastapi, python-gcp-clients, python-job-queues, python-keycloak-oidc, python-openai-sdk, python-pydantic-v2, python-ruff-mypy, python-strawberry-graphql, python-testing, python-uv, react, receiving-code-review, refactoring, requirements-gathering, rest-essentials, root-cause, rust-async-tokio, rust-axum-actix, rust-essentials, rust-gdext, rust-testing, secrets-kms, secrets-vault, security, sql, storage-object-s3, subagent-driven-development, tdd, testing-fuzzing-mutation, testing-property-based, testing-strategy, tooling-eslint-prettier, tooling-fzf, tooling-git-advanced, tooling-jq, tooling-playwright-cli, tooling-ripgrep, tooling-shell-fish, ts-tauri, ts-vite, ts-vitest, ts-zod, ts-zustand, typescript, unix-socket-essentials, using-git-worktrees, ux-essentials, ux-wcag-a11y, websocket-essentials |
+| when | acp-protocol, agent-design, architecture-essentials, architecture-event-driven-cqrs, bun-essentials, ci-github-actions, ci-gitlab-ci, claude-api, code-review, commit-writer, database-redis, database-sqlite-pure-go, dispatching-parallel-agents, finishing-a-development-branch, frontend-ant-design, frontend-charts, frontend-daisyui, frontend-feature-sliced-design, frontend-msw, frontend-pwa-workbox, frontend-radix-ui, frontend-react-hook-form, frontend-react-router, frontend-shadcn-ui, frontend-tailwind, frontend-tanstack-query, frontend-tiptap, game-dev-essentials, gdscript, go-anthropic, go-bubbletea-charm, go-chi, go-cobra, go-concurrency, go-essentials, go-grpc, go-langchaingo, go-mcp, go-pgx, go-slog, go-sqlc, go-stripe-sdk, go-testcontainers, go-testing, godot, graphql-essentials, infra-cloudflare-workers, infra-distroless, infra-docker-compose, infra-docker-images, infra-docker-swarm, infra-frankenphp, infra-gotenberg, infra-nginx, infra-prometheus-grafana, llm-essentials, mcp-protocol, migrations-overview, node-essentials, observability-essentials, observability-loki-alloy, observability-opentelemetry, observability-sentry, orm-overview, php-composer, php-doctrine, php-essentials, php-quality, php-symfony, php-testing, pnpm-essentials, postgres, pr-description, project-memory, python-data-pipeline, python-django, python-document-pipeline, python-essentials, python-fastapi, python-gcp-clients, python-job-queues, python-keycloak-oidc, python-openai-sdk, python-pydantic-v2, python-ruff-mypy, python-strawberry-graphql, python-testing, python-uv, react, receiving-code-review, refactoring, requirements-gathering, rest-essentials, root-cause, rust-async-tokio, rust-axum-actix, rust-cli, rust-essentials, rust-gdext, rust-testing, secrets-kms, secrets-vault, security, sql, storage-object-s3, subagent-driven-development, tdd, testing-fuzzing-mutation, testing-property-based, testing-strategy, tooling-eslint-prettier, tooling-fzf, tooling-git-advanced, tooling-jq, tooling-playwright-cli, tooling-ripgrep, tooling-shell-fish, ts-capacitor, ts-electron, ts-jest, ts-tauri, ts-vite, ts-vitest, ts-zod, ts-zustand, typescript, unix-socket-essentials, using-git-worktrees, ux-essentials, ux-wcag-a11y, websocket-essentials |
 | where | testing-strategy |
 | whether | testing-fuzzing-mutation |
 | which | dispatching-parallel-agents, requirements-gathering, subagent-driven-development |
@@ -1378,12 +1449,12 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | window | sql |
 | windows | sql |
 | wire | claude-api |
-| wiring | python-ruff-mypy |
+| wiring | php-quality, python-ruff-mypy |
 | within-session | project-memory |
 | without | debugging, dispatching-parallel-agents, infra-distroless, refactoring, tdd |
 | work | brainstorming, finishing-a-development-branch, using-git-worktrees |
 | workbox | frontend-pwa-workbox |
-| worker | frontend-msw, frontend-pwa-workbox, infra-cloudflare-workers |
+| worker | frontend-msw, frontend-pwa-workbox, infra-cloudflare-workers, infra-frankenphp |
 | workers | infra-cloudflare-workers |
 | workflow | ci-github-actions, godot, postgres, react, tooling-fzf |
 | workflows | ci-github-actions, react |
@@ -1397,15 +1468,17 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | workups | gdscript |
 | wrangler | infra-cloudflare-workers |
 | wrap-up | project-memory |
+| wrapping | ts-capacitor |
 | write | architecture-event-driven-cqrs, planning, pr-description |
 | writer | commit-writer |
 | writes | pr-description |
-| writing | ci-github-actions, ci-gitlab-ci, commit-writer, gdscript, go-concurrency, go-essentials, go-testcontainers, go-testing, infra-docker-images, python-essentials, python-pydantic-v2, python-testing, react, rust-async-tokio, rust-essentials, security, sql, tdd, ts-vitest, typescript |
+| writing | ci-github-actions, ci-gitlab-ci, commit-writer, gdscript, go-concurrency, go-essentials, go-testcontainers, go-testing, infra-docker-images, php-essentials, python-essentials, python-pydantic-v2, python-testing, react, rust-async-tokio, rust-essentials, security, sql, tdd, ts-vitest, typescript |
+| xdg | rust-cli |
 | xlsx | python-document-pipeline |
 | yaml | go-sqlc |
 | yet | root-cause |
 | yml | ci-gitlab-ci |
-| you | finishing-a-development-branch, frontend-radix-ui, go-essentials, project-memory, python-essentials, requirements-gathering, root-cause, typescript |
+| you | finishing-a-development-branch, frontend-radix-ui, go-essentials, php-essentials, project-memory, python-essentials, requirements-gathering, root-cause, typescript |
 | zed | acp-protocol |
 | zod | frontend-react-hook-form, ts-zod |
 | zsh | tooling-shell-fish |

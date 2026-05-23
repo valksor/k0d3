@@ -9,7 +9,7 @@ metadata:
   status: active
   invokes_shell: false
   shell_reviewed: "valksor 2026-05-18"
-  related: [go-essentials, go-testing, go-slog]
+  related: [go-essentials, go-testing, go-slog, rust-cli]
 ---
 
 # Go Cobra
