@@ -26,6 +26,17 @@ FAIL = 0
 WARN = 0
 TODAY = dt.date.today().isoformat()
 
+# Description length caps. Only frontmatter `description` (and `name`) count toward
+# Claude Code's session skill-listing budget (skillListingBudgetFraction); the body
+# does not. Keep descriptions to a one-line trigger so the whole catalogue's listing
+# fits without the harness dropping descriptions ("name-only") and nagging the user.
+DESC_WARN = 180
+DESC_FAIL = 220
+# Advisory soft cap on the total name+description footprint of all skills. The true
+# budget also depends on the user's context-window size and the built-in skills that
+# share the listing, so this is a self-discipline signal, not an exact mirror.
+LISTING_BUDGET_WARN_CHARS = 22000
+
 
 def err(msg: str) -> None:
     global FAIL
@@ -42,6 +53,7 @@ def warn(msg: str) -> None:
 SKILLS_DIR = REPO / "skills"
 known_slugs: set[str] = set()
 newest_skill_mtime = 0.0
+listing_chars = 0  # running total of name+description across skills (budget footprint)
 
 skill_dirs = sorted(p for p in SKILLS_DIR.iterdir() if p.is_dir()) if SKILLS_DIR.exists() else []
 for d in skill_dirs:
@@ -85,6 +97,14 @@ for d in skill_dirs:
         err(f"{sk}: missing name")
     if not desc:
         err(f"{sk}: missing description")
+    elif len(desc) > DESC_FAIL:
+        err(
+            f"{sk}: description {len(desc)} chars > {DESC_FAIL} cap — trim to a one-line "
+            f"trigger; move detail to the body (docs/conventions.md § Skill frontmatter)"
+        )
+    elif len(desc) > DESC_WARN:
+        warn(f"{sk}: description {len(desc)} chars > {DESC_WARN} — tighten toward a one-line trigger")
+    listing_chars += len(name or "") + len(desc or "")
     if not typ:
         err(f"{sk}: missing metadata.type")
     if not status:
@@ -129,6 +149,14 @@ for d in skill_dirs:
                 if b in seen:
                     warn(f"{sk}: bundles slug '{b}' listed multiple times")
                 seen.add(b)
+
+# --- listing budget footprint (advisory) ---
+if listing_chars > LISTING_BUDGET_WARN_CHARS:
+    warn(
+        f"skill listing footprint {listing_chars} chars > {LISTING_BUDGET_WARN_CHARS} soft cap — "
+        f"the session skill listing may overflow skillListingBudgetFraction for end users; tighten the "
+        f"longest descriptions (advisory: true budget also depends on context size + built-in skills)"
+    )
 
 # --- skill-discovery freshness ---
 disc = SKILLS_DIR / "skill-discovery" / "SKILL.md"

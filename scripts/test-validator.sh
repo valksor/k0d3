@@ -64,7 +64,7 @@ for fixture in "$FIXTURES_DIR"/*.md; do
   case "$name" in
     valid-*)
       # Valid fixture: NO error line should be logged or echoed
-      if [[ -s "$LOG_FILE" ]] || grep -qiE 'missing|forbidden|>[[:space:]]*200' "$TMP/stderr" 2> /dev/null; then
+      if [[ -s "$LOG_FILE" ]] || grep -qiE 'missing|forbidden|cap|>[[:space:]]*[0-9]' "$TMP/stderr" 2> /dev/null; then
         echo "FAIL $name: valid fixture produced error output" >&2
         echo "  stderr: $(cat "$TMP/stderr")" >&2
         echo "  log:    $(cat "$LOG_FILE" 2> /dev/null || true)" >&2
@@ -85,6 +85,17 @@ for fixture in "$FIXTURES_DIR"/*.md; do
       ;;
   esac
 done
+
+# Cross-check: the write-time hard cap must match scripts/_validate_skills.py
+# DESC_FAIL so the two validators never silently diverge (conventions.md treats a
+# divergence between doc/validators as a bug). Catches a bump to one but not the other.
+LINT_CAP="$(grep -oE 'DESC_FAIL = [0-9]+' "$REPO_ROOT/scripts/_validate_skills.py" | grep -oE '[0-9]+')"
+if [[ -n "$LINT_CAP" ]] && grep -qF "> $LINT_CAP cap" "$REPO_ROOT/$HOOK"; then
+  PASS=$((PASS + 1))
+else
+  echo "FAIL threshold-sync: hook hard cap does not match _validate_skills.py DESC_FAIL=$LINT_CAP" >&2
+  FAIL=$((FAIL + 1))
+fi
 
 echo "test-validator.sh: $PASS pass, $FAIL fail" >&2
 exit $((FAIL > 0 ? 1 : 0))

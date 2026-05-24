@@ -91,6 +91,17 @@ if not fm.get("name"):
     errors.append("missing name")
 if not fm.get("description"):
     errors.append("missing description")
+elif len(fm["description"]) > 220:
+    # Hard cap mirrors DESC_FAIL in scripts/_validate_skills.py (currently 220);
+    # keep them in sync -- test-validator.sh asserts they match. Only the
+    # description (and name) count toward the Claude Code skill-listing budget,
+    # so keep it a one-line trigger and push detail to the body. The 180-char
+    # WARN tier is lint-only and intentionally not enforced at write-time.
+    # Edit-safety: this python is captured by a command substitution wrapping a
+    # quoted heredoc (cat << PY). Bash still scans the region for the closing
+    # paren and tracks backticks, so a backtick (or dollar-paren) here desyncs
+    # the parser and the hook fails to load (exit 2). Keep strings plain ASCII.
+    errors.append(f"description {len(fm['description'])} chars > 220 cap - trim to a one-line trigger and move detail to the body (see docs/conventions.md)")
 md = fm.get("metadata") or {}
 if not md.get("type"):
     errors.append("missing metadata.type")
