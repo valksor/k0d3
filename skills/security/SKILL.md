@@ -1,6 +1,6 @@
 ---
 name: security
-description: Use when writing or reviewing any code for security — OWASP categories, SAST tooling, secrets, authn/authz, supply chain. For per-category exploit + remediation depth, see references/owasp-categories.md.
+description: Use when writing or reviewing any code for security — OWASP categories, SAST tooling, secrets, authn/authz, supply chain.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18
@@ -9,7 +9,7 @@ metadata:
   invokes_shell: false
   shell_reviewed: "valksor 2026-05-18"
   related: [code-review, tdd, secrets-vault, secrets-kms]
-  keywords: [production, prod, harden, hardening, owasp, auth, authz, secrets]
+  keywords: [production, prod, harden, hardening, owasp, auth, authz, secrets, exploit, remediation]
 ---
 
 # Security

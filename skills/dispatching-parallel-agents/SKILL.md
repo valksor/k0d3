@@ -1,7 +1,8 @@
 ---
 name: dispatching-parallel-agents
-description: "Use when facing 2+ INDEPENDENT investigations or analyses that can run CONCURRENTLY without shared state (e.g., 'review four files in parallel', 'investigate three possible root causes'). One agent per problem domain. Distinct from `subagent-driven-development`, which is SEQUENTIAL plan execution in the current session. Rule of thumb: parallel-agents = investigation, SDD = implementation."
+description: Use for 2+ INDEPENDENT investigations runnable CONCURRENTLY without shared state — one agent per domain. Investigation, not implementation, vs `subagent-driven-development`.
 metadata:
+  keywords: [concurrent]
   added: 2026-05-18
   last_reviewed: 2026-05-18
   type: core

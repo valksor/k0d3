@@ -1,6 +1,6 @@
 ---
 name: requirements-gathering
-description: "Use FIRST when a request is ambiguous, vague, or might mean different things to different people. Surfaces what's actually needed via targeted questions. Comes BEFORE `brainstorming` (which assumes you already know what you're trying to build). Sequence: requirements-gathering → brainstorming → planning → tdd."
+description: Use FIRST when a request is ambiguous or vague — surface what's actually needed via targeted questions, before `brainstorming` assumes the goal is known.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

@@ -1,6 +1,6 @@
 ---
 name: project-memory
-description: Use when you need persistent, cross-session memory of project FACTS — decisions, conventions, named entities and their relationships — to query later. Backed by k0d3's bundled local knowledge-graph MCP server (mcp__memory__*); stored project-local in .claude/memory.jsonl, no external service. NOT for within-session scratch or human-readable narrative (those go to .claude/memory.md via /start, /sync, /wrap-up).
+description: Use for persistent, cross-session memory of project FACTS — decisions, conventions, named entities — recorded in a local knowledge-graph MCP server, not within-session scratch.
 metadata:
   added: 2026-05-22
   last_reviewed: 2026-05-22

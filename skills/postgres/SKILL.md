@@ -1,6 +1,6 @@
 ---
 name: postgres
-description: Use when designing or operating Postgres — schema, indexes, JSONB, partitioning, replication, pooling, security, LISTEN/NOTIFY, version-specific features. For LISTEN/NOTIFY deep workflow see references/postgres-listen-notify.md; for per-version (17/18) feature deep-dive see references/postgres-version-features.md.
+description: Use when designing or operating Postgres — schema, indexes, JSONB, partitioning, replication, pooling, security, LISTEN/NOTIFY, version-specific (17/18) features.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

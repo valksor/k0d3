@@ -1,6 +1,6 @@
 ---
 name: receiving-code-review
-description: Use when receiving code review feedback, BEFORE implementing suggestions — especially if feedback seems unclear or technically questionable. Verify before implementing. Ask before assuming. Technical correctness over social comfort.
+description: Use when receiving code review feedback, before implementing suggestions — especially if unclear or questionable. Verify before implementing, ask before assuming.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

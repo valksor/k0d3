@@ -1,6 +1,6 @@
 ---
 name: typescript
-description: Use when writing any TypeScript — strict-mode flags, async patterns, ESM/CJS, Node interop, the type patterns you reach for daily (unions, brands, `satisfies`). For advanced type-level recipes, see references/typescript-types-advanced.md.
+description: Use when writing any TypeScript — strict-mode flags, async patterns, ESM/CJS, Node interop, type patterns (unions, brands, `satisfies`).
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

@@ -1,6 +1,6 @@
 ---
 name: go-anthropic
-description: Use when calling Anthropic's Messages API from Go via the official anthropic-sdk-go — client init, sync/streaming, tool use, prompt caching, retries, context cancellation, structured outputs.
+description: Use when calling Anthropic's Messages API from Go via the official anthropic-sdk-go — client init, sync/streaming, tool use, prompt caching, retries, structured outputs.
 metadata:
   added: 2026-05-19
   last_reviewed: 2026-05-19

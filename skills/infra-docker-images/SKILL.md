@@ -1,6 +1,6 @@
 ---
 name: infra-docker-images
-description: Use when choosing or writing Dockerfiles — base-image strategy (Debian default, Alpine when justified), multi-stage builds, distroless, scratch, image size vs supply-chain trade-offs.
+description: Use when choosing or writing Dockerfiles — base-image strategy (Debian vs Alpine), multi-stage builds, distroless, scratch, image size vs supply-chain trade-offs.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

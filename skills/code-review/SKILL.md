@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Use when reviewing code or requesting a review — what a reviewer should catch (silent failures, weak types, comment rot, missing tests) and how to dispatch the right reviewer for the diff.
+description: Use when reviewing code or requesting a review — what a reviewer should catch (silent failures, weak types, comment rot, missing tests) and which reviewer to dispatch.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

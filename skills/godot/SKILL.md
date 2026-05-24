@@ -1,7 +1,8 @@
 ---
 name: godot
-description: Use when building in Godot 4 — scenes, signals, exports, 2D, 3D, Control UI, networking, Rust extensions. For deep multiplayer workflow see references/godot-multiplayer.md; for Rust GDExtension packaging see references/godot-rust-extension.md.
+description: Use when building in Godot 4 — scenes, signals, exports, 2D, 3D, Control UI, networking, Rust extensions.
 metadata:
+  keywords: [multiplayer, gdextension]
   added: 2026-05-18
   last_reviewed: 2026-05-18
   type: domain

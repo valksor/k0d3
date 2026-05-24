@@ -1,6 +1,6 @@
 ---
 name: react
-description: Use when writing React — hooks, composition, performance, RSC boundary, testing. For deep RSC + Next.js + server-action workflows see references/react-server-components.md; for the full RTL/Vitest/MSW workflow see references/react-testing.md.
+description: Use when writing React — hooks, composition, performance, RSC boundary, testing.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18
@@ -10,7 +10,7 @@ metadata:
   invokes_shell: false
   shell_reviewed: "valksor 2026-05-18"
   related: [typescript, ts-zod, ts-vite, ts-vitest, frontend-design-essentials, tdd]
-  keywords: [typescript, frontend, frontends, spa, ssr]
+  keywords: [typescript, frontend, frontends, spa, ssr, next, server-action]
 ---
 
 # React

@@ -1,7 +1,8 @@
 ---
 name: sql
-description: Use when writing or reviewing SQL — parameterization, joins, CTEs, windows, transactions, isolation, NULL gotchas, plan reading basics. For deep optimization (EXPLAIN cheatsheet, indexing strategy, N+1 fixes), see references/sql-optimization.md.
+description: Use when writing or reviewing SQL — parameterization, joins, CTEs, windows, transactions, isolation, NULL gotchas, plan reading basics.
 metadata:
+  keywords: [optimization, indexing, explain]
   added: 2026-05-18
   last_reviewed: 2026-05-18
   type: database

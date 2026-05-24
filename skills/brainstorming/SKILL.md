@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: "Use AFTER requirements are clear, BEFORE any implementation work (new features, components, behavior changes). Turns a clear request into an approved design through Socratic dialogue. Mandatory gate; no code until design approved. If the request itself is ambiguous, use `requirements-gathering` first. Sequence: requirements-gathering → brainstorming → planning → tdd."
+description: Use after requirements are clear, before implementation — turn a clear request into an approved design via Socratic dialogue. Mandatory gate — no code until approved.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

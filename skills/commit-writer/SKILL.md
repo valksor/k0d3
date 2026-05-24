@@ -1,6 +1,6 @@
 ---
 name: commit-writer
-description: "Use when writing a git commit message — for one commit or a series. Iron rule: extract style from `git log -5 | cat` first, never invent. Subjects are imperative; bodies explain WHY, not WHAT."
+description: Use when writing a git commit message, one or a series — extract style from `git log -5 | cat` first, never invent. Subjects are imperative; bodies explain WHY, not WHAT.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

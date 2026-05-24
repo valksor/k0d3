@@ -1,7 +1,8 @@
 ---
 name: subagent-driven-development
-description: "Use when executing an APPROVED implementation plan with multiple tasks in the current session. Fresh subagent per task, SEQUENTIAL execution + two-stage review (spec compliance, then code quality). Distinct from `dispatching-parallel-agents`, which is CONCURRENT investigation. Rule of thumb: SDD = implementation, parallel-agents = investigation."
+description: Use to execute an APPROVED multi-task plan in-session — fresh subagent per task, SEQUENTIAL, two-stage review. Implementation, vs `dispatching-parallel-agents` (investigation).
 metadata:
+  keywords: [sdd]
   added: 2026-05-18
   last_reviewed: 2026-05-18
   type: core

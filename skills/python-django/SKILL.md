@@ -1,6 +1,6 @@
 ---
 name: python-django
-description: Use when working in Django — models, views, ORM, migrations, settings, REST APIs with Django REST Framework, testing with pytest-django, version upgrades. Full DRF patterns in references/drf.md; LTS-upgrade path in references/django-upgrade-path.md.
+description: Use when working in Django — models, views, ORM, migrations, settings, REST APIs with Django REST Framework (DRF), testing with pytest-django, version upgrades.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18
