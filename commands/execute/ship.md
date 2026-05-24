@@ -16,3 +16,5 @@ Invokes `Skill(finishing-a-development-branch)`:
 5. Cleans up worktree if owned
 
 Halts on test failures. Requires typed confirmation for discard.
+
+After integrating, the production deploy is a separate step — `Skill(deploy-checklist)` covers pre-deploy verification and rollback triggers.

@@ -8,7 +8,8 @@ metadata:
   status: active
   invokes_shell: false
   shell_reviewed: "valksor 2026-05-17"
-  related: [using-git-worktrees, code-review, subagent-driven-development, commit-writer, pr-description]
+  related:
+    [using-git-worktrees, code-review, subagent-driven-development, commit-writer, pr-description, deploy-checklist]
   owns: finishing-branch
 ---
 

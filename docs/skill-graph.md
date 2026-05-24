@@ -50,6 +50,10 @@ graph LR
   database-sqlite-pure-go --> infra-docker-images
   debugging --> root-cause
   debugging --> tdd
+  deploy-checklist --> finishing-a-development-branch
+  deploy-checklist --> ci-github-actions
+  deploy-checklist --> ci-gitlab-ci
+  deploy-checklist --> observability-essentials
   dispatching-parallel-agents --> subagent-driven-development
   dispatching-parallel-agents --> debugging
   finishing-a-development-branch --> using-git-worktrees
@@ -57,6 +61,7 @@ graph LR
   finishing-a-development-branch --> subagent-driven-development
   finishing-a-development-branch --> commit-writer
   finishing-a-development-branch --> pr-description
+  finishing-a-development-branch --> deploy-checklist
   frontend-ant-design --> react
   frontend-ant-design --> typescript
   frontend-ant-design --> frontend-design-essentials
@@ -197,6 +202,10 @@ graph LR
   graphql-essentials --> websocket-essentials
   graphql-essentials --> observability-essentials
   graphql-essentials --> security
+  incident-response --> debugging
+  incident-response --> root-cause
+  incident-response --> observability-essentials
+  incident-response --> observability-sentry
   infra-cloudflare-workers --> typescript
   infra-cloudflare-workers --> node-essentials
   infra-cloudflare-workers --> security
@@ -443,6 +452,9 @@ graph LR
   tdd --> debugging
   tdd --> refactoring
   tdd --> code-review
+  technical-writing --> pr-description
+  technical-writing --> architecture-essentials
+  technical-writing --> commit-writer
   testing-fuzzing-mutation --> testing-strategy
   testing-fuzzing-mutation --> testing-property-based
   testing-fuzzing-mutation --> security
