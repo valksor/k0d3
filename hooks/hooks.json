@@ -1,5 +1,5 @@
 {
-  "_comment": "k0d3 hooks. The 12 wired below are enabled by default (old-claude parity + ensure-memory-gitignore + codegraph autoindex/nudge, all safe globally and fail-soft). The 3 in _disabled_examples are k0d3-repo-dev-specific and opt-in. Paths use ${CLAUDE_PLUGIN_ROOT} so they resolve in any project regardless of the user's cwd. See docs/hooks.md.",
+  "_comment": "k0d3 hooks. The 12 wired below are enabled by default (old-claude parity + ensure-memory-gitignore + codegraph autoindex/nudge, all safe globally and fail-soft). The 3 append-only loggers (log-changes, log-failures, log-stop-verdict) run with \"async\": true so they never block the tool/turn pipeline. The 3 in _disabled_examples are k0d3-repo-dev-specific and opt-in. Paths use ${CLAUDE_PLUGIN_ROOT} so they resolve in any project regardless of the user's cwd. See docs/hooks.md.",
   "hooks": {
     "PreToolUse": [
       {
@@ -21,12 +21,12 @@
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
-        "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/log-changes.sh" }]
+        "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/log-changes.sh", "async": true }]
       }
     ],
     "PostToolUseFailure": [
       {
-        "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/log-failures.sh" }]
+        "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/log-failures.sh", "async": true }]
       }
     ],
     "PreCompact": [
@@ -50,7 +50,9 @@
     ],
     "Stop": [
       {
-        "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/log-stop-verdict.sh" }]
+        "hooks": [
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/log-stop-verdict.sh", "async": true }
+        ]
       }
     ]
   },

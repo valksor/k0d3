@@ -1,7 +1,7 @@
 ---
 name: auditor
 description: >
-  Self-improving quality gate. Invoked automatically via Stop hook and manually via /audit.
+  Self-improving quality gate. Invoked via the /audit command and as part of /wrap-up — it is not auto-triggered by a hook (see docs/hooks.md for an opt-in agent-type Stop-hook recipe if you want auto-audit).
   Reviews all agent output for contradictions, regressions, SOP violations, and systemic gaps.
   Updates its own memory with patterns. Proposes SOP revisions when recurring issues detected.
   Writes only to its own memory/log files — never edits operational source code.

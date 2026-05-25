@@ -17,20 +17,20 @@ Most hooks in `hooks/hooks.json` ship **enabled by default** — old-claude pari
 
 Some hooks depend on artifacts produced by other hooks (`session-reset` reads what `post-compact-resume` cleaned up, `pre-compact-handoff` writes a marker that `post-compact-resume` consumes). Enable in this order.
 
-| #   | Hook                         | Event                        | Why this position                                                                                                                                                                                                    |
-| --- | ---------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | `backup-before-write`        | PreToolUse Write\|Edit       | Pure side-effect (file copy). No deps. Safest to enable first — gives you rollback for the next hooks.                                                                                                               |
-| 2   | `log-changes`                | PostToolUse Write\|Edit      | Append-only audit. No deps. Pairs well with backups.                                                                                                                                                                 |
-| 3   | `log-failures`               | PostToolUseFailure           | Append-only failure log. No deps. Independent of any other hook.                                                                                                                                                     |
-| 4   | `pre-compact-handoff`        | PreCompact                   | Writes `.compaction-occurred` marker. Must be enabled **before** `post-compact-resume`.                                                                                                                              |
-| 5   | `post-compact-resume`        | SessionStart matcher=compact | Reads + deletes the marker from #4. Enable after #4 is confirmed healthy.                                                                                                                                            |
-| 6   | `session-reset`              | SessionStart matcher=startup | Cleans stale gate files at session start. Independent — can be enabled any time, but pairs naturally with #4–#5 (same gate-file lifecycle).                                                                          |
-| 7   | `log-stop-verdict`           | Stop                         | JSONL session-ended log. Currently writes `decision: ended` unconditionally — purely additive.                                                                                                                       |
-| 8   | `guard-bash`                 | PreToolUse Bash              | **Behavior-changing.** Will start blocking commands. Confirm `scripts/test-hooks.sh` is green BEFORE enabling. Be prepared to bypass via the deny message's `additionalContext` if a legitimate command is rejected. |
-| 9   | `completeness-gate`          | PreToolUse Write\|Edit       | **Behavior-changing.** Blocks writes containing TBD/TODO/FIXME markers and detected secrets. Test on a throwaway file first.                                                                                         |
-| 10  | `validate-skill-frontmatter` | PreToolUse Write\|Edit       | **Behavior-changing.** Validates frontmatter when writing to `skills/`. Fail-open (always exit 0), so a misfire is annoying but not blocking.                                                                        |
-| 11  | `block-deferred-issues`      | PreToolUse Bash              | Blocks `gh issue create` on `work/*` branches. Only fires on that one command path.                                                                                                                                  |
-| 12  | `check-name-collisions`      | SessionStart matcher=startup | Independent (no deps). Warns when a skill/command/agent name collides with another installed plugin. Safe to enable any time; opt-in only because the collision set is k0d3-repo-development-specific.               |
+| #   | Hook                         | Event                        | Why this position                                                                                                                                                                                                                                  |
+| --- | ---------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `backup-before-write`        | PreToolUse Write\|Edit       | Pure side-effect (file copy). Runs **synchronously** (blocking, by design) — a PreToolUse backup must finish before the write so the snapshot captures pre-write content. No deps. Safest to enable first — gives you rollback for the next hooks. |
+| 2   | `log-changes`                | PostToolUse Write\|Edit      | Append-only audit. Runs **`async`** (non-blocking). No deps. Pairs well with backups.                                                                                                                                                              |
+| 3   | `log-failures`               | PostToolUseFailure           | Append-only failure log. Runs **`async`** (non-blocking). No deps. Independent of any other hook.                                                                                                                                                  |
+| 4   | `pre-compact-handoff`        | PreCompact                   | Writes `.compaction-occurred` marker. Must be enabled **before** `post-compact-resume`.                                                                                                                                                            |
+| 5   | `post-compact-resume`        | SessionStart matcher=compact | Reads + deletes the marker from #4. Enable after #4 is confirmed healthy.                                                                                                                                                                          |
+| 6   | `session-reset`              | SessionStart matcher=startup | Cleans stale gate files at session start. Independent — can be enabled any time, but pairs naturally with #4–#5 (same gate-file lifecycle).                                                                                                        |
+| 7   | `log-stop-verdict`           | Stop                         | JSONL session-ended log. Runs **`async`** (non-blocking). Writes `decision: ended` unconditionally — purely additive.                                                                                                                              |
+| 8   | `guard-bash`                 | PreToolUse Bash              | **Behavior-changing.** Will start blocking commands. Confirm `scripts/test-hooks.sh` is green BEFORE enabling. Be prepared to bypass via the deny message's `additionalContext` if a legitimate command is rejected.                               |
+| 9   | `completeness-gate`          | PreToolUse Write\|Edit       | **Behavior-changing.** Blocks writes containing TBD/TODO/FIXME markers and detected secrets. Test on a throwaway file first.                                                                                                                       |
+| 10  | `validate-skill-frontmatter` | PreToolUse Write\|Edit       | **Behavior-changing.** Validates frontmatter when writing to `skills/`. Fail-open (always exit 0), so a misfire is annoying but not blocking.                                                                                                      |
+| 11  | `block-deferred-issues`      | PreToolUse Bash              | Blocks `gh issue create` on `work/*` branches. Only fires on that one command path.                                                                                                                                                                |
+| 12  | `check-name-collisions`      | SessionStart matcher=startup | Independent (no deps). Warns when a skill/command/agent name collides with another installed plugin. Safe to enable any time; opt-in only because the collision set is k0d3-repo-development-specific.                                             |
 
 ## Default codegraph hooks (fail-soft, outside the order table)
 
@@ -109,9 +109,48 @@ tail -50 .claude/logs/incident-log.md
 
 If any health check fails, rollback the most recently-enabled hook and investigate.
 
+## Hook capabilities reference (Claude Code)
+
+k0d3 wires **6** of the lifecycle events Claude Code exposes (~31 total): `SessionStart`, `PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `PreCompact`, `Stop`. Other events available if a future need arises include `PostCompact`, `SubagentStart` / `SubagentStop`, `SessionEnd`, `PermissionRequest`, `UserPromptSubmit`, and `Notification`.
+
+Every k0d3 hook is `type: "command"` (a shell script: stdin is the event JSON, the exit code plus stdout/JSON control the result). Claude Code also supports other hook types, useful to know when designing a new hook:
+
+- **`command`** — run a shell script. What k0d3 uses.
+- **`http`** — POST the event JSON to a URL; a `2xx` JSON body uses the same output schema as a command hook.
+- **`mcp_tool`** — call a tool on an already-connected MCP server.
+- **`prompt`** — single-turn Claude evaluation returning an allow/block-style verdict.
+- **`agent`** — spawn a subagent with tool access for deeper verification (**experimental**).
+
+Two fields control blocking:
+
+- **`"async": true`** — the hook runs in the background and never blocks the tool/turn pipeline. Use it for append-only logging, backups, and notifications whose output is not consumed for control flow. k0d3 sets it on the three loggers (`log-changes`, `log-failures`, `log-stop-verdict`). **Do not** set it on a hook that must gate the action (`guard-bash`, `completeness-gate`, `validate-skill-frontmatter`), inject `additionalContext` (`prefer-codegraph`), or finish before the event proceeds (`backup-before-write`, which must snapshot before the write; `pre-compact-handoff`, which must write its marker before compaction).
+- **`"asyncRewake": true`** — like `async`, but exit code 2 wakes Claude with the hook's stderr as a system reminder. Implies `async`. Useful for a background check that lets the action through but nudges Claude when it finds something (e.g. a linter that flags an issue without blocking the write).
+
+Official reference: <https://code.claude.com/docs/en/hooks>.
+
+## Opt-in: auto-run the auditor on Stop (agent hook)
+
+The `auditor` agent is invoked by the `/audit` command and as part of `/wrap-up`. To run it **automatically at the end of every turn**, the `agent` hook type makes that possible. Replace the `Stop` block in `hooks.json` with the merged array below — it keeps the existing `log-stop-verdict` logger and adds the agent hook as the second entry (this is the final state of the whole `Stop` array, not a snippet to append; the `Stop` event takes no `matcher`, so it fires on every stop):
+
+```json
+"Stop": [
+  {
+    "hooks": [
+      { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/log-stop-verdict.sh", "async": true },
+      { "type": "agent", "prompt": "Run a Tier-1 audit of the work in this turn. Read CLAUDE.md and .claude/knowledge-base.md, check for contradictions, scope violations, and incomplete tasks, then emit a PASS/WARN/FAIL verdict. Do not edit operational source code." }
+    ]
+  }
+]
+```
+
+The prompt references `CLAUDE.md` and `.claude/knowledge-base.md` as project-relative paths; adapt them to your repo (or the audit reads nothing where those files are absent).
+
+**Cost caveat:** this spawns a subagent at every turn-end — measurable token + latency overhead, and it fires even on trivial turns. The `agent` hook type is **experimental**. For most workflows, on-demand `/audit` (or `/wrap-up` at end of day) is the better trade; enable this only if you specifically want unattended, every-turn auditing.
+
 ## Known limitations of the current hook set
 
 - `guard-bash` is regex-based and treats the command as a string. Shell-indirection (`eval`, `bash -c`) is soft-blocked but `python3 -c '<payload>'` and `perl -e '<payload>'` are not yet detected. Treat the hook as a tripwire, not a sandbox.
+- `guard-bash` does not block env-table enumeration — `env | grep NAME`, `export | grep`, or bare `printenv | grep` all run. Reading a _named_ variable (`printenv VAR`, `echo $KNOWN_PREFIX`) and every `.env` file access stay blocked, but an ambient-environment dump piped to a filter is allowed: a bare-word `env` matcher flags far more benign commands (`docker run --env`, `npm run env`, `rg 'env|export'`) than real exfil, so it is intentionally absent. Keep real secrets in `.env`/a secret store rather than exported into the shell environment.
 - `completeness-gate` secret-scan does not cover every credential format (covers Stripe, OpenAI, Anthropic, classic + fine-grained GitHub PATs, GitLab tokens, Slack tokens, AWS, JWTs, GCP private-key JSON). Custom-format tokens for in-house systems are not detected.
 - `validate-skill-frontmatter` is fail-open: missing PyYAML or any internal error exits 0 (allows the write). Acceptable for a dev tool; surface the limitation to anyone relying on it for security gating.
 

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# PreToolUse async hook — creates timestamped backups before Write|Edit.
-# Runs asynchronously so it doesn't block the write operation.
+# PreToolUse hook — creates timestamped backups before Write|Edit.
+# Runs synchronously (NOT async): a PreToolUse backup must complete before the
+# write, so the snapshot captures the file's pre-write content. An async backup
+# would race the write and could capture the already-modified content.
 # Keeps 7 days of backups, auto-prunes older ones.
 
 [ -z "${CLAUDE_PROJECT_DIR:-}" ] && exit 0
