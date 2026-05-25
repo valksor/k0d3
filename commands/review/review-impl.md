@@ -14,6 +14,8 @@ Multi-perspective review of an implementation. Dispatches all four reviewers in 
 - `Agent(reviewer-security)` — auth, injection, supply chain, secrets
 - `Agent(reviewer-end-user)` — usability, error messages, docs (covers developer-users and non-technical end users in a single review)
 
+**Plan mode is fine — do not stop to ask.** The review itself (dispatch + consolidate) is read-only. In plan mode the disposition step writes the validated findings and their intended fixes to the active plan file instead of editing source, per `references/review-finding-disposition.md`. Run the review.
+
 Arguments:
 
 - `[base-ref]` (optional): the git ref to diff against. Defaults to `origin/main` (then `origin/master`, then `HEAD~1` if neither exists).

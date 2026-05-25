@@ -16,6 +16,8 @@ allowed-tools:
 
 Comprehensive code review. Goes beyond style — checks security, performance, architecture, and generates actionable improvement suggestions.
 
+**Plan mode is fine — do not stop to ask.** The review itself (read + analyze) is read-only. In plan mode the Step 6 disposition writes the validated findings and their intended fixes to the active plan file instead of editing source, per `references/review-finding-disposition.md`. Run the review.
+
 ## Steps
 
 ### Step 1: Determine scope

@@ -56,7 +56,9 @@ and, per above, you never push them.)
 editing source, append the validated findings and their intended fixes to the active plan file
 (path from system context) under a "Review findings" section, and say so. (`/review-plan` is
 the exception: revising a plan document is prose editing, not a source edit, so `/review-plan`
-always edits the reviewed plan document directly — even in plan mode.)
+always edits the reviewed plan document directly — even in plan mode.) Run the review and
+disposition normally; only the _writes_ change target — never front-load a plan-mode question or
+skip the review because edits are restricted.
 
 ## What this is NOT
 
