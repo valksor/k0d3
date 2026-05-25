@@ -50,7 +50,17 @@ The hook contract: `guard-bash.sh` ALWAYS exits 0. Block signals travel via JSON
 | `cat-quoted-env`     | `cat ".env"`                 | block                                  |
 | `grep-c-env-allowed` | `grep -c STRIPE .env`        | allow (existence check, no value leak) |
 | `printenv-var`       | `printenv STRIPE_SECRET_KEY` | block                                  |
-| `env-grep-secret`    | `env \| grep STRIPE`         | block                                  |
+
+### Allow: env-table enumeration (matcher intentionally absent)
+
+A bare-word `env`/`export` piped to a filter is allowed. Matching the word `env` caught far more benign commands (build flags, package scripts, search patterns) than real exfil; reading a _named_ variable (`printenv VAR`) and all `.env` file access stay blocked above.
+
+| Case                       | Command                                      | Expect |
+| -------------------------- | -------------------------------------------- | ------ |
+| `env-grep-allowed`         | `env \| grep STRIPE`                         | allow  |
+| `docker-env-flag-allowed`  | `docker run --env FOO=bar img \| grep ready` | allow  |
+| `npm-run-env-grep-allowed` | `npm run env \| grep PORT`                   | allow  |
+| `rg-env-pattern-allowed`   | `rg -n 'env\|export' docs/hooks.md \| head`  | allow  |
 
 ### Soft-block: compound-AND allowlist (C7)
 

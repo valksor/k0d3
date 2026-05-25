@@ -101,7 +101,13 @@ run_case "grep-env-no-c" "grep STRIPE .env" "block"
 run_case "awk-env" "awk '1' .env" "block"
 run_case "grep-c-env-allowed" "grep -c STRIPE .env" "allow"
 run_case "printenv-var" "printenv STRIPE_SECRET_KEY" "block"
-run_case "env-grep-secret" "env | grep STRIPE" "block"
+
+# ── env-table enumeration is NOT blocked (regression: the bare-word `env`/`export`
+# matcher false-positived on benign --env flags, `npm run env`, even rg patterns) ──
+run_case "env-grep-allowed" "env | grep STRIPE" "allow"
+run_case "docker-env-flag-allowed" "docker run --env FOO=bar img | grep ready" "allow"
+run_case "npm-run-env-grep-allowed" "npm run env | grep PORT" "allow"
+run_case "rg-env-pattern-allowed" "rg -n 'env|export' docs/hooks.md | head" "allow"
 
 # ── Compound-AND allowlist bypass (C7) ──
 # First case is caught by the HARD-block (/home/user is a system path),

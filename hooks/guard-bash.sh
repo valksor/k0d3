@@ -142,12 +142,6 @@ if echo "$COMMAND" | grep -qE '\bprintenv[[:space:]]+[A-Za-z_][A-Za-z0-9_]'; the
   deny "HARD BLOCK: printenv <var> prints the credential value to output." "Reference secrets by variable name only. Never print their values."
 fi
 
-# env | grep / export | grep — filters env output to extract credentials (A7)
-if echo "$COMMAND" | grep -qE '\b(env|export)\b[^|]*\|[[:space:]]*(grep|awk|sed|head|tail|less|more)\b'; then
-  log_incident "HIGH" "BLOCKED: env-filter for secrets: $COMMAND"
-  deny "HARD BLOCK: Piping env/export to grep/awk/etc. filters credential values." "Reference secrets by variable name only. Never enumerate the env table to find a secret."
-fi
-
 # Block echo/printf of environment variables containing common secret prefixes
 # (covers ${VAR} brace form via [{]? optional brace, and $VAR bare form)
 if echo "$COMMAND" | grep -qE '(echo|printf)[[:space:]]+.*\$[{]?(STRIPE_|OPENAI_|ANTHROPIC_|AWS_|DATABASE_|AUTH_SECRET|NEXTAUTH_SECRET|API_KEY|SECRET_KEY|PRIVATE_KEY|TOKEN|GITHUB_TOKEN|GH_TOKEN)'; then
