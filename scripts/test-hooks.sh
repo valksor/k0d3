@@ -109,6 +109,34 @@ run_case "docker-env-flag-allowed" "docker run --env FOO=bar img | grep ready" "
 run_case "npm-run-env-grep-allowed" "npm run env | grep PORT" "allow"
 run_case "rg-env-pattern-allowed" "rg -n 'env|export' docs/hooks.md | head" "allow"
 
+# ── Catastrophic-rm is clause-aware: a system path in a SIBLING clause (not the
+#    rm target) must not hard-block; a system path in the rm clause still does ──
+run_case "rm-sibling-syspath-allowed" "cd /Users/me/proj && rm -f localfile" "allow"
+run_case "ls-syspath-then-rm-allowed" "ls /etc && rm note.txt" "allow"
+run_case "rm-syspath-in-rm-clause-blocked" "cd /tmp && rm -rf /etc/x" "block"
+
+# ── .env templates carry no secrets: read/copy/stage allowed; real .env blocked ──
+run_case "cp-env-template-allowed" "cp .env.example .env" "allow"
+run_case "cat-env-template-allowed" "cat .env.example" "allow"
+run_case "mv-env-local-allowed" "mv .env.local .env" "allow"
+run_case "gitadd-env-template-allowed" "git add .env.example" "allow"
+run_case "gitadd-env-real-blocked" "git add .env" "block"
+
+# ── Force-only rm (no -r) is warn-tier (allowed); recursive still soft-blocks ──
+run_case "rm-force-named-allowed" "rm -f /tmp/throwaway.txt" "allow"
+run_case "rm-recursive-dir-blocked" "rm -rf node_modules" "block"
+
+# ── printenv safelists benign vars; secret-named vars still blocked ──
+run_case "printenv-path-allowed" "printenv PATH" "allow"
+run_case "printenv-home-allowed" "printenv HOME" "allow"
+
+# ── echo of benign env vars allowed; real secret vars still blocked ──
+run_case "echo-aws-region-allowed" "echo \$AWS_REGION" "allow"
+run_case "echo-db-name-allowed" "echo \$DATABASE_NAME" "allow"
+run_case "echo-token-count-allowed" "echo \$TOKEN_COUNT" "allow"
+run_case "echo-stripe-secret-blocked" "echo \$STRIPE_SECRET_KEY" "block"
+run_case "echo-gh-token-blocked" "echo \$GH_TOKEN" "block"
+
 # ── Compound-AND allowlist bypass (C7) ──
 # First case is caught by the HARD-block (/home/user is a system path),
 # second case exercises the clause-aware SOFT-block: allowlisted + non-allowlisted

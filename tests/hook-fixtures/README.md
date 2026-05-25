@@ -62,6 +62,51 @@ A bare-word `env`/`export` piped to a filter is allowed. Matching the word `env`
 | `npm-run-env-grep-allowed` | `npm run env \| grep PORT`                   | allow  |
 | `rg-env-pattern-allowed`   | `rg -n 'env\|export' docs/hooks.md \| head`  | allow  |
 
+### Clause-aware catastrophic rm (system path in a sibling clause)
+
+A system/home path is treated as an rm target only when it shares a clause with `rm`. A path in a sibling clause (`cd`, `ls`, …) no longer hard-blocks.
+
+| Case                              | Command                                | Expect |
+| --------------------------------- | -------------------------------------- | ------ |
+| `rm-sibling-syspath-allowed`      | `cd /Users/me/proj && rm -f localfile` | allow  |
+| `ls-syspath-then-rm-allowed`      | `ls /etc && rm note.txt`               | allow  |
+| `rm-syspath-in-rm-clause-blocked` | `cd /tmp && rm -rf /etc/x`             | block  |
+
+### .env templates vs real secrets
+
+`.env.example` / `.sample` / `.template` / `.dist` are secret-free templates: reading, copying, and staging them is allowed. Local file-movers (`cp`/`mv`/`ln`) are no longer treated as readers. A real `.env` stays blocked.
+
+| Case                          | Command                | Expect |
+| ----------------------------- | ---------------------- | ------ |
+| `cp-env-template-allowed`     | `cp .env.example .env` | allow  |
+| `cat-env-template-allowed`    | `cat .env.example`     | allow  |
+| `mv-env-local-allowed`        | `mv .env.local .env`   | allow  |
+| `gitadd-env-template-allowed` | `git add .env.example` | allow  |
+| `gitadd-env-real-blocked`     | `git add .env`         | block  |
+
+### Force-only vs recursive rm
+
+Force-only `rm -f <named files>` (no `-r`) is warn-tier (allowed, logged). A recursive `rm -r`/`-R` still soft-blocks unless it targets an allowlisted path.
+
+| Case                       | Command                    | Expect |
+| -------------------------- | -------------------------- | ------ |
+| `rm-force-named-allowed`   | `rm -f /tmp/throwaway.txt` | allow  |
+| `rm-recursive-dir-blocked` | `rm -rf node_modules`      | block  |
+
+### printenv & echo: benign vars vs secrets
+
+`printenv` of a safelisted var (`PATH`, `HOME`, …) and `echo` of a non-secret var are allowed; secret-named vars stay blocked.
+
+| Case                         | Command                   | Expect |
+| ---------------------------- | ------------------------- | ------ |
+| `printenv-path-allowed`      | `printenv PATH`           | allow  |
+| `printenv-home-allowed`      | `printenv HOME`           | allow  |
+| `echo-aws-region-allowed`    | `echo $AWS_REGION`        | allow  |
+| `echo-db-name-allowed`       | `echo $DATABASE_NAME`     | allow  |
+| `echo-token-count-allowed`   | `echo $TOKEN_COUNT`       | allow  |
+| `echo-stripe-secret-blocked` | `echo $STRIPE_SECRET_KEY` | block  |
+| `echo-gh-token-blocked`      | `echo $GH_TOKEN`          | block  |
+
 ### Soft-block: compound-AND allowlist (C7)
 
 | Case                             | Command                                               | Expect | Coverage                                   |
