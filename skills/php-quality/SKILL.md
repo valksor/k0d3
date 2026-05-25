@@ -43,10 +43,10 @@ return (new PhpCsFixer\Config())
 `@*:risky` rules can change runtime behaviour (strict comparisons, type juggling) — review the diff the first time. Commands mirror the project's composer scripts:
 
 ```jsonc
-// composer.json scripts — the lv/vvv/vp pattern
-"lv":  ["vendor/bin/php-cs-fixer --config=.php-cs-fixer.dist.php -v --using-cache=no fix -vvv"],
-"vvv": ["vendor/bin/php-cs-fixer --config=valksor-dev/.php-cs-fixer.dist.php -v --using-cache=no -vvv fix valksor/ valksor-dev/ valksor-plugin/"],
-"vp":  ["vendor/bin/php-cs-fixer --config=valksor-dev/.php-cs-fixer.dist.php -v --using-cache=no -vvv fix valksor-plugin/"]
+// composer.json scripts — mirror the fixer invocation so it's one command
+"fix":      ["vendor/bin/php-cs-fixer --config=.php-cs-fixer.dist.php --using-cache=no fix -vvv"],
+// multi-config monorepo: one script per package, each using that package's own config
+"fix:acme": ["vendor/bin/php-cs-fixer --config=packages/acme/.php-cs-fixer.dist.php --using-cache=no fix packages/acme/ -vvv"]
 ```
 
 `--using-cache=no` is deliberate in these scripts — the cache keys on file mtime + ruleset, and in a multi-config monorepo (one config per package path) stale cache hits skip files that a different config should touch. Locally you may keep the cache (`--using-cache=yes`, default) for speed; in CI always disable it.
@@ -133,7 +133,7 @@ Three independent gates, three failure modes — never collapse them, since the 
 - `level` set lower than the code clears — silently disables real checks; raise to `max` and baseline the gap instead.
 - Inline `@phpstan-ignore-line` everywhere — opaque, suppresses unrelated future errors. Use `@phpstan-ignore <identifier>` with a reason.
 - Running the fixer WITH cache in CI — stale mtime/ruleset cache skips files; always `--using-cache=no` in CI.
-- Fixer rewriting files in CI (`fix` without `--dry-run`) — CI should gate, not mutate; rewrites belong to local `composer lv`.
+- Fixer rewriting files in CI (`fix` without `--dry-run`) — CI should gate, not mutate; rewrites belong to local `composer fix`.
 - Letting PHPStan analyse without the warmed Symfony container — `get()`/`getParameter()` types degrade to `mixed`, weakening every check.
 - `setRiskyAllowed(false)` then enabling a `:risky` ruleset — the risky rules silently no-op.
 - Twig templates excluded from the pipeline — formatting drift hides where no PHP fixer reaches.

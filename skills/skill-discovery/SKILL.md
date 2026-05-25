@@ -1,12 +1,12 @@
 ---
 name: skill-discovery
 description: Routing table — given a topic keyword, returns recommended skill slugs to load. Auto-generated; do not edit body.
-last-generated: "2026-05-24T13:27:49Z"
+last-generated: "2026-05-25T09:09:34Z"
 metadata:
   type: meta
   status: active
   invokes_shell: false
-  shell_reviewed: "valksor 2026-05-24"
+  shell_reviewed: "valksor 2026-05-25"
   related: [using-k0d3]
 ---
 

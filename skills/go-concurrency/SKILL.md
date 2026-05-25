@@ -26,12 +26,6 @@ Channels for ownership and communication; mutexes for protecting state that does
 
 ## Goroutines
 
-```go
-go func() {
-    // ...
-}()
-```
-
 Cheap to start (~2KB stack). Don't start one without knowing:
 
 - Who will stop it

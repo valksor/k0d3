@@ -60,10 +60,10 @@ Prefer `^` for libraries. `*` and `dev-*` are deliberate choices (meta-packages,
   "autoload": {
     "psr-4": {
       "App\\": "src/",
-      "Valksor\\": "valksor/src/Valksor/"
+      "Acme\\": "packages/acme/src/"
     },
-    "files": ["apps/autoload.php"],
-    "exclude-from-classmap": ["valksor/src/Valksor/Bundle/recipe"]
+    "files": ["src/bootstrap.php"],
+    "exclude-from-classmap": ["packages/acme/src/Bundle/recipe"]
   },
   "autoload-dev": {
     "psr-4": { "App\\Tests\\": "tests/" }
@@ -99,19 +99,19 @@ Prefer `^` for libraries. `*` and `dev-*` are deliberate choices (meta-packages,
   "repositories": [
     {
       "type": "path",
-      "url": "./valksor-plugin",
+      "url": "./acme-plugin",
       "options": { "symlink": true }
     },
     {
       "type": "vcs",
-      "url": "https://github.com/960018/SncRedisBundle",
+      "url": "https://github.com/your-fork/SncRedisBundle",
       "no-api": true
     }
   ]
 }
 ```
 
-**`path`** — install a sibling package from a local directory; `symlink: true` makes edits live (changes in `./valksor-plugin` appear instantly, no re-install). The backbone of monorepo/multi-app development. **`vcs`** — install from a git fork/branch by URL; `no-api: true` clones over git instead of hitting the GitHub API (avoids rate limits, works for forks where releases aren't tagged). Both let you depend on `dev-main` of a fork before it's on Packagist.
+**`path`** — install a sibling package from a local directory; `symlink: true` makes edits live (changes in `./acme-plugin` appear instantly, no re-install). The backbone of monorepo/multi-app development. **`vcs`** — install from a git fork/branch by URL; `no-api: true` clones over git instead of hitting the GitHub API (avoids rate limits, works for forks where releases aren't tagged). Both let you depend on `dev-main` of a fork before it's on Packagist.
 
 ## minimum-stability & prefer-stable
 
