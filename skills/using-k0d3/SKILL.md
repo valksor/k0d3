@@ -3,7 +3,7 @@ name: using-k0d3
 description: Use at session start to orient Claude in a k0d3-enabled repo. Establishes slug convention, prefix rule, navigation, and the one-skill-per-use rule.
 metadata:
   added: 2026-05-18
-  last_reviewed: 2026-05-18
+  last_reviewed: 2026-05-25
   type: meta
   status: active
   invokes_shell: false
@@ -36,6 +36,14 @@ Type the explicit `k0d3:` prefix for k0d3 commands, agents, and skills when anot
 - **Agent**: you need an independent perspective with its own tool set and its own brief. Agents dispatch and return findings.
 
 See `AGENTS.md` for the agent catalogue. Three cohorts: `workflow/`, `reviewers/`, `experts/`.
+
+## Default to action — research proportional to the task
+
+Before exploring to learn how to build / test / run / lint / release, **check the obvious entry points first**: `Makefile`, `package.json` scripts, `justfile`, `Taskfile.yml`, `pyproject.toml`, `composer.json`, `README`. The command almost always already exists — reuse it instead of rediscovering it with a grep-and-read sweep.
+
+- Spend research budget proportional to the task. A one-line change doesn't warrant a codebase survey.
+- Structural questions (what calls what, where X is defined) go to codegraph — sub-millisecond index reads beat grep+read loops.
+- On small, well-scoped tasks, act directly rather than fanning out Explore/Plan agents — they bias toward research by design.
 
 ## When something seems missing
 
