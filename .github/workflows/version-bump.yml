@@ -37,11 +37,14 @@ jobs:
 
       - name: Bump version
         id: bump
+        env:
+          # Via env, not interpolation — consistent with the bump-type step above
+          BUMP_TYPE: ${{ steps.bump_type.outputs.BUMP_TYPE }}
         run: |
           CURRENT=$(jq -r '.version' .claude-plugin/plugin.json)
           [[ "$CURRENT" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Bad version: $CURRENT"; exit 1; }
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
-          case "${{ steps.bump_type.outputs.BUMP_TYPE }}" in
+          case "$BUMP_TYPE" in
             major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
             minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
             *)     PATCH=$((PATCH + 1)) ;;
@@ -62,11 +65,18 @@ jobs:
 
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
 
-      - name: Commit and push
+      - name: Commit, tag, and push
+        env:
+          NEW_VERSION: ${{ steps.bump.outputs.NEW_VERSION }}
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
           git add .claude-plugin/plugin.json .claude-plugin/marketplace.json
-          git commit -m "Bump version to ${{ steps.bump.outputs.NEW_VERSION }} [skip ci]"
+          git commit -m "Bump version to $NEW_VERSION [skip ci]"
           git pull --rebase origin master
-          git push origin HEAD:master
+          # Tag the rebased HEAD, then push branch + tag in one atomic transaction:
+          # both refs land together or neither does — no commit-without-tag split state.
+          git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION" \
+            -m "Automated — $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          echo "Pushing commit and tag v$NEW_VERSION to master"
+          git push --atomic origin HEAD:master "v$NEW_VERSION"

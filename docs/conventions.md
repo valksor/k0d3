@@ -125,6 +125,12 @@ The env var must be set **in the shell that launches Claude Code**, not in a sub
 
 The hook is **fail-open by design**: if PyYAML is missing, the validator script has any internal error, or the bypass fires, the hook exits 0 and allows the write. A failed validation is logged and surfaced via stderr but does not block. Treat the validator as a developer-aid tripwire, not a security gate.
 
+## Versioning
+
+The plugin version lives in two files, kept in sync by the `version-bump` workflow: `.claude-plugin/plugin.json` (`.version`) and `.claude-plugin/marketplace.json` (the `k0d3` plugin entry's `.version`). Both carry **bare semver** (`0.1.16`).
+
+Each automated bump also pushes a matching **annotated git tag with a `v` prefix** (`v0.1.16`). The prefix lives only on the tag — never compare a tag string to a JSON version field without normalizing it. Bump type comes from the triggering commit message: `[major]` / `[minor]`, otherwise patch.
+
 ## Re-smoke after status flip
 
 When a skill transitions from `draft` → `active`, run `bash scripts/smoke-skills.sh` to include it in the next smoke run. The script only iterates `status: active` skills (drafts are skipped by design — documented in the script header).

@@ -26,6 +26,7 @@ Figure out what commits to include:
 - If user specified a version → find the tag range (e.g., `git log v1.2.0..v1.3.0`)
 - If user specified dates → use date range (`git log --after="2025-01-01" --before="2025-02-01"`)
 - If nothing specified → changes since last tag (`git log $(git describe --tags --abbrev=0)..HEAD`)
+  - If `git describe` fails because no tags exist yet (`fatal: No names found`), fall back to the full history (`git log HEAD`) or ask the user for a starting ref — don't abort.
 
 ### Step 2: Gather commit data
 
