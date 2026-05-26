@@ -40,7 +40,7 @@ expected_integrity() {
     codegraph)
       # Thin launcher package only. The code that actually executes lives in a
       # per-platform optional-dependency, verified separately by cg_platform_integrity.
-      echo "sha512-UJe7wMKnK0IPyN+mRUUUnnfF55rXiwQL8hzpwb0djLrdvy6L3rdK4WXX/sOek+Eih3ANt6YGhv1Ay3vxbRpqRg=="
+      echo "sha512-E5HMrKKJ+578KQ4h1L7HDRb3tK7JJ8KHlSPDamY/35PvBuzQMvhfI8xGKPoPF8fT9gLFW+0sUzu3T2IXLWmh2A=="
       ;;
     *)
       echo ""
@@ -113,22 +113,22 @@ if [ -n "$CG_SPEC" ]; then
   cg_platform_integrity() {
     case "$1" in
       @colbymchenry/codegraph-darwin-arm64)
-        echo "sha512-ggF9MicmVzpqaYvwnguUX1VzQ896j83rPKFfHhwL+QvRmTXWZbhoHtcJ7mYDNPRRIdkXCeTReyYLlfH0k358CQ=="
+        echo "sha512-hGWbFPXxU22tAxubX6x/FEieCJXdRx+gaZ/pEH+IlPeu+zQSib60RwefDrLrVLQpcBa0Kib2noNNbpWjfdInoQ=="
         ;;
       @colbymchenry/codegraph-darwin-x64)
-        echo "sha512-rzdbD/8Cokxsxrkqec6QVFlVNcsF104asWW3ggY6xi+1YvEVXKc0V6qDwV6pNaRgqmkUD1zUTJKo4kzVkD4iGw=="
+        echo "sha512-Ol7OfSM7HaRtJualYeDBa/B49ktJMbeTt5Qm8HAK2lVsKdzwLoDax+pShBUfjrKiIQkUPeQefWqimBaCy6tauw=="
         ;;
       @colbymchenry/codegraph-linux-arm64)
-        echo "sha512-FXGkiXKlRoDglMbUVLnsJkPYCg3mnkVt7l7Pib0Csx3th/qW0FqTXwDcQdt1DfnbdNizCmYD3tfHUvGzjjjVsA=="
+        echo "sha512-c0e6f5XYHnvy7JpJGe4jbNku4MU8JDSB+BRF1IYfn4RxiKmSc2qYOM/rI+xJuZShaFFXE6zw1Qp5b4fo0PEtbw=="
         ;;
       @colbymchenry/codegraph-linux-x64)
-        echo "sha512-PDJW9YStRIJYnTsI7ZqmYSbEulPq7HYFi6fAEIG499Gk3YQt/P/YQrZlJatyoBvWIlVgxAde50KbpUKWX1c34w=="
+        echo "sha512-zSQqQqhpYjhXIgUivr2Pe4Dj90ioYUCs6jZkKNwATX2KHDfJkDEKm6FqfFvGh+XWqprXfNmFhx2Hbz5kCh7syQ=="
         ;;
       @colbymchenry/codegraph-win32-arm64)
-        echo "sha512-89y+AowpS6NCZ3mUl58W3w6q/e3F5DNPkxbA4rdnB4zIYmC1C4GnATCwe5UIG36ca3JHBBZTjkKhu59HaFfDyg=="
+        echo "sha512-+8K691Oxi54uCQp7/PrVay4gJQcWUHrazMYaOhySisvJAxOjq8TTpFXLBpSaDchXdD+fCGdvzOj1nhdSEt7+Cw=="
         ;;
       @colbymchenry/codegraph-win32-x64)
-        echo "sha512-lmXmKKf9GXp7e+xEj6UtePL9xHlN9lAz9z4LDGguGj9kWm/+Z32ObYPSpiBz2/05fyG5URyLnf+7ss6umMQH6Q=="
+        echo "sha512-/BoGmNzm8zAjmt9o4ENBQxsAhsrSZ1RG3LYxaB37U6ewCgcaRJ2D8Di3zOO2oRSTWYtmkH4AFSZ/3yKN8Vg3pA=="
         ;;
       *)
         echo ""
