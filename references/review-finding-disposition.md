@@ -22,6 +22,17 @@ finding:
    treat it as a false positive** and skip it (step 3). A finding is _valid_ only when you can
    see the problem in the real code.
 
+   A finding is **also** a false positive when it proposes a _lateral rewrite_ — swapping
+   working code, wording, or structure for an equally-valid alternative — or proposes
+   _reversing a choice shown deliberate by an affirmative signal_ (a comment, docstring, test,
+   or commit states the intent — not merely that it matches the surrounding code) without
+   demonstrating a concrete defect. These are exactly the findings that make review oscillate:
+   one session swaps A→B, the next swaps B→A, and nothing improves. Skip them (step 3). A
+   finding earns a fix only when you can point to what is actually broken, risky, or failing —
+   never to a preference. A genuine defect, though, is never a "deliberate choice": a hardcoded
+   secret, a disabled security control, injection, or missing authz stays a finding even with
+   an "intentional" comment.
+
 2. **Fix every valid finding — all tiers.** Apply the remediation directly: edit the source
    (for `/review-plan`, revise the plan document). Fix Blockers, Concerns, and Advisories
    alike — and the equivalent Critical/High/Medium/Low/Info tiers. **Severity sets order, not
@@ -37,7 +48,9 @@ finding:
 
 5. **Report the disposition.** After fixing, print a report: for each **fixed** finding, its
    tier, `file:line`, and a one-line description of the change you made; for each **skipped**
-   finding, the one-line reason. These commands do **not** run the test suite or build — close
+   finding, the one-line reason — name the category (_false positive_, _lateral rewrite_, or
+   _deliberate choice_) so the user can tell a deliberate skip from a missed defect. These
+   commands do **not** run the test suite or build — close
    the report by reminding the user to inspect the changes (`git diff`) and run their tests to
    confirm nothing regressed, and that they can re-run the command for a fresh pass.
 
@@ -66,3 +79,7 @@ skip the review because edits are restricted.
   finding is _true_, not whether its tier is _right_.
 - **Not an automatic review loop.** Fix once and report. The user re-runs the command if they
   want another pass; you do not re-dispatch reviewers on your own.
+- **Not a re-litigation of settled choices.** When the code already reflects a deliberate,
+  equally-valid decision, a different-but-equivalent approach is not a defect — reversing it is
+  how review becomes churn instead of value. Validate against what is broken, not against how
+  you would have written it.

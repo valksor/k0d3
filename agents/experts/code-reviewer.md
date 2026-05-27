@@ -39,6 +39,10 @@ Rate each issue from 0-100:
 
 **Only report issues with confidence ≥ 80**
 
+## Not a Finding
+
+A _lateral rewrite_ — swapping working code, wording, or structure for an equally-valid alternative you'd prefer — is never a finding, at any confidence. Treat a choice as deliberate only on an affirmative signal (a comment, docstring, test, or commit states the intent) — not because it merely matches the surrounding code, since a bug repeated across a file is still a bug. With such a signal, do not flag reversing it unless you can show a concrete defect; a real defect — including a security flaw carrying an "intentional" comment — is always a finding. "I would do it differently" is not evidence.
+
 ## Output Format
 
 Start by listing what you're reviewing. For each high-confidence issue provide:

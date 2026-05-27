@@ -3,7 +3,7 @@ name: code-review
 description: Use when reviewing code or requesting a review — what a reviewer should catch (silent failures, weak types, comment rot, missing tests) and which reviewer to dispatch.
 metadata:
   added: 2026-05-18
-  last_reviewed: 2026-05-18
+  last_reviewed: 2026-05-27
   type: core
   status: active
   invokes_shell: false
@@ -25,6 +25,8 @@ metadata:
 | **Style**       | formatter would catch it                                                                                  | Don't bring up — fix the formatter         |
 
 If 80% of your comments are Style, you're reviewing wrong.
+
+A finding that only swaps one acceptable choice for another is noise — review lands value by fixing what's broken, not by relitigating taste. Reversing a deliberate, equally-valid choice is how review oscillates across sessions (one pass swaps A→B, the next swaps B→A) and never converges.
 
 ## Silent failures — the bugs that hide
 
@@ -144,6 +146,8 @@ Mutation testing (mutmut/Stryker/PIT/go-mutesting) on critical paths: flip `+` t
 - "TODO: fix later" / "address in follow-up" accepted as resolution
 - Asking for "more coverage" without naming a specific behaviour
 - Bike-shedding naming when the type is wrong
+- Proposing a lateral rewrite of working code because you'd have written it differently
+- Reversing a deliberate, equally-valid choice without showing it's actually wrong
 - Approving a PR with comments unresolved
 
 ## Requesting a review — dispatching a subagent
