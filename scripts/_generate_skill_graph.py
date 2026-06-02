@@ -66,7 +66,25 @@ disc = disc_dir / "SKILL.md"
 ts = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 today = dt.date.today().isoformat()
 kw: dict[str, set[str]] = {}
-STOPWORDS = {"the", "and", "for", "use", "with", "via", "from"}
+# Generic English words that are poor routing keys — they get mined from skill
+# descriptions ("keep all", "the user wants", "drop filler", "less tokens") and only
+# add noise to the table. Domain words (terse, concise, brief, filler, …) are kept.
+STOPWORDS = {
+    "the",
+    "and",
+    "for",
+    "use",
+    "with",
+    "via",
+    "from",
+    "all",
+    "less",
+    "keep",
+    "drop",
+    "want",
+    "wants",
+    "user",
+}
 for slug, fm, _ in skills:
     if slug in {"skill-discovery", "using-k0d3"}:
         continue
@@ -87,9 +105,13 @@ for slug, fm, _ in skills:
         if w in STOPWORDS or len(w) < 3:
             continue
         kw.setdefault(w, set()).add(slug)
-        # Add singular form for trailing-`s` plurals so "apis" → "api" too
+        # Add singular form for trailing-`s` plurals so "apis" → "api" too.
+        # Honour STOPWORDS here as well, else a plural ("keeps", "users") would
+        # smuggle a stopword singular ("keep", "user") past the filter above.
         if len(w) > 3 and w.endswith("s") and not w.endswith("ss"):
-            kw.setdefault(w[:-1], set()).add(slug)
+            sing = w[:-1]
+            if sing not in STOPWORDS:
+                kw.setdefault(sing, set()).add(slug)
     # Explicit keywords from frontmatter (manual routing entries — primary use case
     # is restoring routing that pack deletions removed without re-bundling).
     md = fm.get("metadata") or {}

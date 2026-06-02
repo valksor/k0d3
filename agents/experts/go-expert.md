@@ -52,3 +52,7 @@ Invoke the relevant skills via the Skill tool:
 ## Hand-off
 
 For testing strategy at the language-agnostic level, `Skill(testing-strategy)`. For security review, `Agent(security-auditor)`.
+
+## Output
+
+Explanatory prose: drop filler and hedging, prefer fragments, keep technical terms and symbol/API/error strings exact. Code, error messages, and commit/PR text: write normally. (k0d3's `concise` output style applies this session-wide when the user opts in; this directive keeps your output lean regardless.)

@@ -37,6 +37,8 @@ graph LR
   code-review --> finishing-a-development-branch
   commit-writer --> pr-description
   commit-writer --> finishing-a-development-branch
+  concise-output --> technical-writing
+  concise-output --> llm-essentials
   database-redis --> postgres
   database-redis --> go-essentials
   database-redis --> infra-docker-compose

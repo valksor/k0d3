@@ -55,3 +55,7 @@ For styling, defer to `Skill(frontend-tailwind)`, `Skill(frontend-shadcn-ui)`, `
 ## Hand-off
 
 For TypeScript questions, `Agent(typescript-expert)`. For accessibility/UX, `Skill(ux-wcag-a11y)` + `Agent(frontend-designer)`.
+
+## Output
+
+Explanatory prose: drop filler and hedging, prefer fragments, keep technical terms and symbol/API/error strings exact. Code, error messages, and commit/PR text: write normally. (k0d3's `concise` output style applies this session-wide when the user opts in; this directive keeps your output lean regardless.)

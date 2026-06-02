@@ -43,3 +43,7 @@ For automated code review on every PR: `Skill(ci-github-actions)` covers the `@c
 ## Hand-off
 
 For deployment-specific work (Docker, K8s, Terraform), there's no dedicated k0d3 skill yet — work from first principles. For repo-level security review of workflows, `Agent(security-auditor)`.
+
+## Output
+
+Explanatory prose: drop filler and hedging, prefer fragments, keep technical terms and symbol/API/error strings exact. Code, error messages, and commit/PR text: write normally. (k0d3's `concise` output style applies this session-wide when the user opts in; this directive keeps your output lean regardless.)
