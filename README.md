@@ -90,9 +90,9 @@ bash scripts/test-hooks.sh        # CI for guard-bash.sh (catastrophic-rm, secre
 bash scripts/smoke-skills.sh      # iterate every status:active skill, write pass/fail log
 bash scripts/sharpness-check.sh   # advisory: iron-rule, anti-pattern section, body length, opinion signal
 bash scripts/test-memory-gitignore.sh  # CI for ensure-memory-gitignore.sh (parent-dir + gitignore enforcement)
-bash scripts/check-mcp-pin.sh                  # supply-chain: pinned tarball integrity for every bundled stdio server (needs network)
 bash scripts/smoke-mcp-memory.sh               # launches the memory server, asserts store self-init (needs Node+network; skips otherwise)
 bash scripts/smoke-mcp-sequentialthinking.sh   # launches the sequential-thinking server, asserts the tool returns a result (needs Node+network; skips otherwise)
+bash scripts/smoke-mcp-codegraph.sh            # launches the codegraph server, asserts it advertises its tools (needs Node+network; skips otherwise)
 ```
 
 All of these wrappers either exit 0 (success) or non-zero (failure with stderr explaining). The advisory `sharpness-check.sh` always exits 0. The wrappers themselves are thin shells around Python helpers (`scripts/_*.py`) — `validate-skills.sh` and `new-skill.sh` use `set -euo pipefail`; the test wrappers use `set -uo pipefail` because they tally per-fixture PASS/FAIL counters rather than failing on the first error.

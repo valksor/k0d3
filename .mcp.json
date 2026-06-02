@@ -10,7 +10,7 @@
     "memory": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory@2026.1.26"],
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
       "env": {
         "MEMORY_FILE_PATH": "${CLAUDE_PROJECT_DIR}/.claude/memory.jsonl"
       }
@@ -18,12 +18,12 @@
     "sequential-thinking": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"]
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
     },
     "codegraph": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@colbymchenry/codegraph@0.9.6", "serve", "--mcp"],
+      "args": ["-y", "@colbymchenry/codegraph", "serve", "--mcp"],
       "alwaysLoad": true
     }
   }

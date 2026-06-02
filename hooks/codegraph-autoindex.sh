@@ -9,8 +9,7 @@
 #
 # Strictly fail-soft: does nothing unless this is a git repo that has no index yet
 # and `npx`/`jq` are present. The codegraph package spec is read from the plugin's
-# own .mcp.json (single source of truth — the exact pin check-mcp-pin.sh verifies),
-# so the version can never drift from what's bundled.
+# own .mcp.json (single source of truth), so it can never drift from what's bundled.
 
 set -uo pipefail
 
@@ -23,13 +22,17 @@ DIR="$CLAUDE_PROJECT_DIR"
 # Already indexed → the serve watcher keeps it fresh; nothing to do.
 [ -f "$DIR/.codegraph/codegraph.db" ] && exit 0
 
-# We run codegraph exactly as .mcp.json does (via npx); jq reads the pinned spec.
+# We run codegraph exactly as .mcp.json does (via npx); jq reads the package spec.
 command -v npx > /dev/null 2>&1 || exit 0
 command -v jq > /dev/null 2>&1 || exit 0
 
 MCP_JSON="${CLAUDE_PLUGIN_ROOT:-}/.mcp.json"
 [ -f "$MCP_JSON" ] || exit 0
-SPEC="$(jq -r '.mcpServers.codegraph.args[]? | select(type == "string" and test("^(@[A-Za-z0-9._-]+/)?[A-Za-z0-9._-]+@[0-9]"))' "$MCP_JSON" 2> /dev/null | head -1)"
+# The @scope/name arg (with or without a trailing @version), skipping codegraph's
+# `serve --mcp` args. All bundled servers are scoped, so the @scope/ prefix is unambiguous.
+# Keep this selector identical across its four consumers — smoke-mcp-{memory,sequentialthinking,codegraph}.sh
+# and hooks/codegraph-autoindex.sh; no automated parity test guards them any more.
+SPEC="$(jq -r '.mcpServers.codegraph.args[]? | select(type == "string" and test("^@[A-Za-z0-9._-]+/[A-Za-z0-9._-]+"))' "$MCP_JSON" 2> /dev/null | head -1)"
 [ -n "$SPEC" ] || exit 0
 
 LOG_DIR="$DIR/.claude/logs"

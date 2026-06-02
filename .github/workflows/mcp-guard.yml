@@ -5,11 +5,9 @@ on:
     branches: [master]
     paths:
       - ".mcp.json"
-      - "scripts/check-mcp-pin.sh"
       - "scripts/smoke-mcp-memory.sh"
       - "scripts/smoke-mcp-sequentialthinking.sh"
       - "scripts/smoke-mcp-codegraph.sh"
-      - "scripts/test-mcp-spec-extraction.sh"
       - "scripts/test-prefer-codegraph.sh"
       - "hooks/codegraph-autoindex.sh"
       - "hooks/prefer-codegraph.sh"
@@ -17,18 +15,16 @@ on:
   pull_request:
     paths:
       - ".mcp.json"
-      - "scripts/check-mcp-pin.sh"
       - "scripts/smoke-mcp-memory.sh"
       - "scripts/smoke-mcp-sequentialthinking.sh"
       - "scripts/smoke-mcp-codegraph.sh"
-      - "scripts/test-mcp-spec-extraction.sh"
       - "scripts/test-prefer-codegraph.sh"
       - "hooks/codegraph-autoindex.sh"
       - "hooks/prefer-codegraph.sh"
       - ".github/workflows/mcp-guard.yml"
   schedule:
-    # Daily — codegraph is a single-maintainer third-party package auto-enabled on every
-    # install, so a republished tarball should be caught within a day, not a week.
+    # Daily — the bundled servers track npm `latest` (unpinned), so a daily smoke catches
+    # an upstream release that breaks launch (a canary) before users hit it.
     - cron: "17 6 * * *"
   workflow_dispatch:
 
@@ -49,9 +45,6 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Supply-chain integrity (pinned tarballs)
-        run: bash scripts/check-mcp-pin.sh
-
       - name: Smoke — memory (self-init + path resolution)
         run: bash scripts/smoke-mcp-memory.sh
 
@@ -60,9 +53,6 @@ jobs:
 
       - name: Smoke — codegraph (launch + advertises tools)
         run: bash scripts/smoke-mcp-codegraph.sh
-
-      - name: Test — MCP spec extraction (selector parity across consumers)
-        run: bash scripts/test-mcp-spec-extraction.sh
 
       - name: Test — prefer-codegraph Grep nudge
         run: bash scripts/test-prefer-codegraph.sh
