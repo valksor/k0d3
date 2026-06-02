@@ -136,7 +136,8 @@ if echo "$COMMAND" | grep -qE '\b(cat|head|tail|less|more|bat|grep|awk|sed|xxd|o
     token="${token%[\"\'\`]}"
     case "$token" in
       *.env.example | *.env.sample | *.env.template | *.env.dist)
-        continue ;; # secret-free templates — safe to read/inspect
+        continue
+        ;; # secret-free templates — safe to read/inspect
       *.env | *.env.*)
         if echo "$COMMAND" | grep -qE '\bgrep[[:space:]]+(-[a-zA-Z]*c[a-zA-Z]*|--count)([[:space:]]|=)'; then
           continue
@@ -158,7 +159,8 @@ if echo "$COMMAND" | grep -qE '\bprintenv[[:space:]]+[A-Za-z_]'; then
       TERM | TERM_PROGRAM | COLORTERM | HOSTNAME | TMPDIR | TZ | EDITOR | VISUAL | \
       PAGER | DISPLAY | COLUMNS | LINES | GOPATH | GOROOT | GOBIN | VIRTUAL_ENV | \
       CONDA_DEFAULT_ENV | LC_*)
-      : ;; # benign environment var — reading it exposes nothing sensitive
+      :
+      ;; # benign environment var — reading it exposes nothing sensitive
     *)
       log_incident "HIGH" "BLOCKED: printenv with arg: $COMMAND"
       deny "HARD BLOCK: printenv <var> prints the credential value to output." "Reference secrets by variable name only. Never print their values. Benign vars (PATH, HOME, …) are allowed."
@@ -190,7 +192,8 @@ if echo "$COMMAND" | grep -qE '\bgit[[:space:]]+add\b'; then
     token="${token%[\"\'\`]}"
     case "$token" in
       *.env.example | *.env.sample | *.env.template | *.env.dist)
-        continue ;; # templates carry no secrets — fine to commit
+        continue
+        ;; # templates carry no secrets — fine to commit
       *.env | *.env.*)
         log_incident "CRITICAL" "BLOCKED: git add of credential file: $COMMAND"
         deny "HARD BLOCK: Staging credential files (.env) for git commit would expose secrets publicly." "These files must stay in .gitignore. Never commit credentials to git. Templates like .env.example are allowed."
