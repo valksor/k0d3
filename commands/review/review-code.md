@@ -22,6 +22,8 @@ Argument `[scope]` (optional):
 - `all` → `git diff HEAD` (staged + unstaged)
 - one or more file paths → read those files directly
 
+**Whole-diff rule — review ALL of it, carve out nothing.** The selected scope is reviewed in its **entirety**: every changed file and every hunk goes to the reviewers **verbatim** — the same bytes `git` produced. Do **not** exclude, set aside, summarize, defer, or "flag separately" any hunk because you judge it incidental, tooling-generated, "not part of my feature," a dependency/lockfile bump, a separate concern, or code you didn't write — **none of those is a reason to drop a hunk.** `/review-code` has **no feature scope**; its scope is _all_ uncommitted changes in the selected set, so there is no "feature diff" to narrow to. A surprising change (a dependency bump that reverts an intentional pin, a stray edit) is precisely a finding to **surface**, not a hunk to hide — carving it out is the exact failure this rule exists to prevent. You may _call out_ a surprising change in your own summary, but you may **never remove it from the reviewers' input.**
+
 Process:
 
 1. Collect the diff (or file contents) per the scope rules above.
@@ -29,7 +31,7 @@ Process:
    - staged changes exist but unstaged doesn't → tell the user: "No unstaged changes. Run `/k0d3:review-code all` to include staged changes." and STOP.
    - nothing uncommitted at all → STOP and tell the user: "No uncommitted changes. Use `/k0d3:review-impl` to review against a branch base." Do not auto-pick a base ref; do not guess.
 3. Resolve stack skills. From the changed file paths (`git diff --name-only` over the selected scope, or the explicit file paths), determine the languages under review and each reviewer's skill slugs per `references/review-skill-routing.md` (which invokes `Skill(skill-discovery)` to resolve current slugs). Every reviewer gets its own short list, or `none`.
-4. Dispatch the four reviewers in parallel (one message, four Agent tool calls), each with the diff or file contents **and its `Stack skills:` line** from step 3.
+4. Dispatch the four reviewers in parallel (one message, four Agent tool calls), each with the **complete** diff (or file contents) for the scope — never a curated or feature-only subset, per the whole-diff rule above — **and its `Stack skills:` line** from step 3.
 5. Consolidate findings into one summary (Blockers / Concerns / Advisories / Verdict).
    - Each reviewer self-applies its own calibration before returning output; the orchestrator does NOT re-classify findings.
    - The orchestrator's job is to: (a) dedupe findings reported by multiple reviewers, (b) preserve the highest severity assigned to any duplicate, (c) attribute each consolidated finding to the reviewers that flagged it, (d) compute the overall verdict (NEEDS WORK if any reviewer has confirmed blockers; CONCERNS REMAIN if only concerns; PASS if all four are clean).
