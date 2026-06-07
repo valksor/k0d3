@@ -28,3 +28,5 @@ __pycache__/
 
 # Loader-spike probes (kept un-versioned)
 skills/_probe-*/
+
+.codegraph/daemon.pid
