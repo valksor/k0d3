@@ -142,3 +142,5 @@ will fail mid-flight but no data corruption.
 ```
 
 Reviewers (and oncall) will thank you.
+
+For AI-tell phrases to keep out of the description (throat-clearing, jargon, manufactured drama): `references/prose-anti-slop.md`.

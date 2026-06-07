@@ -1,6 +1,6 @@
 ---
 name: concise-output
-description: Use when the user wants terser, token-lean replies ("be brief", "less tokens", "keep it short", /concise) — apply terse prose for the current reply, keep all technical substance exact, and point them at the durable `k0d3:concise` output style for the whole session.
+description: Use when the user wants terser, token-lean replies ("be brief", "less tokens", "keep it short", /concise) — apply terse prose now, keep technical substance exact, point them at the durable `k0d3:concise` output style.
 metadata:
   added: 2026-06-01
   last_reviewed: 2026-06-02
@@ -9,6 +9,7 @@ metadata:
   invokes_shell: false
   shell_reviewed: "valksor 2026-06-01"
   related: [technical-writing, llm-essentials]
+  keywords: [current, reply, session, whole]
   owns: concise-output
 ---
 

@@ -146,3 +146,5 @@ For a feature branch with many commits:
 ## Hand-off
 
 Often the final commit on a branch becomes the PR description's "Summary" section. Use `Skill(pr-description)` to expand it.
+
+For AI-tell phrases to keep out of the body (throat-clearing, jargon, manufactured drama): `references/prose-anti-slop.md`.

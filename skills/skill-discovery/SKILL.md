@@ -1,7 +1,7 @@
 ---
 name: skill-discovery
 description: Routing table — given a topic keyword, returns recommended skill slugs to load. Auto-generated; do not edit body.
-last-generated: "2026-06-02T19:54:42Z"
+last-generated: "2026-06-07T23:01:18Z"
 metadata:
   type: meta
   status: active
@@ -803,6 +803,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | not | agent-design, commit-writer, dispatching-parallel-agents, project-memory |
 | note | python-strawberry-graphql |
 | notify | postgres, python-job-queues |
+| now | concise-output |
 | null | sql |
 | object | infra-cloudflare-workers, php-doctrine, python-gcp-clients, storage-object-s3 |
 | objects | infra-cloudflare-workers, php-doctrine |

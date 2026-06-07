@@ -64,3 +64,4 @@ Every endpoint: a real request and a real response, the error shapes and status 
 - **Aspirational docs** — describing how it _should_ work, not how it does. Document reality.
 - **"We should document this someday" placeholders** — an empty section with a marker promising future content is noise; either write it or omit the section.
 - **Wall-of-prose where a table or example fits** — structure is part of the writing, not decoration.
+- **AI-tell prose** — throat-clearing openers, business jargon, manufactured drama ("Not X. Y."). Phrase + structure checklist: `references/prose-anti-slop.md`.

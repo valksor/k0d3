@@ -122,6 +122,17 @@ for slug, fm, _ in skills:
             if len(w) >= 3 and w not in STOPWORDS:  # match the description-mining floor
                 kw.setdefault(w, set()).add(slug)
 
+# Preserve the human shell-review attestation across regenerations. shell_reviewed
+# records that a person read this file's shell usage for safety; re-stamping it with
+# today's date on every routine regen would falsely advance the attestation (this file
+# is invokes_shell:false and its body is generated, so a regen reviews no shell calls).
+# Keep the existing value; only stamp a fresh date on first generation.
+shell_reviewed = f"valksor {today}"
+if disc.exists():
+    prev = (parse_frontmatter(disc).get("metadata") or {}).get("shell_reviewed")
+    if prev:
+        shell_reviewed = str(prev)
+
 with disc.open("w") as f:
     f.write("---\n")
     f.write("name: skill-discovery\n")
@@ -133,7 +144,7 @@ with disc.open("w") as f:
     f.write("  type: meta\n")
     f.write("  status: active\n")
     f.write("  invokes_shell: false\n")
-    f.write(f'  shell_reviewed: "valksor {today}"\n')
+    f.write(f'  shell_reviewed: "{shell_reviewed}"\n')
     f.write("  related: [using-k0d3]\n")
     f.write("---\n\n")
     f.write("# Skill discovery\n\n")
