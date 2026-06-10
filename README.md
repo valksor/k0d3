@@ -36,11 +36,11 @@ When another installed plugin defines the same name, **type the explicit `k0d3:`
 
 ```
 .claude-plugin/plugin.json    — manifest
-.mcp.json                     — bundled MCP servers (context7 + memory + sequential-thinking, auto-enabled)
-skills/                       — ~145 active at one level (slug == directory)
+.mcp.json                     — bundled MCP servers (context7 + memory + sequential-thinking + codegraph, auto-enabled)
+skills/                       — ~140 active at one level (slug == directory)
 agents/                       — workflow/, reviewers/, experts/
 commands/                     — workflow/, plan/, execute/, review/, analyze/
-hooks/                        — 13 shell hooks (10 enabled by default in hooks.json; rest opt-in)
+hooks/                        — 15 shell hooks (12 enabled by default in hooks.json; rest opt-in)
 scripts/                      — validators, smoke runner, graph generator
 tests/                        — fixtures for validator + hook tests
 docs/                         — conventions, architecture, hooks, …
@@ -49,7 +49,7 @@ references/                   — long-form material linked from skills
 
 ## MCP servers
 
-k0d3 bundles three MCP servers, all defined in the top-level `.mcp.json`. Because they ship with the plugin, they **auto-enable when k0d3 is installed** — no per-server approval prompt, unlike a project-level `.mcp.json`.
+k0d3 bundles four MCP servers, all defined in the top-level `.mcp.json`. Because they ship with the plugin, they **auto-enable when k0d3 is installed** — no per-server approval prompt, unlike a project-level `.mcp.json`.
 
 **context7** (Upstash's hosted up-to-date library-docs service) is a remote HTTP server (`https://mcp.context7.com/mcp`), so there is nothing to install locally and no per-project index to build.
 
@@ -66,6 +66,8 @@ export CONTEXT7_API_KEY=<your-key>   # bash/zsh
 The key is never committed — `.mcp.json` references `${CONTEXT7_API_KEY:-}`, which falls back to empty (anonymous) when the variable is unset. To disable the server entirely, run `/mcp` in a session, or remove the context7 block from your installed plugin's `.mcp.json`.
 
 **memory** is a local stdio server — the official, Anthropic-maintained `@modelcontextprotocol/server-memory`, launched via `npx`. It gives Claude a persistent **knowledge graph (JSONL)** — entities, observations, relations — that survives across sessions. Storage is **project-local**: it writes to `${CLAUDE_PROJECT_DIR}/.claude/memory.jsonl`, one store per project. k0d3's `ensure-memory-gitignore` SessionStart hook adds that file to `.claude/.gitignore` automatically, so the plaintext store is never committed by accident. There is **no runtime external service** — no network calls once cached, no embeddings, no API key; the only network use is the one-time `npx` package fetch on first run. If Node is absent or the first run is offline, the server simply doesn't start (memory features disabled) and the rest of k0d3 is unaffected. Type `/mcp` in a session (a Claude Code command that lists and toggles servers) to confirm it's connected or to disable it; you can also remove the memory block from `.mcp.json`. The skill `project-memory` covers when to store versus recall — and the iron rule: never put secrets or personal data in the store.
+
+**codegraph** is a local stdio server — `@colbymchenry/codegraph`, launched via `npx`. It serves a **tree-sitter-parsed knowledge graph** of every symbol, edge, and file in the workspace: sub-millisecond structural queries (where is X defined, what calls Y, what breaks if Z changes) that grep can't answer. It needs a per-repo index under `.codegraph/`, which k0d3 provisions itself: the `codegraph-autoindex` SessionStart hook builds it on first session in a repo, and the `prefer-codegraph` hook nudges Grep calls toward the index once it exists. No API key, no external service; the only network use is the one-time `npx` package fetch. If Node is absent or the index isn't built yet, the tools simply report "not initialized" and the rest of k0d3 is unaffected. Type `/mcp` to confirm it's connected or to disable it; you can also remove the codegraph block from your installed plugin's `.mcp.json`.
 
 **sequential-thinking** is a local stdio server — the official, Anthropic-maintained `@modelcontextprotocol/server-sequential-thinking`, launched via `npx`. It gives Claude a structured **reasoning scratchpad**: a single `sequentialthinking` tool through which it logs revisable, branchable thought steps. It is **stateless** — no store, no API key, **nothing written to disk** (so, unlike memory, there is no file to gitignore) — and the only network use is the one-time `npx` package fetch on first run. If Node is absent or the first run is offline, it simply doesn't start and the rest of k0d3 is unaffected. It overlaps with the native extended thinking available on current Claude models; bundle it for the inspectable branch/revise workflow and parity with models that lack native thinking. Type `/mcp` to confirm it's connected or to disable it; you can also remove the sequential-thinking block from your installed plugin's `.mcp.json`.
 
@@ -95,6 +97,14 @@ bash scripts/smoke-mcp-sequentialthinking.sh   # launches the sequential-thinkin
 bash scripts/smoke-mcp-codegraph.sh            # launches the codegraph server, asserts it advertises its tools (needs Node+network; skips otherwise)
 ```
 
+CI runs the skill checks too: `.github/workflows/skills-guard.yml` executes the lint, smoke, sharpness, and hook-fixture scripts on every push/PR that touches skills, agents, commands, hooks, references, or scripts — so a bad frontmatter or dead `references/` link can't land on master unnoticed.
+
+There is also an opt-in (billed — each prompt is a real headless `claude -p` session) trigger-rate harness, deliberately NOT in CI:
+
+```bash
+bash scripts/trigger-test.sh --skill commit-writer   # fire skills/<slug>/trigger-prompts.txt, measure Skill() activation; bar: 90%, zero false-triggers
+```
+
 All of these wrappers either exit 0 (success) or non-zero (failure with stderr explaining). The advisory `sharpness-check.sh` always exits 0. The wrappers themselves are thin shells around Python helpers (`scripts/_*.py`) — `validate-skills.sh` and `new-skill.sh` use `set -euo pipefail`; the test wrappers use `set -uo pipefail` because they tally per-fixture PASS/FAIL counters rather than failing on the first error.
 
 ## Formatting
@@ -113,6 +123,12 @@ Files get formatted on first touch rather than in a tree-wide sweep, so `make fo
 
 ## Authoring a new skill
 
+Once per clone, install the pre-commit hook — it runs `validate-skills.sh` and regenerates `docs/skill-graph.md` + `skills/skill-discovery/SKILL.md` on every commit, which is what keeps the graph and routing table in lockstep with the catalogue:
+
+```bash
+bash scripts/install-git-hooks.sh
+```
+
 ```bash
 bash scripts/new-skill.sh <kebab-case-slug>
 # Edit skills/<slug>/SKILL.md to fill in description, type, body content
@@ -125,7 +141,7 @@ See `docs/conventions.md` for the full frontmatter schema and lint rules.
 
 ## Contributing
 
-Open an issue at `https://github.com/valksor/k0d3/issues` (once the repo is public). Before submitting a PR, run the five verification scripts above and confirm `0 fail`. Skills that don't follow the voice rules will be revised in review.
+Open an issue at `https://github.com/valksor/k0d3/issues` (once the repo is public). Before submitting a PR, run the verification scripts above and confirm `0 fail` (the `skills-guard` CI workflow runs the same checks on the PR). Skills that don't follow the voice rules will be revised in review.
 
 ## License
 

@@ -1,7 +1,7 @@
 ---
 name: skill-discovery
 description: Routing table — given a topic keyword, returns recommended skill slugs to load. Auto-generated; do not edit body.
-last-generated: "2026-06-07T23:01:18Z"
+last-generated: "2026-06-10T15:14:40Z"
 metadata:
   type: meta
   status: active
@@ -68,7 +68,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | api-docs | technical-writing |
 | apis | bun-essentials, frontend-msw, gdscript, graphql-essentials, python-django, python-fastapi, python-strawberry-graphql, rest-essentials |
 | app | frontend-feature-sliced-design, infra-docker-compose, php-symfony, ts-capacitor, ts-electron, ts-tauri |
-| apply | concise-output, frontend-tailwind |
+| apply | frontend-tailwind |
 | applying | frontend-feature-sliced-design |
 | approle | secrets-vault |
 | approved | brainstorming, planning, subagent-driven-development |
@@ -1157,7 +1157,6 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | shine | frontend-feature-sliced-design |
 | shines | frontend-feature-sliced-design |
 | shipping | deploy-checklist, infra-cloudflare-workers, infra-distroless, observability-loki-alloy |
-| short | concise-output |
 | should | code-review |
 | shrinking | testing-property-based |
 | signal | gdscript, godot, rust-gdext, testing-strategy |
@@ -1262,7 +1261,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | tcp | go-pgx, unix-socket-essentials |
 | tdd | planning, tdd |
 | tea | go-bubbletea-charm |
-| technical | concise-output, technical-writing |
+| technical | technical-writing |
 | terminal | acp-protocol |
 | termination | infra-nginx |
 | terse | concise-output |
@@ -1273,7 +1272,7 @@ When the user mentions a topic, look up here. Each row maps a keyword to one or 
 | testing | go-testing, php-testing, python-django, python-fastapi, python-testing, react, rust-testing, testing-fuzzing-mutation, testing-property-based, testing-strategy, ts-jest |
 | tests | code-review, finishing-a-development-branch, go-testcontainers, go-testing, python-testing, refactoring, rust-testing, testing-fuzzing-mutation, ts-vitest |
 | that | gdscript, testing-property-based, tooling-fzf, tooling-jq |
-| them | concise-output, deploy-checklist |
+| them | deploy-checklist |
 | theme | frontend-daisyui |
 | themes | frontend-daisyui |
 | theming | frontend-ant-design, frontend-shadcn-ui |

@@ -1,0 +1,8 @@
+# trigger corpus for debugging — see scripts/trigger-test.sh
+My test_parse_dates test started failing with TypeError: NoneType object is not subscriptable
+The API returns 500 after the last deploy and the logs show nothing useful
+This function returns the wrong total only when the cart has exactly one item
+CI is green locally but the same test fails on the runner
+The app crashes on startup with a segfault after upgrading the database driver
+! Write a README section explaining how to install the project
+! Add dark mode support to the settings page

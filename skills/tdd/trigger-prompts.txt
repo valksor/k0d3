@@ -1,0 +1,8 @@
+# trigger corpus for tdd — see scripts/trigger-test.sh
+Add a slugify helper to utils.py that converts post titles into URL slugs
+Implement a rate-limiter middleware for our Go HTTP server
+I need a new endpoint that returns the user's unread notification count
+Add input validation to the signup form handler
+Build a CSV export feature for the orders table
+! What is the difference between unit and integration tests?
+! Rename the variable foo to orderCount across the project

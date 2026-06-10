@@ -104,6 +104,18 @@ for d in skill_dirs:
         )
     elif len(desc) > DESC_WARN:
         warn(f"{sk}: description {len(desc)} chars > {DESC_WARN} — tighten toward a one-line trigger")
+    # CSO (Claude Search Optimization): the description is what the model matches a task
+    # against, so it must state WHEN to load the skill (trigger conditions / symptoms),
+    # not summarize the workflow — a workflow summary gets followed instead of loaded.
+    if desc and slug != "skill-discovery":
+        has_trigger = re.search(
+            r"\buse\s+(it\s+|this\s+)?(when|for|to|at|after|before|first)\b", desc, re.I
+        ) or re.search(r"\b(when|trigger)\b", desc, re.I)
+        if not has_trigger:
+            warn(
+                f"{sk}: description has no trigger framing ('Use when …') — state when to "
+                f"load the skill, not what it contains (docs/conventions.md § Skill frontmatter)"
+            )
     listing_chars += len(name or "") + len(desc or "")
     if not typ:
         err(f"{sk}: missing metadata.type")
@@ -228,6 +240,27 @@ if AGENTS_DIR.exists():
                 called.add(m.group(1))
         for s in called - fm_skills:
             warn(f"{ag}: body invokes Skill({s}) but '{s}' not in frontmatter skills:")
+
+# --- Garden: references/ link integrity + orphan detection ---
+# Skills, commands, and agents all point at long-form material with repo-root-relative
+# `references/<topic>.md` paths. A broken link fails silently at runtime (the reader
+# just never loads), so dead links are a hard fail; unreferenced files only rot, so
+# orphans are a warning.
+REFS_DIR = REPO / "references"
+ref_mention_re = re.compile(r"references/([A-Za-z0-9._-]+\.md)")
+existing_refs = {p.name for p in REFS_DIR.glob("*.md")} if REFS_DIR.exists() else set()
+mentioned_refs: set[str] = set()
+scan_files = [d / "SKILL.md" for d in skill_dirs if (d / "SKILL.md").exists()]
+for tree in ("commands", "agents", "output-styles"):
+    scan_files.extend(sorted((REPO / tree).rglob("*.md")))
+for f in scan_files:
+    text = f.read_text(encoding="utf-8")
+    for m in ref_mention_re.finditer(text):
+        mentioned_refs.add(m.group(1))
+        if m.group(1) not in existing_refs:
+            err(f"{f}: links references/{m.group(1)} which does not exist")
+for orphan in sorted(existing_refs - mentioned_refs):
+    warn(f"references/{orphan}: not linked from any skill, command, agent, or output style")
 
 print(f"validate-skills.sh: {FAIL} fail, {WARN} warn", file=sys.stderr)
 sys.exit(1 if FAIL > 0 else 0)

@@ -1,0 +1,64 @@
+name: Skills guard
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "skills/**"
+      - "agents/**"
+      - "commands/**"
+      - "output-styles/**"
+      - "references/**"
+      - "scripts/**"
+      - "hooks/**"
+      - "tests/**"
+      - ".github/workflows/skills-guard.yml"
+  pull_request:
+    paths:
+      - "skills/**"
+      - "agents/**"
+      - "commands/**"
+      - "output-styles/**"
+      - "references/**"
+      - "scripts/**"
+      - "hooks/**"
+      - "tests/**"
+      - ".github/workflows/skills-guard.yml"
+  workflow_dispatch:
+
+# Least privilege: this job only reads the repo — no writes.
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+
+      # The validators are Python under thin .sh wrappers; PyYAML is their one dependency.
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Lint — frontmatter, slugs, body caps, related/reference integrity
+        run: bash scripts/validate-skills.sh
+
+      - name: Smoke — every status:active skill parses and loads
+        run: bash scripts/smoke-skills.sh
+
+      - name: Advisory — sharpness (iron rule, anti-patterns, opinion signal)
+        run: bash scripts/sharpness-check.sh
+
+      - name: Test — validate-skill-frontmatter hook fixtures
+        run: bash scripts/test-validator.sh
+
+      - name: Test — guard-bash hook fixtures
+        run: bash scripts/test-hooks.sh
+
+      - name: Test — ensure-memory-gitignore hook fixtures
+        run: bash scripts/test-memory-gitignore.sh

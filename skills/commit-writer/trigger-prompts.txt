@@ -1,0 +1,8 @@
+# trigger corpus for commit-writer — see scripts/trigger-test.sh
+Write a commit message for my staged changes
+I need a commit message for this diff
+Draft a series of commit messages to split this work into reviewable commits
+What should the commit message say for this change?
+Write a good commit subject and body for the fix I just made
+! Explain what git rebase --onto does
+! Squash the last three commits into one
