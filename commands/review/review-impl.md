@@ -38,7 +38,7 @@ Process:
 5. Dispatch the four reviewers in parallel (one message, four Agent tool calls), each with the diff content, (if available) the requirements text, **and its `Stack skills:` line** from step 4.
 6. Consolidate findings into one summary (Blockers / Concerns / Advisories / Verdict).
    - Each reviewer self-applies its own calibration before returning output; the orchestrator does NOT re-classify findings.
-   - The orchestrator's job is to: (a) dedupe findings reported by multiple reviewers, (b) preserve the highest severity assigned to any duplicate, (c) attribute each consolidated finding to the reviewers that flagged it, (d) compute the overall verdict (NEEDS WORK if any reviewer has confirmed blockers; CONCERNS REMAIN if only concerns; PASS if all four are clean).
+   - The orchestrator's job is to: (a) dedupe findings reported by multiple reviewers, (b) preserve the highest severity assigned to any duplicate, (c) attribute each consolidated finding to the reviewers that flagged it, (d) compute the overall verdict (NEEDS WORK if any reviewer has confirmed blockers; CONCERNS REMAIN if only concerns; PASS if all four are clean), (e) preserve each finding's `(spec)`/`(code)` tag verbatim — never re-classify it (when a `[requirements-path]` was provided, `(spec)` findings flag the implementation diverging from it; if duplicate findings carry different tags, keep `(spec)`).
 
    Each reviewer emits all four sections (Blockers / Concerns / Advisories / Verdict) — empty sections are written as `- None` so the orchestrator's parse stays predictable.
 

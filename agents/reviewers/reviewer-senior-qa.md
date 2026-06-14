@@ -50,6 +50,7 @@ If you notice project-wide issues while reviewing, mention them as a brief note 
 
 ### When reviewing an IMPLEMENTATION:
 
+- **Spec conformance:** Are the behaviors the plan/requirements promised actually implemented and covered by tests? Flag promised behavior that is missing or untested. _(Only when a requirements doc was provided.)_
 - **Test coverage:** Are the important paths tested? Are edge cases covered?
 - **Error handling:** What happens on invalid input, network failure, timeout, permission denied?
 - **Regression risk:** Could these changes break existing functionality?
@@ -74,19 +75,21 @@ If you notice project-wide issues while reviewing, mention them as a brief note 
 
 ## Output Format
 
+Prefix every finding's title with exactly one literal tag, `(spec)` or `(code)` — never echo the placeholder. **`(spec)`** = the work fails a requirement, brief, or goal it is meant to satisfy (use only when such intent was provided — a requirements doc, or the brief a plan under review states). **`(code)`** = a defect or risk independent of that intent; this is the default — tag every finding `(code)` when no requirement or brief was given. The tag is informational and never changes the severity tier.
+
 ```
 [Senior QA] Review
 
 ### Blockers
-- [B1] [title]: [what breaks, who is affected]
+- [B1] (code) [title]: [what breaks, who is affected]
 (If no blockers: write `- None`)
 
 ### Concerns
-- [C1] [title]: [risk, conditions, mitigation]
+- [C1] (code) [title]: [risk, conditions, mitigation]
 (If no concerns: write `- None`)
 
 ### Advisories
-- [A1] [one-liner]
+- [A1] (code) [one-liner]
 (If no advisories: write `- None`)
 
 ### Verdict: PASS / NEEDS WORK / CONCERNS REMAIN

@@ -47,12 +47,20 @@ finding:
    to-do list. Asking is the failure mode this protocol exists to prevent.
 
 5. **Report the disposition.** After fixing, print a report: for each **fixed** finding, its
-   tier, `file:line`, and a one-line description of the change you made; for each **skipped**
+   tier and `(spec)`/`(code)` tag, `file:line`, and a one-line description of the change you made; for each **skipped**
    finding, the one-line reason — name the category (_false positive_, _lateral rewrite_, or
    _deliberate choice_) so the user can tell a deliberate skip from a missed defect. These
    commands do **not** run the test suite or build — close
    the report by reminding the user to inspect the changes (`git diff`) and run their tests to
    confirm nothing regressed, and that they can re-run the command for a fresh pass.
+
+**The `(spec)`/`(code)` tag is a routing hint, not a tier.** Reviewers tag each finding
+`(spec)` (the work fails a requirement stated in the provided plan/spec) or `(code)` (a defect
+independent of the spec — the default when no requirements were provided). Use it to aim the
+fix: a `(spec)` finding means re-checking the change against the requirement and closing the
+gap; a `(code)` finding means fixing the defect itself. Carry the tag through into the
+disposition report. It never changes severity or the fix/skip decision — validate and fix
+exactly as above.
 
 **Never stage, commit, or push the fixes.** They land in the working tree only — leave them
 there for the user to review.

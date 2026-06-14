@@ -34,7 +34,7 @@ Process:
 4. Dispatch the four reviewers in parallel (one message, four Agent tool calls), each with the **complete** diff (or file contents) for the scope — never a curated or feature-only subset, per the whole-diff rule above — **and its `Stack skills:` line** from step 3.
 5. Consolidate findings into one summary (Blockers / Concerns / Advisories / Verdict).
    - Each reviewer self-applies its own calibration before returning output; the orchestrator does NOT re-classify findings.
-   - The orchestrator's job is to: (a) dedupe findings reported by multiple reviewers, (b) preserve the highest severity assigned to any duplicate, (c) attribute each consolidated finding to the reviewers that flagged it, (d) compute the overall verdict (NEEDS WORK if any reviewer has confirmed blockers; CONCERNS REMAIN if only concerns; PASS if all four are clean).
+   - The orchestrator's job is to: (a) dedupe findings reported by multiple reviewers, (b) preserve the highest severity assigned to any duplicate, (c) attribute each consolidated finding to the reviewers that flagged it, (d) compute the overall verdict (NEEDS WORK if any reviewer has confirmed blockers; CONCERNS REMAIN if only concerns; PASS if all four are clean), (e) preserve each finding's `(spec)`/`(code)` tag verbatim — `/review-code` runs with no requirements in scope, so every finding is `(code)`.
 
    Each reviewer emits all four sections (Blockers / Concerns / Advisories / Verdict) — empty sections are written as `- None` so the orchestrator's parse stays predictable.
 
