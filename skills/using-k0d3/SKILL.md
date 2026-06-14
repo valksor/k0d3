@@ -45,6 +45,23 @@ Before exploring to learn how to build / test / run / lint / release, **check th
 - Structural questions (what calls what, where X is defined) go to codegraph — sub-millisecond index reads beat grep+read loops.
 - On small, well-scoped tasks, act directly rather than fanning out Explore/Plan agents — they bias toward research by design.
 
+## Right-size the process — execution ceremony proportional to the stakes
+
+Just as research budget scales to the task (above), so does _execution ceremony_ — how much verification, independent review, and durable logging a change earns. This is the rigor that follows design, not whether to design. Match the tier to the blast radius; **when unsure, round up.**
+
+- 🟢 **Trivial** (typo, rename, local one-liner): execute with minimal ceremony — verification beyond "it builds" is over-process.
+- 🟡 **Substantial** (multi-file, reversible, touches no auth/money/data/security/privacy): verify the load-bearing claims and name the biggest weakness before you ship.
+- 🔴 **High-stakes** (auth, money, data, security, privacy; hard to undo; long session): spawn an independent reviewer to read ground truth (`Skill(k0d3:code-review)`, or the calibrated `/k0d3:review-impl` / `/k0d3:review-code` flow) and keep a durable progress file.
+
+Two rules hold at every tier:
+
+- **Internal consistency is not correctness.** A clean diff is not evidence it works — run it and observe.
+- **Persist deferrals in writing.** A gap that lives only in the conversation is lost the moment the session resets — graduate it to a durable file, not just this reply.
+
+This governs _execution_ rigor only — what you do **after** the design is set. It does **not** relax the `Skill(brainstorming)` design gate: every change still gets a design first, even when that's one sentence stated before acting (Trivial) rather than a written spec.
+
+<!-- Right-sizing tiers adapted from tale-mode (https://github.com/alicicek/tale-mode), MIT. -->
+
 ## When something seems missing
 
 If a skill you expect isn't there, check `Skill(skill-discovery)` for the keyword routing table or `ls skills/` for the live catalogue. If still missing, it hasn't been authored yet — `git log skills/` shows when things landed.

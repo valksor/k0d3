@@ -26,6 +26,8 @@ Assume they are skilled but know almost nothing about your toolset or problem do
 
 If the spec covers multiple independent subsystems, suggest breaking into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
 
+Phase the rollout, not the rigor: when a plan is split into phases, each phase must deliver production-grade, complete behavior for its slice — not a half-built stub finished later.
+
 ## File structure
 
 Before defining tasks, map which files will be created or modified and what each is responsible for. This is where decomposition decisions get locked in.
@@ -121,6 +123,7 @@ After writing the complete plan, check against the spec:
 2. **Placeholder scan** — search for "TBD" / "TODO" / vague language; fix
 3. **Type consistency** — same names + signatures used in later tasks as earlier tasks
 4. **DRY/YAGNI** — no duplicated work, no speculative features
+5. **Decision provenance** — each non-obvious design choice in the plan names its source (spec section, user decision, or "author judgment: rationale"). A fresh subagent executes this plan with zero context; an unsourced choice reads as fact and gets built on. Annotate the source inline or cut the choice.
 
 Fix issues inline. If a spec requirement has no task, add the task.
 

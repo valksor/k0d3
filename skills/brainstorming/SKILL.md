@@ -73,6 +73,7 @@ Create a TaskCreate item per step and complete in order:
 2. **Internal consistency** — sections contradict? Architecture matches features?
 3. **Scope check** — focused enough for a single plan, or needs decomposition?
 4. **Ambiguity check** — could any requirement be interpreted two ways? Pick one, make it explicit.
+5. **Provenance check** — every load-bearing decision (one the rest of the design rests on) tags to a source: a user quote, an answer you explicitly requested, or "my judgment — rationale: X." Equivalence claims ("mirrors X exactly", "byte-identical") are testable — back them with evidence or use qualified wording ("approximates").
 
 **User review gate:**
 
