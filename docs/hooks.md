@@ -147,6 +147,58 @@ The prompt references `CLAUDE.md` and `.claude/knowledge-base.md` as project-rel
 
 **Cost caveat:** this spawns a subagent at every turn-end — measurable token + latency overhead, and it fires even on trivial turns. The `agent` hook type is **experimental**. For most workflows, on-demand `/audit` (or `/wrap-up` at end of day) is the better trade; enable this only if you specifically want unattended, every-turn auditing.
 
+## Opt-in: green-gate — typecheck/lint after edits (command hook)
+
+<!-- Green-gate recipe adapted from tale-mode (https://github.com/alicicek/tale-mode), MIT. -->
+
+k0d3's hooks log, back up, and guard — none of them assert "the project still typechecks" after an edit. `Skill(using-k0d3)` states the principle (_internal consistency is not correctness — run it and observe_); a `PostToolUse` gate makes that the harness's job instead of something the model must remember to run.
+
+This is a **recipe, not a bundled hook.** The command is project-specific (a Go repo runs `go build ./...`, a TS repo `tsc --noEmit`, a Python repo `ruff check`), so k0d3 ships no script for it — wire it into your own `.claude/settings.json`. Because it runs a project command rather than a plugin script, it is the one case that does **not** use `${CLAUDE_PLUGIN_ROOT}`.
+
+**Blocking variant** — `PostToolUse` runs _after_ the edit is written, so this doesn't prevent the change; a non-zero exit surfaces the hook's stderr to Claude as a blocking error it must resolve before continuing. Exit code `2` is the value Claude Code treats as blocking (a bare `npm run` failure exits `1`, a non-blocking error), so force it with `|| exit 2`:
+
+```json
+"PostToolUse": [
+  {
+    "matcher": "Edit|Write",
+    "hooks": [
+      { "type": "command", "command": "npm run -s typecheck || exit 2" }
+    ]
+  }
+]
+```
+
+Swap the command for your stack: `tsc --noEmit`, `ruff check`, `go build ./...`. Keep it self-contained — don't reference the edited file's path here; the bare `"command"` string has no `$file` in scope (see file-scoping below for that).
+
+A whole-project gate also fires _between_ the files of a multi-file edit, when the tree is legitimately half-written and red — Claude then chases a failure the next edit would have fixed. For multi-file work, prefer the file-scoping below or the non-blocking nudge.
+
+**Non-blocking nudge** — `asyncRewake` (see the _Hook capabilities reference_ section above) runs the check in the background, lets the edit through, and only wakes Claude (exit 2 → stderr as a system reminder) when it fails:
+
+```json
+"PostToolUse": [
+  {
+    "matcher": "Edit|Write",
+    "hooks": [
+      { "type": "command", "command": "npm run -s typecheck", "asyncRewake": true }
+    ]
+  }
+]
+```
+
+**Scope to the changed file.** A multi-line gate doesn't fit the single-string `"command"` field — save it as a project script and point the command at it (e.g. `"command": "bash .claude/green-gate.sh"`; a project script takes no `${CLAUDE_PLUGIN_ROOT}`). The hook delivers the tool payload as JSON on **stdin**, so parse the path with `jq` and only run when a relevant file changed:
+
+```bash
+#!/usr/bin/env bash
+file=$(jq -r '.tool_input.file_path // empty')
+case "$file" in
+  *.ts | *.tsx) npx --no-install tsc --noEmit || exit 2 ;;
+esac
+```
+
+`--no-install` stops `npx` from fetching `tsc` over the network on every edit — install it locally (`devDependencies`) so it resolves from `node_modules`. Confirm the payload field name against your Claude Code version (<https://code.claude.com/docs/en/hooks>); if it is absent, `$file` is empty, the `case` matches nothing, and the gate silently passes.
+
+**Keep it fast** — this fires on _every_ matching edit. Prefer a file-scoped or incremental check (as above) to a full build; reserve the full test suite for the verification phase, not the per-edit hook.
+
 ## Known limitations of the current hook set
 
 - `guard-bash` is regex-based and treats the command as a string. Shell-indirection (`eval`, `bash -c`) is soft-blocked but `python3 -c '<payload>'` and `perl -e '<payload>'` are not yet detected. Treat the hook as a tripwire, not a sandbox.
