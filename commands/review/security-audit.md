@@ -15,7 +15,9 @@ Argument:
 - A PR number (e.g. `#123`) → audits the PR diff
 - Empty → audits the current branch's diff against `origin/main`
 
-Output: findings categorized by severity (Critical / High / Medium / Low / Info), with specific file:line references and remediation suggestions.
+Scope the target through `references/review-generated-file-exclusion.md` using the **Security profile**: keep lockfiles (supply-chain is core to a security audit) but exclude other generated artifacts — codegen output, minified bundles, vendored trees, `@generated`-marked files — from the content the `security-auditor` reads. Pass the agent the **excluded-generated-artifacts manifest** alongside the target, and instruct it to `Read` any manifest-listed new or renamed file excluded only by a filename glob or `@generated` marker (the spoofable signals, per the reference's Security profile). An explicitly named path is audited verbatim. If only generated artifacts remain after exclusion (e.g. an all-codegen path with no lockfiles), still run the audit with the manifest — do not treat it as empty.
+
+Output: findings categorized by severity (Critical / High / Medium / Low / Info), with specific file:line references and remediation suggestions, plus the excluded-generated-artifacts manifest.
 
 **Plan mode is fine — do not stop to ask.** The audit itself is read-only. In plan mode the disposition step writes the validated findings and their intended fixes to the active plan file instead of editing source, per `references/review-finding-disposition.md`. Run the audit.
 

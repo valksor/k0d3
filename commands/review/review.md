@@ -12,6 +12,7 @@ allowed-tools:
   - Bash(git diff:*)
   - Bash(git log:*)
   - Bash(git show:*)
+  - Bash(git check-attr:*)
 ---
 
 Comprehensive code review. Goes beyond style — checks security, performance, architecture, and generates actionable improvement suggestions.
@@ -30,7 +31,9 @@ Identify what to review:
 
 ### Step 2: Read the code
 
-Read all files in scope. For large diffs, focus on:
+Skip auto-generated content first. Apply `references/review-generated-file-exclusion.md` to classify the files in scope and exclude generated content from the review. This is a single-pass review that wears the security hat itself, so use the **Security profile** — keep lockfile content (supply-chain), but exclude other generated artifacts (codegen, minified bundles, vendored trees, `@generated`-marked files); also `Read` any new or renamed file excluded only by a filename glob or `@generated` marker, since those signals are spoofable. Print the **excluded-generated-artifacts manifest** in the Step 5 output so the skipped files stay visible — but since this single pass has no separate security agent, omit the `[security sees full content]` annotation on lockfile lines. If only generated artifacts remain after exclusion, still run the review with the manifest. Explicitly named files are reviewed verbatim.
+
+Read all remaining files in scope. For large diffs, focus on:
 
 - New files (highest risk — no prior review)
 - Files with the most changes
@@ -88,6 +91,10 @@ Output a structured review:
 ### Summary
 
 [1-2 sentences: overall assessment and top concern]
+
+### Excluded generated artifacts
+
+[the manifest from Step 2 — one line per skipped file; omit this section if nothing was excluded]
 
 ### Critical Issues
 
