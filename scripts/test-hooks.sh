@@ -160,5 +160,49 @@ run_case "rm-single-file" "rm ./single-file.txt" "allow"
 : > "$CLAUDE_PROJECT_DIR/.claude/logs/incident-log.md"
 run_case "warn-redirect-outside" "echo hi > /tmp/somefile.txt" "warn"
 
+# ── verify-before-stop gate ──────────────────────────────────────────────────
+# Stop-hook block protocol: prints {"decision":"block",...} on a detected failure
+# in this turn's tool output, nothing otherwise. Single-fire via stop_hook_active.
+# Fail-soft on missing inputs. Requires python3; skipped if absent.
+VERIFY_STOP="hooks/verify-before-stop.sh"
+FIXTURES="$REPO_ROOT/tests/stop-hook-fixtures"
+
+run_stop_case() {
+  local label="$1" active="$2" transcript="$3" expect="$4"
+  local out decision
+  out="$(printf '{"stop_hook_active":%s,"transcript_path":%s}' \
+    "$active" "$(printf '%s' "$transcript" | jq -Rs .)" |
+    bash "$REPO_ROOT/$VERIFY_STOP" 2> /dev/null)"
+  if [[ -z "$out" ]]; then
+    decision="allow"
+  else
+    decision="$(printf '%s' "$out" | jq -r '.decision // "allow"' 2> /dev/null)"
+    [[ -z "$decision" ]] && decision="allow"
+  fi
+  if [[ "$decision" == "$expect" ]]; then
+    PASS=$((PASS + 1))
+  else
+    echo "FAIL $label: expected $expect, got '$decision'; out=$out" >&2
+    FAIL=$((FAIL + 1))
+  fi
+}
+
+if command -v python3 > /dev/null 2>&1; then
+  # Each signature category blocks on a real failure...
+  run_stop_case "stop-build-blocks" "false" "$FIXTURES/failing.jsonl" "block"
+  run_stop_case "stop-auth-blocks" "false" "$FIXTURES/auth.jsonl" "block"
+  run_stop_case "stop-cmd-not-found-blocks" "false" "$FIXTURES/cmd-not-found.jsonl" "block"
+  run_stop_case "stop-test-failure-blocks" "false" "$FIXTURES/test-fail.jsonl" "block"
+  run_stop_case "stop-permission-blocks" "false" "$FIXTURES/permission.jsonl" "block"
+  # ...and allows on clean output, on source merely READ (tightened patterns must
+  # not fire on except-clauses / panic() / prose), on single-fire, and fail-soft.
+  run_stop_case "stop-clean-allows" "false" "$FIXTURES/clean.jsonl" "allow"
+  run_stop_case "stop-reading-source-allows" "false" "$FIXTURES/reading-source.jsonl" "allow"
+  run_stop_case "stop-single-fire-allows" "true" "$FIXTURES/failing.jsonl" "allow"
+  run_stop_case "stop-missing-transcript" "false" "$FIXTURES/does-not-exist.jsonl" "allow"
+else
+  echo "SKIP verify-before-stop: python3 not available" >&2
+fi
+
 echo "test-hooks.sh: $PASS pass, $FAIL fail" >&2
 exit $((FAIL > 0 ? 1 : 0))

@@ -1,6 +1,6 @@
 # Hooks: enabling & operating
 
-Most hooks in `hooks/hooks.json` ship **enabled by default** — old-claude parity (#1–9 in the table below), plus `ensure-memory-gitignore` and the two codegraph hooks (`codegraph-autoindex`, `prefer-codegraph`, described after the table); all are fail-soft and safe in any project. Three further hooks (`validate-skill-frontmatter`, `check-name-collisions`, `block-deferred-issues`) are **opt-in** because they are k0d3-repo-development-specific and would misfire in unrelated projects. This doc covers how to enable the opt-in hooks, the correct config shape, the enable order, bypass, and rollback.
+Most hooks in `hooks/hooks.json` ship **enabled by default** — old-claude parity (#1–9 in the table below), plus `ensure-memory-gitignore`, the two codegraph hooks (`codegraph-autoindex`, `prefer-codegraph`), and `verify-before-stop` (the stop-time false-completion gate) — all described after the table; all are fail-soft and safe in any project. Three further hooks (`validate-skill-frontmatter`, `check-name-collisions`, `block-deferred-issues`) are **opt-in** because they are k0d3-repo-development-specific and would misfire in unrelated projects. This doc covers how to enable the opt-in hooks, the correct config shape, the enable order, bypass, and rollback.
 
 > **Config shape & paths (read before editing `hooks.json`).** A live hook entry is the **nested** form
 > `hooks.<event>: [ { "matcher": "…", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/<name>.sh" } ] } ]`.
@@ -32,6 +32,8 @@ Some hooks depend on artifacts produced by other hooks (`session-reset` reads wh
 | 11  | `block-deferred-issues`      | PreToolUse Bash              | Blocks `gh issue create` on `work/*` branches. Only fires on that one command path.                                                                                                                                                                |
 | 12  | `check-name-collisions`      | SessionStart matcher=startup | Independent (no deps). Warns when a skill/command/agent name collides with another installed plugin. Safe to enable any time; opt-in only because the collision set is k0d3-repo-development-specific.                                             |
 
+This table is the **opt-in / dependency-ordered** set. Three more hooks ship **enabled by default** and sit outside it because they have no dependencies: the two codegraph hooks and `verify-before-stop` — note that `verify-before-stop` is the **only default-on hook that blocks** (the codegraph pair never does). All three have their own sections below.
+
 ## Default codegraph hooks (fail-soft, outside the order table)
 
 Two hooks back the bundled **codegraph** MCP server. Both ship enabled, are independent of the dependency chain above, and **fail soft**, so they sit here rather than in the activation-order table.
@@ -42,6 +44,18 @@ Two hooks back the bundled **codegraph** MCP server. Both ship enabled, are inde
 Neither needs the supply-chain enable ceremony below — they take no destructive action.
 
 **First run & opt-out.** On a fresh install the background `npx` fetch + initial index take a little time; until they finish, `codegraph_*` tools answer "not initialized" (fail-soft) — watch progress in `.claude/logs/codegraph-index.log`. To opt out: disable the server via `/mcp`, and/or remove the `codegraph-autoindex` / `prefer-codegraph` entries from `hooks/hooks.json` and restart. The index lives in each repo's `.codegraph/`. codegraph's own `.codegraph/.gitignore` ignores only the index **data** (`*.db`, `cache/`, `*.log`) — it leaves `.codegraph/config.json` and the `.gitignore` itself committable, so on its own the directory is only _partially_ ignored. The hook therefore adds `.codegraph/` to `.git/info/exclude` (repo-local, never committed), keeping the **whole** directory out of your `git status`. Remove the index with `rm -rf .codegraph/` or `npx @colbymchenry/codegraph uninit`.
+
+## Default: `verify-before-stop` (stop-time false-completion gate)
+
+Wired on **both `Stop` and `SubagentStop`**, enabled by default, and the **one default-on hook that blocks** — so it runs **synchronously** (no `async`). It exists because the model's own "I'm done" judgment is unreliable after it hits a wall (not logged in, build failing, a command erroring) and rationalizes the failure as success.
+
+- **What it does.** Reads the turn's `transcript_path`, scans **only this turn's `tool_result` output** (tool OUTPUT — not the model's own prose, where a reviewer subagent legitimately _discusses_ errors) for a high-precision failure signature (auth/login, build/compile, test failure, command-not-found, non-zero exit). On a hit it returns `{"decision":"block","reason":…}`, forcing one more turn to re-verify the fix or report honestly.
+- **Single-fire.** Gated on `stop_hook_active`: it blocks at most once per stop episode. The model's _next_ stop is always allowed, so an honest "needs input" / "blocked" passes straight through and the gate never loops. No persistent ledger.
+- **Escape hatch in the reason.** The block message explicitly accepts "needs-input" / "blocked" as honest outcomes, so the gate never traps the model into grinding on something only the user can unblock (auth, access, a decision).
+- **Fail-soft.** Missing `jq`/`python3`, an absent transcript, or any parse error → `exit 0` (allows the stop, no output). Turns with no tool calls collect no `tool_result` → never blocked.
+- **Signatures are the tunable surface.** The pattern list in `hooks/verify-before-stop.sh` is deliberately high-precision (no bare `error`/`failed`/`no such file`). Regression-tested in `scripts/test-hooks.sh` against `tests/stop-hook-fixtures/`.
+- **Companion skill.** `skills/honest-completion/SKILL.md` is the framework the hook enforces; the hook catches the obvious walls, the skill generalizes to the ones a regex can't match.
+- **Caveat / disabling.** `SubagentStop` is the higher false-positive surface (it fires for every Explore/Plan/reviewer subagent); the `tool_result`-only scoping is what keeps that in check. To disable either binding, remove its entry from the `Stop` / `SubagentStop` arrays in `hooks.json` and restart — the two are independent.
 
 ## Step-by-step procedure (per hook)
 
@@ -66,12 +80,13 @@ All four must exit 0 before flipping hooks #8–#11.
 
 ## Bypass mechanisms (per-hook)
 
-| Hook                         | Bypass for one command                                                                                                                                                                                                       | Bypass persistently                                                       |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `guard-bash`                 | Temporarily move the hook entry back to `_disabled_examples` and restart Claude. The hook itself has no per-command bypass mechanism — SOFT vs HARD is a labeling distinction in the deny message, not a separate code path. | none — HARD BLOCKs are non-overridable by design while the hook is active |
-| `validate-skill-frontmatter` | `env K0D3_SKIP_VALIDATOR=1 claude` (one-shot, **preferred — logs to `validator-bypass.log`**)                                                                                                                                | `chmod -x hooks/validate-skill-frontmatter.sh` (silent, no audit trail)   |
-| `completeness-gate`          | none (hard-block on detected secrets / placeholder markers)                                                                                                                                                                  | move entry back to `_disabled_examples`                                   |
-| `block-deferred-issues`      | switch to `master` branch (`git checkout master`)                                                                                                                                                                            | move entry back to `_disabled_examples`                                   |
+| Hook                         | Bypass for one command                                                                                                                                                                                                       | Bypass persistently                                                                                                 |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `guard-bash`                 | Temporarily move the hook entry back to `_disabled_examples` and restart Claude. The hook itself has no per-command bypass mechanism — SOFT vs HARD is a labeling distinction in the deny message, not a separate code path. | none — HARD BLOCKs are non-overridable by design while the hook is active                                           |
+| `validate-skill-frontmatter` | `env K0D3_SKIP_VALIDATOR=1 claude` (one-shot, **preferred — logs to `validator-bypass.log`**)                                                                                                                                | `chmod -x hooks/validate-skill-frontmatter.sh` (silent, no audit trail)                                             |
+| `completeness-gate`          | none (hard-block on detected secrets / placeholder markers)                                                                                                                                                                  | move entry back to `_disabled_examples`                                                                             |
+| `block-deferred-issues`      | switch to `master` branch (`git checkout master`)                                                                                                                                                                            | move entry back to `_disabled_examples`                                                                             |
+| `verify-before-stop`         | none — it blocks at most once per stop episode (single-fire), so the next stop always proceeds; report blocked / needs-input honestly and stop again                                                                         | remove its entry from the `Stop` and/or `SubagentStop` arrays in `hooks.json` and restart (the two are independent) |
 
 The `chmod -x` bypass for the validator is supported but produces no audit log — prefer the env-var path for one-off needs.
 
@@ -111,7 +126,7 @@ If any health check fails, rollback the most recently-enabled hook and investiga
 
 ## Hook capabilities reference (Claude Code)
 
-k0d3 wires **6** of the lifecycle events Claude Code exposes (~31 total): `SessionStart`, `PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `PreCompact`, `Stop`. Other events available if a future need arises include `PostCompact`, `SubagentStart` / `SubagentStop`, `SessionEnd`, `PermissionRequest`, `UserPromptSubmit`, and `Notification`.
+k0d3 wires **7** of the lifecycle events Claude Code exposes (~31 total): `SessionStart`, `PreToolUse`, `PostToolUse`, `PostToolUseFailure`, `PreCompact`, `Stop`, and `SubagentStop` (the last two share `verify-before-stop`). Other events available if a future need arises include `PostCompact`, `SubagentStart`, `SessionEnd`, `PermissionRequest`, `UserPromptSubmit`, and `Notification`.
 
 Every k0d3 hook is `type: "command"` (a shell script: stdin is the event JSON, the exit code plus stdout/JSON control the result). Claude Code also supports other hook types, useful to know when designing a new hook:
 
@@ -205,5 +220,6 @@ esac
 - `guard-bash` does not block env-table enumeration — `env | grep NAME`, `export | grep`, or bare `printenv | grep` all run. Reading a _named_ variable (`printenv VAR`, `echo $KNOWN_PREFIX`) and every `.env` file access stay blocked, but an ambient-environment dump piped to a filter is allowed: a bare-word `env` matcher flags far more benign commands (`docker run --env`, `npm run env`, `rg 'env|export'`) than real exfil, so it is intentionally absent. Keep real secrets in `.env`/a secret store rather than exported into the shell environment.
 - `completeness-gate` secret-scan does not cover every credential format (covers Stripe, OpenAI, Anthropic, classic + fine-grained GitHub PATs, GitLab tokens, Slack tokens, AWS, JWTs, GCP private-key JSON). Custom-format tokens for in-house systems are not detected.
 - `validate-skill-frontmatter` is fail-open: missing PyYAML or any internal error exits 0 (allows the write). Acceptable for a dev tool; surface the limitation to anyone relying on it for security gating.
+- `verify-before-stop` is regex-based (like `guard-bash`) and pattern-matches tool output, so it has both false negatives (a failure phrased outside its signature list slips through) and rare false positives (benign output that contains a matched phrase). It is a tripwire that forces one re-check, not a proof of correctness — the companion `honest-completion` skill carries the discipline the regex can't.
 
 See `hooks/<hook>.sh` for the authoritative per-hook contract.

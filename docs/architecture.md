@@ -105,6 +105,7 @@ Five categories under `commands/`:
 Shell hooks under `hooks/`:
 
 - `backup-before-write`, `block-deferred-issues`, `completeness-gate`, `guard-bash`, `log-changes`, `log-failures`, `log-stop-verdict`, `pre-compact-handoff`, `post-compact-resume`, `session-reset`
+- `verify-before-stop` — Stop + SubagentStop, blocks once on a detected failure so the agent can't claim "done" over a wall (companion skill: `honest-completion`)
 - `validate-skill-frontmatter` — PreToolUse on `/skills/`, fail-open + stderr echo
 
 Most ship enabled by default in `hooks/hooks.json`; the repo-development-specific ones are opt-in. See `docs/hooks.md` for the per-hook enable order and rollback.

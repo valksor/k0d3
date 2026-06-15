@@ -204,6 +204,12 @@ graph LR
   graphql-essentials --> websocket-essentials
   graphql-essentials --> observability-essentials
   graphql-essentials --> security
+  honest-completion --> tdd
+  honest-completion --> debugging
+  honest-completion --> finishing-a-development-branch
+  honest-completion --> code-review
+  honest-completion --> using-k0d3
+  honest-completion --> subagent-driven-development
   incident-response --> debugging
   incident-response --> root-cause
   incident-response --> observability-essentials
