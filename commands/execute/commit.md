@@ -14,7 +14,7 @@ Create well-structured git commits for all uncommitted changes in the current re
 
 ## Requirements
 
-- **Commit everything**: "all uncommitted changes" means ALL — every modified, staged, and untracked path in `git status`. Never leave a file out, **and never pause to ask whether to commit one**, because you judge it incidental, tooling-generated, "not part of my change," **a separate feature, or code you didn't write** — none of those is a reason to skip _or to ask_. If it doesn't belong with the main commit, give it its own commit. Invoking `/commit` IS the authorization to commit everything; there is no further confirmation step. The only files you may skip are (a) genuine secrets/credentials or (b) files the user explicitly named — and you must say which you skipped and why. Done = a clean working tree.
+- **Commit everything**: "all uncommitted changes" means ALL — every modified, staged, and untracked path in `git status`. Never leave a file out, **and never pause to ask whether to commit one**, because you judge it incidental, "not part of my change," **a separate feature, or code you didn't write** — none of those is a reason to skip _or to ask_. If it doesn't belong with the main commit, give it its own commit. Invoking `/commit` IS the authorization to commit everything; there is no further confirmation step. The only files whose contents you keep out of a commit are (a) genuine secrets/credentials, (b) files the user explicitly named, or (c) **generated artifacts** — reproducible scratch/output with no review value, which you _gitignore_ rather than commit (see _Artifact triage_). Say which you skipped or ignored, and why. Done = a clean working tree.
 - **File-based commits**: commit whole files only, never partial files or line hunks
 - **Gradual commits**: limit each commit to **20–25 files maximum**. Split larger changesets into multiple focused commits. Improves reviewability, makes `git bisect` effective, keeps history readable.
 - **Land on the project's mainline, never push**: commit locally on the current branch, then land the work where the project keeps it (see _Step 4_). **Never create a branch on your own initiative** — a branch you're only on because of the harness "branch first" default is _not_ the project's workflow; its commits get landed on the mainline and the branch deleted. **Never push** — the user pushes.
@@ -39,11 +39,15 @@ Before any other action, check for plan mode:
    - `git diff` — understand what changed
    - `git log -5 | cat` — match existing commit style
 2. Extract style dimensions from `git log` (see Step 1 below).
-3. Group related files logically — every uncommitted file lands in some commit; grouping distributes them across commits, it never drops any.
+3. Run _Artifact triage_ (read-only here): note which paths are generated artifacts to be **gitignored** vs authored files to commit. Then group the authored files logically — every authored file lands in some commit; grouping distributes them, it never drops any. (`.gitignore` edits and `git rm --cached` are writes — describe them in the plan, don't run them.)
 4. Append a Commit Plan to the active plan file:
 
 ```
 ## Commit Plan
+
+### Artifacts to gitignore (if any)
+
+- `<pattern>` — <why it's generated scratch, not source>
 
 ### Commit 1: <short summary>
 **Files:**
@@ -97,13 +101,41 @@ For deeper guidance on writing the message body itself, invoke `Skill(commit-wri
 
 If `git log -5 | cat` returns nothing (truly empty repo), default to: imperative-with-s subject ("Adds X"), prose body explaining what + why. Do **not** introduce conventional commits (`feat:`, `fix:`) as a default — that is a project-wide editorial decision, not a sensible default.
 
+## Artifact triage (before staging)
+
+Before staging anything, look at each uncommitted path and judge it by its **nature, not its relevance to your change**:
+
+- **Authored** — code, config, docs, fixtures, lockfiles, checked-in generated source/migrations, anything a human wrote or that the repo already tracks as a source of truth → **commit it.** Always. Even if it's unrelated to your change, a separate feature, or written by someone else. Relevance is _never_ a reason to skip (see _Restrictions_).
+- **Generated artifact** — machine-produced, reproducible scratch/output with **no review value** _and_ not already tracked by the repo as a source of truth: the kind of thing a `.gitignore` exists to exclude. Judge case-by-case — there is **no fixed list** — but typical shapes are browser snapshots like `.playwright-cli/`, Playwright traces/screenshots, coverage reports, `node_modules/`, `*.log` debug logs, `.DS_Store`, `__pycache__/`, and **uncommitted** `dist/` / `build/` output. → **gitignore it; do not commit its contents.**
+
+**The bright line:** ask "_was this generated_?" — never "_is this part of my change_?". The falsification test: **if you find yourself reasoning about whether the file's _content_ is useful to your change, you're testing relevance, not nature — commit it.** A file being unrelated, incidental, or not-yours makes it none of these — it gets committed. **When you are genuinely unsure of a file's nature, commit it** — the safe default never skips authored source.
+
+> **Generated ≠ artifact.** A lockfile, a `*.pb.go`, a checked-in migration, a generated `schema.sql`, a `dist/` the repo intentionally tracks — all machine-produced, yet they carry review value or are the repo's source of truth → **commit them.** The artifact test is "reproducible scratch with no review value that the repo does not already track." If git already tracks a path as committed source, treat it as authored unless it is plainly stale scratch.
+
+### Handling an artifact
+
+For each path you classify as an artifact:
+
+1. **Secrets first.** Scan its contents for credentials (the same patterns `Skill(commit-writer)` uses, run directly against the file). If it matches, **do NOT gitignore it** — escalate to the secrets stop (permitted stop #2): tell the user a credential is in `<path>` and let them scrub/rotate. Silently ignoring a token-bearing log would hide a leak. A clean artifact continues below.
+2. **Pick the narrowest correct ignore pattern.** Default to the exact path or a scoped glob (`.playwright-cli/*.yml`). Use a whole-directory pattern (`.playwright-cli/`) **only after confirming the directory holds no authored files** (`git status --porcelain <dir>`); a directory mixing scratch with a real `config.ts` gets a file-glob, never the bare dir. **Never an extension-only glob** (`*.yml`, `*.json`) — it silently hides real config; before adding any glob, check what it already matches in the tree.
+3. **Append to `.gitignore`** — repo root, or the nearest package-level `.gitignore` in a monorepo; create it if absent. First `grep -qxF '<pattern>' .gitignore` and **skip the append if the pattern is already present.**
+4. **Untracked artifact** → the pattern alone drops it from `git status`. **Already-tracked artifact** (it landed in history on a prior run, possibly now modified) → `git rm --cached <path>` so the ignore takes effect — the file stays on disk, staged as a deletion.
+5. **Verify before committing:** run `git status` and confirm the artifact path is gone (not still modified/staged). A typo'd pattern that leaves it visible must **not** pass as a clean tree — fix the pattern.
+6. **Commit** the `.gitignore` edit (plus any `git rm --cached` removals) as its own housekeeping commit, **in the repo's extracted style** (Step 1) — the subject `Ignore <thing> scratch artifacts` is illustrative, not prescriptive.
+7. **Report** each gitignored/untracked path on its own line — `Gitignored <path> — <why it's scratch>` — so the user always sees what was reclassified, exactly as visible as a skipped-secret report.
+
+If triage leaves **no authored files** (everything was an artifact), the housekeeping commit is the entire result — say so; do not report "nothing to commit." If every pattern was already present (no `.gitignore` change needed), say that too.
+
+This is the **third and only other** permitted reason not to commit a file's contents, alongside (a) secrets/credentials and (b) user-named files. It adds no new _stop_ — you act on it autonomously; the lone exception is the secret-in-artifact escalation in step 1, which is just stop #2.
+
 ## Step 3: Execute
 
 1. `git status` — see all uncommitted changes. **If the working tree is clean** (no untracked, no modified, no staged), STOP and tell the user "Nothing to commit, working tree clean." Do NOT proceed; do NOT invent files to stage; do NOT create an empty commit.
 2. `git diff` — understand what changed
-3. Group related files logically per commit (20–25 file cap) — this distributes ALL uncommitted files across commits; it never excludes any.
-4. `git add <specific-files>` (never `-A` or `.`)
-5. Create the commit using HEREDOC format for proper message formatting:
+3. **Artifact triage** (see _Artifact triage_ above) — for each untracked or changed path, decide _authored_ vs _generated artifact_, and for every artifact run the full _Handling an artifact_ procedure (steps 1–7: secrets-check, narrowest pattern, dedup, `git rm --cached` if already tracked, verify, housekeeping commit, report). Everything authored continues below.
+4. Group related files logically per commit (20–25 file cap) — this distributes ALL **authored** uncommitted files across commits; it never excludes authored source.
+5. `git add <specific-files>` (never `-A` or `.`)
+6. Create the commit using HEREDOC format for proper message formatting:
 
 ```bash
 git commit -m "$(cat <<'EOF'
@@ -114,8 +146,8 @@ EOF
 )"
 ```
 
-6. Repeat for remaining changes
-7. Final `git status` — the tree MUST be clean. Anything still uncommitted is a bug unless it is an allowed exclusion (secret/credential or user-named); name any skipped file and the reason. "Done" means a clean tree, not "the files I judged relevant are committed."
+7. Repeat for remaining changes
+8. Final `git status` — the tree MUST be clean. Anything still uncommitted is a bug unless it is an allowed exclusion (secret/credential, user-named, or a gitignored artifact); name any skipped or ignored file and the reason. "Done" means a clean tree, not "the files I judged relevant are committed."
 
 ## Step 4: Land the work on the project's mainline
 
@@ -177,5 +209,5 @@ silently `git merge --abort`, never force.
 - NEVER `git commit --amend` unless explicitly requested
 - NEVER skip hooks (`--no-verify`) unless explicitly requested
 - NEVER invent a commit style — match the repo's existing one
-- NEVER leave a changed file uncommitted because you deemed it "unintended" or "unrelated" — commit it (its own commit if needed). Only genuine secrets/credentials or user-named files may be skipped, and you must say so.
-- NEVER pause to ask the user whether to commit a file, and NEVER treat committing something as an "editorial call." The permitted stops are exactly two: (1) a clean working tree, (2) a detected secret/credential. **Every other reason to stop or ask is invalid** — "I didn't write it," "it's a separate feature," "it looks unrelated" all mean _commit it in its own commit_, not _ask first_.
+- NEVER leave a changed file uncommitted because you deemed it "unintended" or "unrelated" — commit it (its own commit if needed). The only contents you keep out of a commit are genuine secrets/credentials, user-named files, or **generated artifacts** (which you _gitignore_ instead — see _Artifact triage_); say so in each case.
+- NEVER pause to ask the user whether to commit a file, and NEVER treat committing something as an "editorial call." The permitted stops are exactly two: (1) a clean working tree, (2) a detected secret/credential. **Every other reason to stop or ask is invalid** — "I didn't write it," "it's a separate feature," "it looks unrelated" all mean _commit it in its own commit_, not _ask first_. The one judgment you _do_ make silently is **nature, not relevance**: a generated, no-review-value artifact gets gitignored (no asking), everything authored gets committed (no asking), and when you're unsure which, you commit.
