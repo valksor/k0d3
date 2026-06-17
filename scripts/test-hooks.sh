@@ -204,5 +204,82 @@ else
   echo "SKIP verify-before-stop: python3 not available" >&2
 fi
 
+# ── review-plan-before-exit gate ─────────────────────────────────────────────
+# PreToolUse(ExitPlanMode) block protocol: prints JSON with
+# `permissionDecision: "deny"` on the FIRST ExitPlanMode (arming a single-fire
+# gate file), nothing on the re-presentation (gate consumed), nothing for other
+# tools, and nothing under K0D3_SKIP_PLAN_REVIEW=1. Fail-soft on missing inputs.
+REVIEW_PLAN="hooks/review-plan-before-exit.sh"
+PLAN_GATE="$CLAUDE_PROJECT_DIR/.claude/logs/.plan-review-gate"
+
+run_plan_case() {
+  local label="$1" tool="$2" expect="$3" skip="${4:-}"
+  local out decision
+  out="$(printf '{"tool_name":"%s","tool_input":{"plan":"x"}}' "$tool" |
+    env ${skip:+K0D3_SKIP_PLAN_REVIEW=1} bash "$REPO_ROOT/$REVIEW_PLAN" 2> /dev/null)"
+  if [[ -z "$out" ]]; then
+    decision="allow"
+  else
+    decision="$(printf '%s' "$out" | jq -r '.hookSpecificOutput.permissionDecision // "allow"' 2> /dev/null)"
+    [[ -z "$decision" ]] && decision="allow"
+  fi
+  if [[ "$decision" == "$expect" ]]; then
+    PASS=$((PASS + 1))
+  else
+    echo "FAIL $label: expected $expect, got '$decision'; out=$out" >&2
+    FAIL=$((FAIL + 1))
+  fi
+}
+
+rm -f "$PLAN_GATE"
+run_plan_case "plan-first-exit-denies" "ExitPlanMode" "deny" # arms the gate
+if [[ -f "$PLAN_GATE" ]]; then PASS=$((PASS + 1)); else
+  echo "FAIL plan-gate-armed: gate not created after deny" >&2
+  FAIL=$((FAIL + 1))
+fi
+run_plan_case "plan-second-exit-allows" "ExitPlanMode" "allow" # consumes the gate
+if [[ ! -f "$PLAN_GATE" ]]; then PASS=$((PASS + 1)); else
+  echo "FAIL plan-gate-consumed: gate not removed after allow" >&2
+  FAIL=$((FAIL + 1))
+fi
+run_plan_case "plan-non-exitplanmode-allows" "Bash" "allow"
+rm -f "$PLAN_GATE"
+run_plan_case "plan-skip-env-allows" "ExitPlanMode" "allow" "skip"
+rm -f "$PLAN_GATE"
+
+# Re-arm: after a deny→allow cycle consumes the gate, a fresh ExitPlanMode must
+# deny again (the loop-safety property — back-to-back plans can't bypass review).
+run_plan_case "plan-rearm-1-denies" "ExitPlanMode" "deny"
+run_plan_case "plan-rearm-2-consumes" "ExitPlanMode" "allow"
+run_plan_case "plan-rearm-3-denies-again" "ExitPlanMode" "deny"
+rm -f "$PLAN_GATE"
+
+# The deny output must carry the /k0d3:review-plan routing instruction (a regression
+# that emptied/misdirected the reason would otherwise pass the decision-only checks).
+deny_out="$(printf '{"tool_name":"ExitPlanMode","tool_input":{"plan":"x"}}' |
+  bash "$REPO_ROOT/$REVIEW_PLAN" 2> /dev/null)"
+if printf '%s' "$deny_out" | jq -e -r '.hookSpecificOutput.permissionDecisionReason' 2> /dev/null |
+  grep -q "/k0d3:review-plan"; then
+  PASS=$((PASS + 1))
+else
+  echo "FAIL plan-deny-reason-routes: reason lacks /k0d3:review-plan; out=$deny_out" >&2
+  FAIL=$((FAIL + 1))
+fi
+rm -f "$PLAN_GATE"
+
+# Session-scoped gate: a session_id yields a per-session gate file, never the shared
+# fallback — so two concurrent plan-mode sessions can't consume each other's gate.
+SID_GATE="$CLAUDE_PROJECT_DIR/.claude/logs/.plan-review-gate-sess-abc"
+rm -f "$SID_GATE" "$PLAN_GATE"
+printf '{"tool_name":"ExitPlanMode","tool_input":{"plan":"x"},"session_id":"sess-abc"}' |
+  bash "$REPO_ROOT/$REVIEW_PLAN" > /dev/null 2>&1
+if [[ -f "$SID_GATE" && ! -f "$PLAN_GATE" ]]; then
+  PASS=$((PASS + 1))
+else
+  echo "FAIL plan-session-scoped-gate: expected $SID_GATE armed, shared gate absent" >&2
+  FAIL=$((FAIL + 1))
+fi
+rm -f "$SID_GATE"
+
 echo "test-hooks.sh: $PASS pass, $FAIL fail" >&2
 exit $((FAIL > 0 ? 1 : 0))

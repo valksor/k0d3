@@ -17,8 +17,11 @@ rm -f "$LOG_DIR/.quality-gate-active" \
   "$LOG_DIR/.tool-call-count" \
   "$LOG_DIR/.compaction-occurred" 2> /dev/null
 
-# Clean up stale session-blocks files (older than current hour)
+# Clean up stale session-blocks and plan-review gate files (older than 2h).
+# Plan-review gates are session-scoped (.plan-review-gate-<id>), so prune by age,
+# not by exact name — a startup must never delete a concurrent session's fresh gate.
 find "$LOG_DIR" -name ".session-blocks-*" -mmin +120 -delete 2> /dev/null
+find "$LOG_DIR" -name ".plan-review-gate*" -mmin +120 -delete 2> /dev/null
 
 # ═══════════════════════════════════════════════════════
 # 2. Validate hook scripts are executable (B7: was .claude/hooks; hooks live at $CLAUDE_PROJECT_DIR/hooks)

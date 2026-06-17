@@ -3,7 +3,7 @@ name: planning
 description: Use after brainstorming (spec approved) to write a comprehensive implementation plan. Bite-sized tasks, exact files, full code, TDD throughout. No placeholders.
 metadata:
   added: 2026-05-18
-  last_reviewed: 2026-05-18
+  last_reviewed: 2026-06-17
   type: core
   status: active
   invokes_shell: false
@@ -126,6 +126,10 @@ After writing the complete plan, check against the spec:
 5. **Decision provenance** — each non-obvious design choice in the plan names its source (spec section, user decision, or "author judgment: rationale"). A fresh subagent executes this plan with zero context; an unsourced choice reads as fact and gets built on. Annotate the source inline or cut the choice.
 
 Fix issues inline. If a spec requirement has no task, add the task.
+
+## Calibrated review
+
+Self-review is single-author — you check your own work. Before the execution handoff, get **independent perspectives**: run `/k0d3:review-plan <saved-plan-path>` to dispatch the four calibrated reviewers (senior-dev, senior-qa, security, end-user) in parallel against the plan. Disposition their findings per `references/review-finding-disposition.md` — validate each against the plan, apply every valid revision directly to the plan document, skip false positives with a one-line reason — then proceed to the handoff. This is the same review that native plan mode triggers automatically via the `review-plan-before-exit` hook, so a plan is never handed off un-reviewed. (Per-need opt-out for the plan-mode hook: `K0D3_SKIP_PLAN_REVIEW=1`.)
 
 ## Execution handoff
 

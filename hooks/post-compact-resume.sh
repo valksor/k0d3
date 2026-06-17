@@ -13,7 +13,9 @@ if [ ! -f "$MARKER" ]; then
   exit 0
 fi
 
-# Reset session counters
+# Reset session counters. NB: the plan-review gate is deliberately NOT cleared here
+# — it is session-scoped and survives compaction so an armed-but-unpresented plan
+# still passes through on re-presentation instead of forcing a redundant re-review.
 rm -f "$LOG_DIR/.tool-call-count" "$LOG_DIR/.quality-gate-active" 2> /dev/null
 
 # Read compaction timestamp

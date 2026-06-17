@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# PreToolUse(ExitPlanMode) hook — force a calibrated plan review before a plan is
+# presented to the user.
+#
+# Single-fire per presentation (mirrors verify-before-stop): the FIRST ExitPlanMode
+# of a plan is DENIED with an instruction to run /k0d3:review-plan and apply the
+# four reviewers' findings; the gate file is ARMED on that deny, so the
+# re-presentation after the review passes straight through (gate consumed). The
+# gate self-re-arms for the next plan in the session — no persistent ledger.
+#
+# Why deny-then-allow and not content-hashing: the review EDITS the plan, so the
+# re-presented plan has different text. A hash key would re-block in a loop. The
+# single-fire gate is loop-safe by construction.
+#
+# Escape hatch: K0D3_SKIP_PLAN_REVIEW=1 → allow immediately (mirrors
+# K0D3_SKIP_VALIDATOR). Fail-soft: missing jq, unset CLAUDE_PROJECT_DIR, a
+# non-ExitPlanMode tool, or an un-writable gate dir → exit 0 (never trap the user
+# in plan mode).
+#
+# Output contract mirrors completeness-gate.sh: exit 0 + hookSpecificOutput JSON
+# with permissionDecision "deny" on the block; exit 0 with no output to allow.
+
+set -uo pipefail
+
+# Per-need opt-out.
+[ "${K0D3_SKIP_PLAN_REVIEW:-}" = "1" ] && exit 0
+
+# jq parses the event envelope; without it, allow.
+command -v jq > /dev/null 2>&1 || exit 0
+
+# No project dir → nowhere to keep the single-fire gate → fail-soft allow.
+[ -z "${CLAUDE_PROJECT_DIR:-}" ] && exit 0
+
+INPUT=$(cat)
+TOOL=$(printf '%s' "$INPUT" | jq -r '.tool_name // empty' 2> /dev/null || echo '')
+
+# Defensive guard: the hooks.json matcher already scopes this to ExitPlanMode,
+# but re-check so a loose matcher can never block an unrelated tool.
+[ "$TOOL" = "ExitPlanMode" ] || exit 0
+
+LOG_DIR="$CLAUDE_PROJECT_DIR/.claude/logs"
+# Scope the gate to THIS session so two plan-mode sessions in the same repo never
+# consume each other's gate. Fall back to a fixed name when the runtime gives no
+# session_id. session-reset prunes stale gates by age, so a private name is safe.
+SID=$(printf '%s' "$INPUT" | jq -r '.session_id // empty' 2> /dev/null || echo '')
+GATE="$LOG_DIR/.plan-review-gate${SID:+-$SID}"
+mkdir -p "$LOG_DIR" 2> /dev/null || exit 0
+
+# Re-presentation after review: consume the gate and let the plan through.
+if [ -f "$GATE" ]; then
+  rm -f "$GATE" 2> /dev/null
+  exit 0
+fi
+
+# First presentation: arm the gate and route Claude through the reviewers.
+# If we cannot arm (read-only FS, etc.), fail soft rather than trap the user.
+: > "$GATE" 2> /dev/null || exit 0
+
+# permissionDecisionReason is shown to the user (kept short); additionalContext is
+# injected into the model's context (carries the full, actionable instruction).
+SHORT="k0d3: plan not yet reviewed — run /k0d3:review-plan on the plan file, apply the findings, then present."
+CONTEXT="k0d3: this plan has not been reviewed. Before presenting it: if the plan is not already saved \
+to a file, save it (e.g. docs/plans/<name>.md); then run /k0d3:review-plan <path-to-that-plan-file> — \
+pass the path explicitly. Let the 4 calibrated reviewers run, apply their findings to the plan, then \
+call ExitPlanMode again to present the improved plan; the re-presentation passes through automatically. \
+Note: this is a 4-reviewer pass (tokens + latency). The gate can only be disabled by launching Claude \
+with K0D3_SKIP_PLAN_REVIEW=1 in the environment — it cannot be toggled from inside a running session."
+
+# Best-effort observability (fail-soft); mirrors completeness-gate / verify-before-stop.
+printf -- '- `%s` | PLAN-REVIEW | DENY | armed gate, routed to /review-plan\n' \
+  "$(date +"%Y-%m-%d %H:%M:%S")" >> "$LOG_DIR/incident-log.md" 2> /dev/null || true
+
+jq -n --arg reason "$SHORT" --arg ctx "$CONTEXT" '{
+  hookSpecificOutput: {
+    hookEventName: "PreToolUse",
+    permissionDecision: "deny",
+    permissionDecisionReason: $reason,
+    additionalContext: $ctx
+  }
+}'
+exit 0
