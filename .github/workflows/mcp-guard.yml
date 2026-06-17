@@ -9,8 +9,11 @@ on:
       - "scripts/smoke-mcp-sequentialthinking.sh"
       - "scripts/smoke-mcp-codegraph.sh"
       - "scripts/test-prefer-codegraph.sh"
+      - "scripts/test-allow-codegraph.sh"
       - "hooks/codegraph-autoindex.sh"
       - "hooks/prefer-codegraph.sh"
+      - "hooks/allow-codegraph.sh"
+      - "hooks/hooks.json"
       - ".github/workflows/mcp-guard.yml"
   pull_request:
     paths:
@@ -19,8 +22,11 @@ on:
       - "scripts/smoke-mcp-sequentialthinking.sh"
       - "scripts/smoke-mcp-codegraph.sh"
       - "scripts/test-prefer-codegraph.sh"
+      - "scripts/test-allow-codegraph.sh"
       - "hooks/codegraph-autoindex.sh"
       - "hooks/prefer-codegraph.sh"
+      - "hooks/allow-codegraph.sh"
+      - "hooks/hooks.json"
       - ".github/workflows/mcp-guard.yml"
   schedule:
     # Daily — the bundled servers track npm `latest` (unpinned), so a daily smoke catches
@@ -56,3 +62,6 @@ jobs:
 
       - name: Test — prefer-codegraph Grep nudge
         run: bash scripts/test-prefer-codegraph.sh
+
+      - name: Test — allow-codegraph auto-approve
+        run: bash scripts/test-allow-codegraph.sh
