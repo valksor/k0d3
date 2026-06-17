@@ -74,7 +74,14 @@ Scan for:
 - **Daily notes:** Are there daily notes from 30+ days ago that should be archived?
 - **Task Board:** Are there tasks that have been "in progress" for more than a week?
 
-### Step 5: Check configuration health
+### Step 5: Check memory corpus integrity
+
+Keep the memory stores consistent. The project-local check runs with this command's tools (`Read` / `Grep`); the global auto-memory sweep is manual (that dir lives outside the project, so project-scoped Glob/Grep can't reach it). Report entity and file **names only** — never quote stored values, since the JSONL store is plaintext and a report may be shared.
+
+- **Knowledge-graph ↔ markdown drift (project-local):** the rule is "don't write the same fact into both stores — they drift." If `.claude/memory.jsonl` exists (it's gitignored runtime state — skip this sub-check if absent), list entity names with `grep '"name":' .claude/memory.jsonl` and check whether the same fact also lives in `knowledge-base.md`; flag duplicates by name, and graph entities whose observations reference removed files, tools, or APIs.
+- **Global auto-memory sweep (manual):** the auto-memory corpus — a `MEMORY.md` index plus one `.md` file per fact, cross-linked with `[[slug]]` wiki-links — lives outside the project. When asked to sweep it, point `Read` / `Grep` at that dir and flag: index lines whose target file is missing, fact files absent from the index, and dangling `[[slug]]` links (a slug with no matching file). Match `[[kebab-slug]]` note references only — ignore code/TOML/shell double-brackets such as `[[ -f x ]]` or `[[tool.mypy]]`. Note in the report whether this sweep ran or was skipped.
+
+### Step 6: Check configuration health
 
 - **settings.json:** Is `.claude/settings.json` valid JSON? (always at project `.claude/`, regardless of MODE)
 - **Hook scripts executable?** Check `$TARGET_HOOKS/*.sh` — each should have +x. List any without it.
@@ -82,7 +89,7 @@ Scan for:
 - **Memory.md size:** Is it within limits? (<100 lines target)
 - **Knowledge-base size:** Is it within limits? (<200 lines target)
 
-### Step 6: Generate drift report
+### Step 7: Generate drift report
 
 ```markdown
 # Drift Detection Report
@@ -101,6 +108,10 @@ Scan for:
 ## Stale Items
 
 - [stale memory, task, or reference]
+
+## Memory Corpus
+
+- [knowledge-graph ↔ markdown drift; if the global sweep ran, index/wiki-link orphans — else note it was skipped]
 
 ## Configuration Health
 

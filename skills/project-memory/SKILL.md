@@ -3,7 +3,7 @@ name: project-memory
 description: Use for persistent, cross-session memory of project FACTS — decisions, conventions, named entities — recorded in a local knowledge-graph MCP server, not within-session scratch.
 metadata:
   added: 2026-05-22
-  last_reviewed: 2026-05-22
+  last_reviewed: 2026-06-17
   type: core
   status: active
   invokes_shell: false
@@ -57,6 +57,23 @@ keyword, it's the graph. Don't write the same fact into both — they drift.
   second entity for the same thing.
 - **Relation** — a directed, active-voice edge: `auth-service` —`depends_on`→ `postgres`.
 
+### Taxonomy — keep it predictable
+
+The server matches by substring, not meaning, so a consistent vocabulary makes recall reliable.
+
+- **`entityType`** — reuse a small, fixed set. For fact-like memories prefer
+  `fact | decision | preference | reference | task | snippet`; for named systems a concrete kind
+  (`service`, `module`, `person`) is fine — just use the same word across entities, don't invent a new
+  type per fact.
+- **Confidence & tags as observations** — record `confidence: high|medium|low` and a `tags: [a, b]`
+  observation so the words you'll later search for live in the store. Lightweight, not mandatory.
+- **Scope** — the store is already project-local, so the one distinction worth marking is a
+  `scope: session` observation on facts that are session-only, so a later cleanup can prune them.
+
+The same `type` / `confidence` / `tags` taxonomy maps onto the global auto-memory notes — the per-fact
+`.md` files (with `metadata.type` frontmatter) indexed by `MEMORY.md`; aligning those is a separate,
+out-of-repo step that `/drift-detect` Step 5 can sweep.
+
 ## When to store
 
 The moment a fact becomes durable — don't wait for end of session:
@@ -71,6 +88,13 @@ The moment a fact becomes durable — don't wait for end of session:
   assume anything about architecture, ownership, or past decisions.
 - **Before re-deciding** something — search first; the answer may already be stored.
 - After recall, act on what you find. If a stored fact is now wrong, correct it (below).
+
+**Recall for the task, not just a keyword.** The server has no single "give me context" call (unlike
+`codegraph_context`), so compose one from the primitives:
+
+1. `search_nodes "<task keywords>"` broadly to find the relevant entities.
+2. `open_nodes` the top hits to pull their full observations and relations.
+3. Synthesize the task-relevant subset before you act — don't stop at the raw match list.
 
 ## Tool reference
 
