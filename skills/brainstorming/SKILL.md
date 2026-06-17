@@ -8,7 +8,7 @@ metadata:
   status: active
   invokes_shell: false
   shell_reviewed: "valksor 2026-05-17"
-  related: [planning, requirements-gathering, tdd]
+  related: [planning, requirements-gathering, tdd, interview-first]
   owns: brainstorming
 ---
 

@@ -8,7 +8,7 @@ metadata:
   status: active
   invokes_shell: false
   shell_reviewed: "valksor 2026-06-01"
-  related: [technical-writing, llm-essentials]
+  related: [technical-writing, llm-essentials, interview-first]
   keywords: [current, reply, session, whole]
   owns: concise-output
 ---

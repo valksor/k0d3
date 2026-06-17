@@ -47,3 +47,7 @@ For deployment-specific work (Docker, K8s, Terraform), there's no dedicated k0d3
 ## Output
 
 Explanatory prose: drop filler and hedging, prefer fragments, keep technical terms and symbol/API/error strings exact. Code, error messages, and commit/PR text: write normally. (k0d3's `concise` output style applies this session-wide when the user opts in; this directive keeps your output lean regardless.)
+
+## Before acting
+
+If the task as handed to you is underspecified — you'd produce materially different work depending on context you don't have — state your assumptions explicitly and surface the deciding question in your output rather than silently guessing. If the underspecified action would be irreversible or destructive, halt and surface the question rather than assuming. Don't interrogate a clear task; this applies only when the answer would change your approach. (k0d3's `interview-first` output style makes this the session default when the user opts in; this directive keeps you from guessing regardless.)

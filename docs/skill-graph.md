@@ -19,6 +19,7 @@ graph LR
   brainstorming --> planning
   brainstorming --> requirements-gathering
   brainstorming --> tdd
+  brainstorming --> interview-first
   bun-essentials --> node-essentials
   bun-essentials --> pnpm-essentials
   bun-essentials --> typescript
@@ -39,6 +40,7 @@ graph LR
   commit-writer --> finishing-a-development-branch
   concise-output --> technical-writing
   concise-output --> llm-essentials
+  concise-output --> interview-first
   database-redis --> postgres
   database-redis --> go-essentials
   database-redis --> infra-docker-compose
@@ -251,6 +253,9 @@ graph LR
   infra-prometheus-grafana --> observability-essentials
   infra-prometheus-grafana --> infra-docker-compose
   infra-prometheus-grafana --> infra-docker-swarm
+  interview-first --> requirements-gathering
+  interview-first --> brainstorming
+  interview-first --> concise-output
   llm-essentials --> claude-api
   llm-essentials --> agent-design
   llm-essentials --> python-openai-sdk
@@ -400,6 +405,7 @@ graph LR
   refactoring --> code-review
   requirements-gathering --> brainstorming
   requirements-gathering --> planning
+  requirements-gathering --> interview-first
   rest-essentials --> graphql-essentials
   rest-essentials --> websocket-essentials
   rest-essentials --> observability-essentials
