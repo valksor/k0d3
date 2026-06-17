@@ -1,6 +1,6 @@
 ---
 name: finishing-a-development-branch
-description: Use when implementation is done and tests pass, to integrate the work — verify tests, detect environment, present options (merge / PR / keep / discard), then execute and clean up.
+description: Use when implementation is done and tests pass, to integrate the work — verify, present options (merge / PR / keep / discard), then execute and clean up.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

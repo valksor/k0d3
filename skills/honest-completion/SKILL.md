@@ -1,6 +1,6 @@
 ---
 name: honest-completion
-description: Use when about to report a task done — don't claim success after a step failed (not logged in, build or tests failing). Blocked/needs-input are honest; a false 'done' is not.
+description: Use when about to report a task done — don't claim success after a step failed (not logged in, build/tests failing); blocked/needs-input is the honest call.
 metadata:
   added: 2026-06-16
   last_reviewed: 2026-06-16

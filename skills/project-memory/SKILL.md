@@ -1,6 +1,6 @@
 ---
 name: project-memory
-description: Use for persistent, cross-session memory of project FACTS — decisions, conventions, named entities — recorded in a local knowledge-graph MCP server, not within-session scratch.
+description: Use for persistent, cross-session memory of project FACTS — decisions, conventions, named entities — in a local knowledge-graph MCP server, not session scratch.
 metadata:
   added: 2026-05-22
   last_reviewed: 2026-06-17

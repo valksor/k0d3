@@ -1,6 +1,6 @@
 ---
 name: debugging
-description: Use for any bug, test failure, or unexpected behavior before proposing fixes. Four phases — root-cause, pattern analysis, hypothesis, implementation. No fix without root cause.
+description: Use for any bug, test failure, or unexpected behavior before proposing fixes — root-cause, hypothesis, implementation. No fix without root cause.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

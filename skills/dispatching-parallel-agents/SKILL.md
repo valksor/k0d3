@@ -1,6 +1,6 @@
 ---
 name: dispatching-parallel-agents
-description: Use for 2+ INDEPENDENT investigations runnable CONCURRENTLY without shared state — one agent per domain. Investigation, not implementation, vs `subagent-driven-development`.
+description: Use for 2+ INDEPENDENT investigations runnable CONCURRENTLY — one agent per domain. Investigation, not implementation, vs subagent-driven-development.
 metadata:
   keywords: [concurrent]
   added: 2026-05-18

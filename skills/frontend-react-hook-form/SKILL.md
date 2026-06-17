@@ -1,6 +1,6 @@
 ---
 name: frontend-react-hook-form
-description: Use when building forms with react-hook-form — register vs Controller, schema resolvers (zod), useFieldArray, performance, async validation, integration with Ant Design / shadcn.
+description: Use when building forms with react-hook-form — register vs Controller, zod resolvers, useFieldArray, performance, async validation, Ant Design/shadcn.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

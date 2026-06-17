@@ -1,6 +1,6 @@
 ---
 name: interview-first
-description: Use when the user wants to be interviewed before you act ("interview me first", "ask before building") — clarify now, then signpost the durable k0d3:interview-first output style.
+description: Use when asked to interview you before acting ("interview me first", "ask before building") — clarify, then point at the k0d3:interview-first output style.
 metadata:
   added: 2026-06-17
   last_reviewed: 2026-06-17

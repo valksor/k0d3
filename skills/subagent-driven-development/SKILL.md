@@ -1,6 +1,6 @@
 ---
 name: subagent-driven-development
-description: Use to execute an APPROVED multi-task plan in-session — fresh subagent per task, SEQUENTIAL, two-stage review. Implementation, vs `dispatching-parallel-agents` (investigation).
+description: Use to execute an APPROVED multi-task plan — fresh subagent per task, SEQUENTIAL, two-stage review. Implementation, vs dispatching-parallel-agents.
 metadata:
   keywords: [sdd]
   added: 2026-05-18

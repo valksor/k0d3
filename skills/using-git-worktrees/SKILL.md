@@ -1,6 +1,6 @@
 ---
 name: using-git-worktrees
-description: Use when feature work needs isolation from the current workspace, or before executing an implementation plan. Prefers native worktree tools, falls back to manual git worktree.
+description: Use when feature work needs isolation, or before executing an implementation plan — native worktree tools, else manual git worktree.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18
