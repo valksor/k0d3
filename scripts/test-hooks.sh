@@ -281,5 +281,64 @@ else
 fi
 rm -f "$SID_GATE"
 
+# Commit-plan sentinel skip: only the plan's FIRST line, matched against the EXACT
+# `<!-- k0d3:commit-plan -->` marker, bypasses the gate — and the skip never arms the
+# gate, so a code plan later in the session is still reviewed. /k0d3:execute:commit
+# emits this marker as line 1 of the Commit Plan it presents.
+#
+# NOTE: run_plan_case (above) hardcodes plan text "x" and so can NEVER exercise this
+# skip — these cases need their own helper that injects an arbitrary plan body.
+# jq --arg JSON-encodes the body, so a body carrying real newlines (bash $'...\n...')
+# becomes a valid JSON string (a literal newline inside a JSON string is invalid).
+run_marker_case() {
+  local label="$1" body="$2" expect="$3" expect_gate="$4"
+  local out decision gate
+  rm -f "$PLAN_GATE"
+  out="$(jq -nc --arg p "$body" '{tool_name:"ExitPlanMode",tool_input:{plan:$p}}' |
+    bash "$REPO_ROOT/$REVIEW_PLAN" 2> /dev/null)"
+  if [[ -z "$out" ]]; then
+    decision="allow"
+  else
+    decision="$(printf '%s' "$out" | jq -r '.hookSpecificOutput.permissionDecision // "allow"' 2> /dev/null)"
+  fi
+  [[ -f "$PLAN_GATE" ]] && gate="armed" || gate="absent"
+  if [[ "$decision" == "$expect" && "$gate" == "$expect_gate" ]]; then
+    PASS=$((PASS + 1))
+  else
+    echo "FAIL $label: expected $expect/$expect_gate, got $decision/$gate; out=$out" >&2
+    FAIL=$((FAIL + 1))
+  fi
+  rm -f "$PLAN_GATE"
+}
+
+# Skips (allow, gate untouched): marker leads line 1, leading whitespace tolerated.
+run_marker_case "marker-first-line-skips" $'<!-- k0d3:commit-plan -->\n## Commit Plan\n' "allow" "absent"
+run_marker_case "marker-leading-ws-skips" $'   <!-- k0d3:commit-plan -->\n## Commit Plan' "allow" "absent"
+# Still reviewed (deny, gate armed): marker below line 1, in-prose, or a near-miss
+# prefix — the first-line-only + close-`-->` anchoring is what these prove.
+run_marker_case "marker-on-line-2-denies" $'## Plan\n<!-- k0d3:commit-plan -->\nstep 1' "deny" "armed"
+run_marker_case "marker-in-prose-denies" $'## Plan\nWe edit the <!-- k0d3:commit-plan --> marker.' "deny" "armed"
+run_marker_case "marker-near-miss-denies" $'<!-- k0d3:commit-planner -->\n## Plan' "deny" "armed"
+
+# Gate-already-armed interaction: a code plan was denied (gate armed); a commit plan
+# presented BEFORE the re-presentation must skip WITHOUT consuming that gate, so the
+# code plan's re-presentation still finds it and passes. Guards the skip-before-consume
+# ordering against a future refactor.
+rm -f "$PLAN_GATE"
+: > "$PLAN_GATE" # simulate an armed gate from a prior code-plan deny
+commit_armed_out="$(jq -nc '{tool_name:"ExitPlanMode",tool_input:{plan:"<!-- k0d3:commit-plan -->\n## Commit Plan"}}' |
+  bash "$REPO_ROOT/$REVIEW_PLAN" 2> /dev/null)"
+if [[ -z "$commit_armed_out" && -f "$PLAN_GATE" ]]; then PASS=$((PASS + 1)); else
+  echo "FAIL plan-commit-leaves-armed-gate: commit plan must not consume an armed gate; out=$commit_armed_out gate=$([[ -f $PLAN_GATE ]] && echo armed || echo absent)" >&2
+  FAIL=$((FAIL + 1))
+fi
+codeplan_out="$(printf '{"tool_name":"ExitPlanMode","tool_input":{"plan":"x"}}' |
+  bash "$REPO_ROOT/$REVIEW_PLAN" 2> /dev/null)"
+if [[ -z "$codeplan_out" && ! -f "$PLAN_GATE" ]]; then PASS=$((PASS + 1)); else
+  echo "FAIL plan-codeplan-consumes-after-commit: re-presentation should consume the gate; out=$codeplan_out gate=$([[ -f $PLAN_GATE ]] && echo armed || echo absent)" >&2
+  FAIL=$((FAIL + 1))
+fi
+rm -f "$PLAN_GATE"
+
 echo "test-hooks.sh: $PASS pass, $FAIL fail" >&2
 exit $((FAIL > 0 ? 1 : 0))
