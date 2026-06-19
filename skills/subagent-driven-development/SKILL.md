@@ -36,7 +36,7 @@ Otherwise: manual execution, or brainstorm first.
 
 For each task:
 
-1. **Dispatch implementer subagent** with full task text + context (don't make them read the plan file).
+1. **Dispatch implementer subagent** with full task text + context (don't make them read the plan file). The task's `Done when` and `Out of scope` lines are part of that text — the implementer must satisfy the first and stay inside the second.
 2. **Answer any questions** the implementer asks before they proceed.
 3. **Implementer implements, tests, commits, self-reviews.**
 4. **Dispatch spec reviewer subagent** — confirms code matches spec exactly.
@@ -94,6 +94,7 @@ Implementers return one of four:
 **Stage 1: spec compliance**
 
 - "Does this code match the spec? Anything missing? Anything extra?"
+- Verify the task's `Done when` check actually passes and nothing outside its `Out of scope` fence was touched (a task with no `Out of scope` line fences nothing — don't flag its absence).
 - Reviewer is read-only (`tools: [Read, Grep, Glob]`)
 - Issues → implementer fixes → spec reviewer re-reviews → repeat
 

@@ -21,7 +21,7 @@ Take whatever the user described and identify:
 
 - **The problem:** What pain does this solve?
 - **The solution:** What are we building?
-- **The user:** Who benefits?
+- **The stakeholders:** Who benefits (primary users), who sponsors/approves it, who maintains it after launch, and anyone else materially affected? Naming all of them — not just the end user — surfaces needs and constraints a single-user lens misses.
 - **The outcome:** What does success look like?
 
 If any of these are unclear from the input, make reasonable assumptions and flag them.
@@ -46,7 +46,7 @@ If any of these are unclear from the input, make reasonable assumptions and flag
 
 ### Step 3: User stories
 
-Write 5-10 user stories in standard format:
+Write 5-10 user stories in standard format — `[user type]` can be any stakeholder identified above, not only end users:
 
 ```
 As a [user type], I want to [action] so that [benefit].
@@ -111,9 +111,12 @@ Save to `briefs/[project-name]-brief.md`:
 
 [What are we building?]
 
-## Target User
+## Stakeholders
 
-[Who benefits?]
+- **Primary users:** [who uses it day-to-day, and what they need]
+- **Decision-makers:** [who sponsors/approves, and what they care about]
+- **Maintainers:** [who keeps it running after launch]
+- **Affected parties:** [anyone impacted who isn't a direct user]
 
 ## Success Criteria
 

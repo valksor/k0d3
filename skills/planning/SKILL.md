@@ -73,6 +73,10 @@ Every plan MUST start with:
 - Modify: `exact/path/to/existing.py:123-145`
 - Test: `tests/exact/path/to/test.py`
 
+**Done when:** the test check passes — e.g. `pytest tests/exact/path/to/test.py -q` (substitute your stack's runner: `go test ./...`, `vitest run`, …) — and [any behavior that must be observable].
+
+**Out of scope:** [files/refactors/behavior reserved for another task — omit if nothing adjacent is at risk].
+
 - [ ] **Step 1: Write the failing test**
 
 ```python
@@ -103,6 +107,8 @@ git add tests/path/test.py src/path/file.py
 git commit -m "<message per Skill(k0d3:commit-writer) — extract style from `git log -5 | cat`, do not invent>"
 ```
 ````
+
+`Done when` and `Out of scope` are the task-level contract. `Done when` is the single check that proves completion — a fresh subagent runs it and stops guessing whether it's finished; put it on every task. `Out of scope` fences what the task must not touch, so a subagent executing one task in isolation doesn't drift into another task's files — when in doubt, include it; omit only when no adjacent file or responsibility could be wrongly pulled in.
 
 ## No placeholders
 
