@@ -70,7 +70,7 @@ Current activity has no clear path back to original task. You've lost the plot.
 
 - If you're refactoring code that isn't broken: probably a yak shave
 - If you're building a tool to do a task you could do manually in 5 minutes: definitely a yak shave
-- If you're "just quickly" doing something that isn't on the task board: yak shave
+- If you're "just quickly" doing something that isn't part of the current task or goal: yak shave
 - If you're optimizing something that hasn't been measured: yak shave
 - If you're adding tests for code you're about to delete: yak shave
 - If you caught yourself saying "while I'm here, I might as well...": yak shave

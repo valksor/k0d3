@@ -25,6 +25,6 @@ COMPACT_TIME=$(cat "$MARKER" 2> /dev/null || echo "unknown")
 rm -f "$MARKER"
 
 # Output resumption context for Claude
-echo "POST-COMPACTION RESUME: Context was auto-compacted at $COMPACT_TIME. Session state was preserved in memory.md and daily note. Read .claude/memory.md and the latest Daily Note (look for the latest Session Handoff) to reload context, then continue working on whatever task was in progress. Do not ask the user what to do — just resume seamlessly."
+echo "POST-COMPACTION RESUME: Context was auto-compacted at $COMPACT_TIME. Session state was preserved in memory.md. Read .claude/memory.md — use the latest \`## Session Handoff\` block if present, otherwise reload from the \`## Now\` section — to reload context, then continue working on whatever task was in progress. Do not ask the user what to do — just resume seamlessly."
 
 exit 0

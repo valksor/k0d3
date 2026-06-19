@@ -14,7 +14,7 @@ Persist session state then seamlessly resume work. The user should not notice th
 
 **Tool scope (rm constraint):** the `Bash(rm:*)` grant permits any `rm` invocation at the runtime level. **You MUST only call `rm` against files inside `.claude/logs/`** — never any other path. The Step 0 invocation is the only sanctioned `rm` call in this command; do not improvise additional cleanups.
 
-**Emergency mode** (compacting/prompt-too-long): Skip reads, distill from in-context memory only, go to Step 3.
+**Emergency mode** (compacting/prompt-too-long): Skip the Step 1 reads — distill from in-context memory only (Step 2), then persist to memory.md (Step 3).
 
 ---
 
@@ -26,9 +26,9 @@ Persist session state then seamlessly resume work. The user should not notice th
 date +"%m%d%y %H:%M" && rm -f ".claude/logs/.quality-gate-active" ".claude/logs/.session-blocks-$(date +"%m%d-%H")" ".claude/logs/.tool-call-count" ".claude/logs/.compaction-occurred"
 ```
 
-### Step 1: Read state (parallel, skip in emergency)
+### Step 1: Read state (skip in emergency)
 
-Read simultaneously: `.claude/memory.md` + `Daily Notes/MMDDYY.md`
+Read `.claude/memory.md` — the single session-state anchor.
 
 ### Step 2: Distill session (from in-context memory)
 
@@ -42,9 +42,12 @@ Extract and compress using **restorable compression** — preserve retrieval pat
 6. **Active references** — URLs, API endpoints, external resources consulted. Drop content, keep the pointer.
 7. **Next action** — precise, actionable instruction including which file(s) to read first
 
-### Step 3: Write handoff to daily note
+### Step 3: Persist handoff to memory.md
 
-Append (or create new daily note if none exists):
+Edit `.claude/memory.md` so the resumed session can restore from it. Fold the distilled
+session into the existing sections (Now ← Task + Next, Open Threads ← Remaining, Recent
+Decisions ← Decisions, Blockers ← anything blocking), then append a `## Session Handoff`
+block that carries the retrieval anchors a compact narrative would otherwise lose:
 
 ```markdown
 ## Session Handoff — HH:MM
@@ -58,11 +61,10 @@ Append (or create new daily note if none exists):
 **Next:** [precise action + which file(s) to read first]
 ```
 
-### Step 4: Update memory.md (only if changed)
+Use `Edit` (not `Write`) so the 100-line completeness cap on `memory.md` Writes does not
+apply; prune any stale prior handoff block as you go.
 
-New priorities, threads, decisions → edit. Nothing changed → skip.
-
-### Step 5: Promote and nominate learnings (only if discovered)
+### Step 4: Promote and nominate learnings (only if discovered)
 
 **Two-tier promotion:**
 
@@ -82,14 +84,13 @@ Append: `- [MMDDYY] /safe-clear: [learning] | Evidence: [source]`
 
 **Rule: When in doubt, promote. A rule in knowledge-base.md that gets corrected later is better than a rule in nominations that never gets seen.**
 
-### Step 6: Auto-resume (restorable decompression)
+### Step 5: Auto-resume (restorable decompression)
 
 Do NOT output a resumption prompt. Do NOT ask the user anything. Instead:
 
-1. Re-read `.claude/memory.md` and `.claude/knowledge-base.md` (compressed context reload)
-2. Re-read the daily note handoff you just wrote (for the Next action)
-3. **Restore from retrieval anchors** — re-read the file(s) specified in the **Next** field and any critical files from the **Files** list that the next action depends on. This is the decompression step: the handoff told you _what_ happened; re-reading the files restores _how_ to continue.
-4. **Immediately execute the Next action** — pick up exactly where you left off
+1. Re-read `.claude/memory.md` and `.claude/knowledge-base.md` (compressed context reload — the Session Handoff block you just wrote carries the **Next** action)
+2. **Restore from retrieval anchors** — re-read the file(s) specified in the **Next** field and any critical files from the **Files** list that the next action depends on. This is the decompression step: the handoff told you _what_ happened; re-reading the files restores _how_ to continue.
+3. **Immediately execute the Next action** — pick up exactly where you left off
 
 The user should experience a brief pause, then work continuing seamlessly. No visible "clearing" or "resuming" messages. Just keep working.
 

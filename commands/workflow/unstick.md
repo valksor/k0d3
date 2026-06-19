@@ -19,7 +19,6 @@ Break through a block. Uses the Unsticker agent for root-cause analysis and fres
 If the user described what they're stuck on, use that. Otherwise, infer from:
 
 - Current memory.md → Now
-- Recent daily note entries
 - Last few tool calls in context
 
 Articulate the block in one sentence: "I'm stuck on [X] because [Y]."
@@ -53,16 +52,12 @@ Break this down. What am I missing?
 Take the unsticker's top recommendation and try it immediately.
 Don't deliberate — act. The fastest way out of stuck is through.
 
-### Step 5: Log the resolution
+### Step 5: Capture the learning
 
-If resolved, add to daily note:
+If the fix reveals a reusable pattern, nominate it to `.claude/knowledge-nominations.md`:
 
 ```markdown
-### Unstick — HH:MM
-
-- **Block:** [what was stuck]
-- **Root cause:** [why]
-- **Fix:** [what worked]
+- [MMDDYY] /unstick: [block] → [fix] | Root cause: [why]
 ```
 
-If the fix reveals a pattern, nominate to knowledge-nominations.md.
+Otherwise just report the resolution to the user — no need to persist a one-off.

@@ -6,7 +6,7 @@
 # Each file path gets path-specific validation rules. Non-critical files pass through.
 #
 # Philosophy: Only gate files where an incomplete write causes persistent damage.
-# Daily notes, scratchpad, logs, templates = ungated (iterative by nature).
+# Logs, templates, and other iterative files = ungated (iterative by nature).
 # Knowledge-base, settings, memory = gated (errors persist/cascade).
 #
 # Implementation note: large CONTENT values are written to a temp file before

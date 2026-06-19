@@ -44,7 +44,7 @@ Putting a fact in the wrong store is the most common mistake.
 | Store                                                                   | Holds                                                         | Read/written by               | Shape            |
 | ----------------------------------------------------------------------- | ------------------------------------------------------------- | ----------------------------- | ---------------- |
 | **Knowledge graph (JSONL)** — `.claude/memory.jsonl` (`mcp__memory__*`) | Durable, queryable facts: entities + observations + relations | **You**, via MCP tools        | Structured graph |
-| **Markdown memory** — `.claude/memory.md`, `knowledge-base.md`          | Human-readable session narrative, confirmed rules             | `/start`, `/sync`, `/wrap-up` | Prose            |
+| **Markdown memory** — `.claude/memory.md`, `knowledge-base.md`          | Human-readable session narrative, confirmed rules             | `/safe-clear`, you            | Prose            |
 
 Rule of thumb: if a human reads it as a story, it's markdown. If _you_ will query it later by name or
 keyword, it's the graph. Don't write the same fact into both — they drift.

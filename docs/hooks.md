@@ -160,7 +160,7 @@ Official reference: <https://code.claude.com/docs/en/hooks>.
 
 ## Opt-in: auto-run the auditor on Stop (agent hook)
 
-The `auditor` agent is invoked by the `/audit` command and as part of `/wrap-up`. To run it **automatically at the end of every turn**, the `agent` hook type makes that possible. Replace the `Stop` block in `hooks.json` with the merged array below — it keeps the existing `log-stop-verdict` logger and adds the agent hook as the second entry (this is the final state of the whole `Stop` array, not a snippet to append; the `Stop` event takes no `matcher`, so it fires on every stop):
+The `auditor` agent is invoked by the `/audit` command. To run it **automatically at the end of every turn**, the `agent` hook type makes that possible. Replace the `Stop` block in `hooks.json` with the merged array below — it keeps the existing `log-stop-verdict` logger and adds the agent hook as the second entry (this is the final state of the whole `Stop` array, not a snippet to append; the `Stop` event takes no `matcher`, so it fires on every stop):
 
 ```json
 "Stop": [
@@ -175,7 +175,7 @@ The `auditor` agent is invoked by the `/audit` command and as part of `/wrap-up`
 
 The prompt references `CLAUDE.md` and `.claude/knowledge-base.md` as project-relative paths; adapt them to your repo (or the audit reads nothing where those files are absent).
 
-**Cost caveat:** this spawns a subagent at every turn-end — measurable token + latency overhead, and it fires even on trivial turns. The `agent` hook type is **experimental**. For most workflows, on-demand `/audit` (or `/wrap-up` at end of day) is the better trade; enable this only if you specifically want unattended, every-turn auditing.
+**Cost caveat:** this spawns a subagent at every turn-end — measurable token + latency overhead, and it fires even on trivial turns. The `agent` hook type is **experimental**. For most workflows, on-demand `/audit` is the better trade; enable this only if you specifically want unattended, every-turn auditing.
 
 ## Opt-in: green-gate — typecheck/lint after edits (command hook)
 

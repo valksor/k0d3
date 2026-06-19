@@ -63,8 +63,7 @@ fi
 # 4. Ensure required runtime directories exist
 # ═══════════════════════════════════════════════════════
 mkdir -p "$CLAUDE_PROJECT_DIR/.claude/agent-memory" \
-  "$CLAUDE_PROJECT_DIR/.claude/backups" \
-  "$CLAUDE_PROJECT_DIR/Daily Notes" 2> /dev/null
+  "$CLAUDE_PROJECT_DIR/.claude/backups" 2> /dev/null
 
 # ═══════════════════════════════════════════════════════
 # 5. Prune old log files (keep last 30 days)

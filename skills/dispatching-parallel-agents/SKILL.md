@@ -113,7 +113,7 @@ After agents return:
 
 **When one agent fails / returns nothing / times out**: re-dispatch the same agent solo with the original error context verbatim and a narrower FILE SCOPE (e.g., specific file paths instead of a directory). If the second run also fails (context overrun, sandbox restriction, tool error), investigate sequentially yourself — do NOT re-dispatch the full parallel batch. Per-agent context budget matters: dispatching 5+ agents with broad read permissions can saturate each agent's context mid-task; cap file reads or scope the prompt to a specific path tree.
 
-**Secrets in agent summaries.** Agent return summaries land in your context (and via hooks may land in `.claude/logs/`, daily notes, or audit trails). If an agent investigates env-var loading, integration tests, or any path that touches credentials, instruct it in the prompt: "Never echo or quote environment variable values, file contents under `.env*`, or any token-shaped string in your summary — refer to them by name only." A `DATABASE_URL=postgres://admin:hunter2@host/db` in a summary persists in logs forever.
+**Secrets in agent summaries.** Agent return summaries land in your context (and via hooks may land in `.claude/logs/` or audit trails). If an agent investigates env-var loading, integration tests, or any path that touches credentials, instruct it in the prompt: "Never echo or quote environment variable values, file contents under `.env*`, or any token-shaped string in your summary — refer to them by name only." A `DATABASE_URL=postgres://admin:hunter2@host/db` in a summary persists in logs forever.
 
 ## Anti-patterns
 

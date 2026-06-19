@@ -94,7 +94,7 @@ Code-quality cohort agents are read-only (`tools: [Read, Grep, Glob]`).
 
 Five categories under `commands/`:
 
-- **workflow/**: `/start /sync /wrap-up /audit /safe-clear /unstick /retro /system-audit /standup /handoff /playbook /update-k0d3`
+- **workflow/**: `/audit /safe-clear /unstick /system-audit /handoff /playbook /update-k0d3`
 - **plan/**: `/brief /brainstorm /plan /onboard`
 - **execute/**: `/tdd /refactor /migrate /debug /commit /pr /ship /release`
 - **review/**: `/review /review-plan /review-impl /security-audit`

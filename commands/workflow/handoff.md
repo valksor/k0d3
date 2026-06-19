@@ -22,9 +22,7 @@ Generate a structured handoff briefing when passing work to another person or AI
 
 Read:
 
-- `.claude/memory.md` — current state
-- Recent daily note — today's work log
-- `Task Board.md` — active tasks and priorities
+- `.claude/memory.md` — current state, open threads, and decisions
 - `git status` and `git log --oneline -10` — recent changes
 
 ### Step 2: Identify what was done

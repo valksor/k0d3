@@ -71,8 +71,6 @@ Scan for:
 
 - **Memory.md:** Is "Now" section from more than 3 days ago?
 - **Knowledge-base entries:** Do any reference outdated tools, APIs, or patterns?
-- **Daily notes:** Are there daily notes from 30+ days ago that should be archived?
-- **Task Board:** Are there tasks that have been "in progress" for more than a week?
 
 ### Step 5: Check memory corpus integrity
 

@@ -74,7 +74,6 @@ Apply this `$TARGET_*` resolution to every check below.
 - `.claude/knowledge-base.md`: Is it under 200 lines? Do all entries have `[Source:]`?
 - `.claude/knowledge-nominations.md`: Are there stale nominations (>30 days)?
 - `.claude/agent-memory/`: Do directories match existing agents in `$TARGET_AGENTS/`?
-- `Daily Notes/`: Are recent notes present?
 
 ### Check 5: Log Health
 
@@ -123,7 +122,7 @@ In `plugin-source` mode: same checks but against the plugin repo's own `CLAUDE.m
 
 ## Output
 
-Write results to daily note under:
+Report results to the user, and append them to `.claude/logs/audit-trail.md` under:
 
 ```markdown
 ## System Audit — MMDDYY (mode: [plugin-source|installed])
@@ -131,7 +130,7 @@ Write results to daily note under:
 **Grade:** [A-F]
 **Checks:** [passed]/9
 **Issues:** [bullets with severity]
-**Actions:** [corrective tasks, if any]
+**Actions:** [corrective actions, if any]
 ```
 
-Create corrective tasks on Task Board for any D or F grade issues.
+Call out the corrective actions needed for any D or F grade issues.
