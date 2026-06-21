@@ -5,7 +5,7 @@ valksor's consolidated Claude Code skills, agents, commands, and hooks. Single s
 ## Install
 
 ```bash
-# From GitHub (once the repo is published)
+# From GitHub
 /plugin marketplace add valksor/k0d3
 /plugin install k0d3@valksor
 ```
@@ -26,7 +26,7 @@ After install, in any Claude Code session, type `Skill(k0d3:using-k0d3)` as a me
 - **PyYAML** (Python) — required by the lint/smoke/skill-graph scripts. Install with `pip install pyyaml`. The scripts use `yaml.safe_load()` only — never `yaml.load()` — so the historical PyYAML deserialization CVEs do not apply.
 - **jq** — used by hooks for JSON parsing. Install via your package manager (`brew install jq`, `apt install jq`).
 - **bash 3.2+** — the project targets the macOS system bash, so hooks and scripts avoid bash 4+ features (associative arrays, `mapfile`).
-- **Node.js / `npx`** — for the bundled stdio MCP servers (`memory` = `@modelcontextprotocol/server-memory`, `sequential-thinking` = `@modelcontextprotocol/server-sequential-thinking`). Install via your package manager (`brew install node`). Fails soft: if Node is absent (or the very first run is offline), only those two stdio servers are unavailable — their features are disabled and everything else in k0d3 (including the HTTP-based context7) works.
+- **Node.js / `npx`** — for the bundled stdio MCP servers (`memory` = `@modelcontextprotocol/server-memory`, `sequential-thinking` = `@modelcontextprotocol/server-sequential-thinking`, `codegraph` = `@colbymchenry/codegraph`). Install via your package manager (`brew install node`). Fails soft: if Node is absent (or the very first run is offline), only those three stdio servers are unavailable — their features are disabled and everything else in k0d3 (including the HTTP-based context7) works.
 
 ## Prefix
 
@@ -37,11 +37,12 @@ When another installed plugin defines the same name, **type the explicit `k0d3:`
 ```
 .claude-plugin/plugin.json    — manifest
 .mcp.json                     — bundled MCP servers (context7 + memory + sequential-thinking + codegraph, auto-enabled)
-skills/                       — ~140 active at one level (slug == directory)
+skills/                       — 143 active at one level (slug == directory)
 agents/                       — workflow/, reviewers/, experts/
 commands/                     — workflow/, plan/, execute/, review/, analyze/
-hooks/                        — 15 shell hooks (12 enabled by default in hooks.json; rest opt-in)
+hooks/                        — 18 shell hooks (15 enabled by default in hooks.json; 3 opt-in)
 scripts/                      — validators, smoke runner, graph generator
+output-styles/                — opt-in output styles (concise, interview-first)
 tests/                        — fixtures for validator + hook tests
 docs/                         — conventions, architecture, hooks, …
 references/                   — long-form material linked from skills
@@ -97,7 +98,9 @@ bash scripts/smoke-mcp-sequentialthinking.sh   # launches the sequential-thinkin
 bash scripts/smoke-mcp-codegraph.sh            # launches the codegraph server, asserts it advertises its tools (needs Node+network; skips otherwise)
 ```
 
-CI runs the skill checks too: `.github/workflows/skills-guard.yml` executes the lint, smoke, sharpness, and hook-fixture scripts on every push/PR that touches skills, agents, commands, hooks, references, or scripts — so a bad frontmatter or dead `references/` link can't land on master unnoticed.
+CI runs the skill checks too: `.github/workflows/skills-guard.yml` executes the lint, smoke, sharpness, and hook-fixture scripts on every push/PR that touches skills, agents, commands, hooks, references, scripts, output-styles, or tests — so a bad frontmatter or dead `references/` link can't land on master unnoticed.
+
+A separate `.github/workflows/mcp-guard.yml` runs the three `smoke-mcp-*.sh` checks (plus the `prefer-codegraph`/`allow-codegraph` hook-fixture tests) on every push or PR that touches them, and on a daily cron. It is a **liveness canary** — it proves each bundled server still launches and advertises its tools — not a supply-chain/trust control.
 
 There is also an opt-in (billed — each prompt is a real headless `claude -p` session) trigger-rate harness, deliberately NOT in CI:
 
@@ -141,8 +144,8 @@ See `docs/conventions.md` for the full frontmatter schema and lint rules.
 
 ## Contributing
 
-Open an issue at `https://github.com/valksor/k0d3/issues` (once the repo is public). Before submitting a PR, run the verification scripts above and confirm `0 fail` (the `skills-guard` CI workflow runs the same checks on the PR). Skills that don't follow the voice rules will be revised in review.
+Open an issue at `https://github.com/valksor/k0d3/issues`. Before submitting a PR, run the verification scripts above and confirm `0 fail` (the `skills-guard` CI workflow runs the same checks on the PR). Skills that don't follow the voice rules will be revised in review.
 
 ## License
 
-MIT. A `LICENSE` file will be added when the repo is published; until then `plugin.json` is the canonical license declaration.
+MIT, declared in `plugin.json` (the canonical declaration). There is no top-level `LICENSE` file, so GitHub's license detection shows none.
