@@ -13,9 +13,10 @@
 # single-fire gate is loop-safe by construction.
 #
 # Escape hatch: K0D3_SKIP_PLAN_REVIEW=1 → allow immediately (mirrors
-# K0D3_SKIP_VALIDATOR). Per-plan skip: a plan whose first line is the
-# `<!-- k0d3:commit-plan -->` sentinel (emitted by /k0d3:execute:commit) is allowed
-# without arming the gate — a commit plan is not code. Fail-soft: missing jq, unset
+# K0D3_SKIP_VALIDATOR). Per-plan skip: a plan containing the
+# `<!-- k0d3:commit-plan -->` sentinel on a standalone line (emitted by
+# /k0d3:execute:commit) is allowed without arming the gate — a commit plan is not
+# code. Fail-soft: missing jq, unset
 # CLAUDE_PROJECT_DIR, a non-ExitPlanMode tool, or an un-writable gate dir → exit 0
 # (never trap the user in plan mode).
 #
@@ -48,20 +49,29 @@ SID=$(printf '%s' "$INPUT" | jq -r '.session_id // empty' 2> /dev/null || echo '
 GATE="$LOG_DIR/.plan-review-gate${SID:+-$SID}"
 mkdir -p "$LOG_DIR" 2> /dev/null || exit 0
 
-# Commit plans are not code — /k0d3:execute:commit marks the plan it presents with
-# a first-line `<!-- k0d3:commit-plan -->` sentinel so this gate skips the 4-reviewer
-# pass on it. Match ONLY the plan's first line (CR-stripped) against the EXACT marker
-# (close `-->` anchored): a marker on a later line, an incidental in-prose mention, or
-# a near-miss like `k0d3:commit-planner` must NOT skip a real code plan. Allow
-# immediately and WITHOUT touching the single-fire gate, so a code plan later in the
-# same session is still reviewed. Fail-open by construction (a missed marker just gets
-# the normal review), never a deadlock.
+# Commit plans are not code — /k0d3:execute:commit leads the plan it presents with a
+# `<!-- k0d3:commit-plan -->` sentinel so this gate skips the 4-reviewer pass on it.
+# Match the EXACT marker (close `-->` anchored) on ANY standalone line of the plan, not
+# just line 1: /commit appends its Commit Plan to the active plan file, so the marker is
+# rarely the literal first line of the presented string. The `^...[[:space:]]*$` anchor
+# keeps it to a line of its own (CR absorbed by the trailing class), so an in-prose
+# mention or a near-miss like `k0d3:commit-planner` still gets the normal review.
+# Accepted false-skip: a real code plan carrying the exact sentinel on its own line (a
+# meta-plan documenting this hook, even inside a fenced block) also skips — fine, the
+# token is k0d3-internal and the gate is fail-open. Allow immediately and WITHOUT
+# touching the single-fire gate, so a code plan later in the session is still reviewed.
+#
+# awk (one process) yields the 1-based line number of the FIRST standalone-line match,
+# or empty if none — used only to enrich the skip log. Preferred over `grep -n | head |
+# cut` because awk reads the final record even when the plan has no trailing newline
+# (grep's behavior on an unterminated last line is POSIX-undefined), and it carries no
+# pipefail/SIGPIPE or colon-split fragility.
 PLAN=$(printf '%s' "$INPUT" | jq -r '.tool_input.plan // empty' 2> /dev/null || echo '')
-FIRST_LINE=${PLAN%%$'\n'*}      # text before the first newline
-FIRST_LINE=${FIRST_LINE%$'\r'}  # tolerate CRLF line endings
-if printf '%s' "$FIRST_LINE" | grep -qE '^[[:space:]]*<!--[[:space:]]*k0d3:commit-plan[[:space:]]*-->[[:space:]]*$'; then
-  printf -- '- `%s` | PLAN-REVIEW | SKIP | commit-plan marker (session %s), review bypassed\n' \
-    "$(date +"%Y-%m-%d %H:%M:%S")" "${SID:-none}" >> "$LOG_DIR/incident-log.md" 2> /dev/null || true
+MARKER_LINE=$(printf '%s' "$PLAN" \
+  | awk '/^[[:space:]]*<!--[[:space:]]*k0d3:commit-plan[[:space:]]*-->[[:space:]]*$/ { print NR; exit }')
+if [ -n "$MARKER_LINE" ]; then
+  printf -- '- `%s` | PLAN-REVIEW | SKIP | commit-plan marker on line %s (session %s), review bypassed\n' \
+    "$(date +"%Y-%m-%d %H:%M:%S")" "$MARKER_LINE" "${SID:-none}" >> "$LOG_DIR/incident-log.md" 2> /dev/null || true
   exit 0
 fi
 

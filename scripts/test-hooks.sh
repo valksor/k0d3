@@ -281,10 +281,10 @@ else
 fi
 rm -f "$SID_GATE"
 
-# Commit-plan sentinel skip: only the plan's FIRST line, matched against the EXACT
-# `<!-- k0d3:commit-plan -->` marker, bypasses the gate — and the skip never arms the
-# gate, so a code plan later in the session is still reviewed. /k0d3:execute:commit
-# emits this marker as line 1 of the Commit Plan it presents.
+# Commit-plan sentinel skip: the EXACT `<!-- k0d3:commit-plan -->` marker on ANY
+# standalone line of the plan bypasses the gate — and the skip never arms the gate, so a
+# code plan later in the session is still reviewed. /k0d3:execute:commit leads its Commit
+# Plan with this marker, but appends to the active plan file, so it can land below line 1.
 #
 # NOTE: run_plan_case (above) hardcodes plan text "x" and so can NEVER exercise this
 # skip — these cases need their own helper that injects an arbitrary plan body.
@@ -311,12 +311,20 @@ run_marker_case() {
   rm -f "$PLAN_GATE"
 }
 
-# Skips (allow, gate untouched): marker leads line 1, leading whitespace tolerated.
+# Skips (allow, gate untouched): the sentinel on a standalone line — first line, leading
+# whitespace, below other content, even inside a fenced block, CRLF tolerated.
 run_marker_case "marker-first-line-skips" $'<!-- k0d3:commit-plan -->\n## Commit Plan\n' "allow" "absent"
 run_marker_case "marker-leading-ws-skips" $'   <!-- k0d3:commit-plan -->\n## Commit Plan' "allow" "absent"
-# Still reviewed (deny, gate armed): marker below line 1, in-prose, or a near-miss
-# prefix — the first-line-only + close-`-->` anchoring is what these prove.
-run_marker_case "marker-on-line-2-denies" $'## Plan\n<!-- k0d3:commit-plan -->\nstep 1' "deny" "armed"
+run_marker_case "marker-below-line-1-skips" $'## Plan\n<!-- k0d3:commit-plan -->\nstep 1' "allow" "absent" # was marker-on-line-2-denies — the exact real-world failure, now the regression guard
+run_marker_case "marker-preceded-by-body-skips" $'# Title\n\nsome context\n\n## Commit Plan\n<!-- k0d3:commit-plan -->\n### Commit 1' "allow" "absent"
+run_marker_case "marker-in-fenced-block-skips" $'## Plan\n```\n<!-- k0d3:commit-plan -->\n```\nstep 1' "allow" "absent" # accepted false-skip: a standalone marker anywhere skips, even in a fence (only meta-plans carry it)
+run_marker_case "marker-crlf-skips" $'<!-- k0d3:commit-plan -->\r\n## Commit Plan' "allow" "absent" # locks CR tolerance via [[:space:]]*$
+run_marker_case "marker-all-crlf-skips" $'# Title\r\n\r\n## Commit Plan\r\n<!-- k0d3:commit-plan -->\r\n### Commit 1' "allow" "absent" # whole body CRLF-encoded
+run_marker_case "marker-tab-indented-skips" $'\t<!-- k0d3:commit-plan -->\t' "allow" "absent" # [[:space:]] covers tabs
+run_marker_case "marker-only-skips" $'<!-- k0d3:commit-plan -->' "allow" "absent" # plan is ONLY the marker, no trailing newline
+run_marker_case "marker-last-line-no-newline-skips" $'## Heading\n<!-- k0d3:commit-plan -->' "allow" "absent" # sentinel is the final, unterminated line — awk reads it (grep's POSIX-undefined edge)
+# Still reviewed (deny, gate armed): marker embedded mid-line (not standalone) or a
+# near-miss prefix — the standalone-line + close-`-->` anchoring is what these prove.
 run_marker_case "marker-in-prose-denies" $'## Plan\nWe edit the <!-- k0d3:commit-plan --> marker.' "deny" "armed"
 run_marker_case "marker-near-miss-denies" $'<!-- k0d3:commit-planner -->\n## Plan' "deny" "armed"
 
@@ -326,10 +334,18 @@ run_marker_case "marker-near-miss-denies" $'<!-- k0d3:commit-planner -->\n## Pla
 # ordering against a future refactor.
 rm -f "$PLAN_GATE"
 : > "$PLAN_GATE" # simulate an armed gate from a prior code-plan deny
-commit_armed_out="$(jq -nc '{tool_name:"ExitPlanMode",tool_input:{plan:"<!-- k0d3:commit-plan -->\n## Commit Plan"}}' |
+commit_armed_out="$(jq -nc --arg p $'<!-- k0d3:commit-plan -->\n## Commit Plan' '{tool_name:"ExitPlanMode",tool_input:{plan:$p}}' |
   bash "$REPO_ROOT/$REVIEW_PLAN" 2> /dev/null)"
 if [[ -z "$commit_armed_out" && -f "$PLAN_GATE" ]]; then PASS=$((PASS + 1)); else
   echo "FAIL plan-commit-leaves-armed-gate: commit plan must not consume an armed gate; out=$commit_armed_out gate=$([[ -f $PLAN_GATE ]] && echo armed || echo absent)" >&2
+  FAIL=$((FAIL + 1))
+fi
+# Same guard via the any-standalone-line path: a commit plan whose marker is BELOW line 1
+# must still skip without consuming the armed gate. (--arg JSON-encodes the real newlines.)
+commit_below_out="$(jq -nc --arg p $'## Plan\n<!-- k0d3:commit-plan -->\n### Commit 1' '{tool_name:"ExitPlanMode",tool_input:{plan:$p}}' |
+  bash "$REPO_ROOT/$REVIEW_PLAN" 2> /dev/null)"
+if [[ -z "$commit_below_out" && -f "$PLAN_GATE" ]]; then PASS=$((PASS + 1)); else
+  echo "FAIL plan-commit-below-line-1-leaves-armed-gate: below-line-1 commit plan must not consume an armed gate; out=$commit_below_out gate=$([[ -f $PLAN_GATE ]] && echo armed || echo absent)" >&2
   FAIL=$((FAIL + 1))
 fi
 codeplan_out="$(printf '{"tool_name":"ExitPlanMode","tool_input":{"plan":"x"}}' |

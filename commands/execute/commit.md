@@ -40,7 +40,7 @@ Before any other action, check for plan mode:
    - `git log -5 | cat` — match existing commit style
 2. Extract style dimensions from `git log` (see Step 1 below).
 3. Run _Artifact triage_ (read-only here): note which paths are generated artifacts to be **gitignored** vs authored files to commit. Then group the authored files logically — every authored file lands in some commit; grouping distributes them, it never drops any. (`.gitignore` edits and `git rm --cached` are writes — describe them in the plan, don't run them.)
-4. Append a Commit Plan to the active plan file, led by the `<!-- k0d3:commit-plan -->` sentinel (see the template) — that marker is what tells the k0d3 plan-review gate this is a commit plan, not code, so it skips the 4-reviewer pass. **Step 7 governs where the marker must actually land** for the skip to fire:
+4. Append a Commit Plan to the active plan file, led by the `<!-- k0d3:commit-plan -->` sentinel on its own line (see the template) — that marker tells the k0d3 plan-review gate this is a commit plan, not code, so it skips the 4-reviewer pass. The gate matches the sentinel as a standalone line **anywhere** in the plan you present, so you don't have to position it precisely:
 
 ```
 <!-- k0d3:commit-plan -->
@@ -73,7 +73,7 @@ Before any other action, check for plan mode:
    - Files staged: M
    - Where the work will land (per the line above)
    - Review the plan; after exiting plan mode, run `/commit` again to execute.
-7. The gate checks only the **first line** of the plan string you pass to `ExitPlanMode` — not the plan file on disk. So the `<!-- k0d3:commit-plan -->` sentinel must be **line 1 of that string**: if the active plan file has other content above the Commit Plan section, present only the Commit Plan block (sentinel first), not the whole file. Get this right and the gate passes the commit plan straight through instead of running the 4 calibrated reviewers — a commit plan is bookkeeping, not code. Omit the marker only if you _want_ the full plan review (worst case of a missing marker is just that review, never a block).
+7. The gate scans the plan string you pass to `ExitPlanMode` (not the plan file on disk) for the `<!-- k0d3:commit-plan -->` sentinel on a line of its own — **anywhere** in the plan, with leading/trailing whitespace and a trailing CR tolerated. So presenting the whole plan file is fine: as long as the sentinel appears as a standalone line (the template puts it at the top of the Commit Plan block), the gate passes the commit plan straight through instead of running the 4 calibrated reviewers — a commit plan is bookkeeping, not code. A sentinel buried mid-sentence (not on its own line) does not count; omit the marker entirely only if you _want_ the full plan review (worst case of a missing marker is just that review, never a block).
 
 ### If plan mode is NOT active → execute commits
 
