@@ -97,11 +97,17 @@ Extract from the output:
 
 You MUST use the extracted style. Do not invent. Do not copy an example from this command or from `Skill(commit-writer)` — those are illustrative, not prescriptive.
 
+**Judge by specificity, and look past noise.** Housekeeping commits — version bumps ("Bump version to 1.2.0"), merge commits, squashed-history commits — are workflow artifacts, not style signals; ignore them when reading the log. A subject that is a **bare generic placeholder** — a context-free token naming nothing specific, such as `init`, `Initial commit`, `wip`, `update`, `stuff` standing alone, or a lone verb (`add` / `create` / `delete`) with no object — is not a style either. There is a real style to match as long as the sample holds **any** specific subject ("Add rate limiting", "Fix off-by-one in pagination cursor"): learn from those, ignore the noise. If the recent five are all housekeeping or bare placeholders, widen the sample with `git log -20 | cat` (full format, so body shape survives) before concluding there is no style. Only when nothing specific remains do you go to Step 2.
+
 For deeper guidance on writing the message body itself, invoke `Skill(commit-writer)`.
 
-## Step 2: Fallback — only if the repo has zero commits
+## Step 2: Fallback — empty repo, or no specific style to learn from
 
-If `git log -5 | cat` returns nothing (truly empty repo), default to: imperative-with-s subject ("Adds X"), prose body explaining what + why. Do **not** introduce conventional commits (`feat:`, `fix:`) as a default — that is a project-wide editorial decision, not a sensible default.
+Use the sensible default when EITHER the repo has zero commits (`git log` returns nothing) OR — after ignoring housekeeping and widening per Step 1 — every sampled subject is a **bare generic placeholder**: a context-free token naming nothing specific, such as `init`, `Initial commit`, `wip`, `update`, `stuff`, `changes` standing alone, or a lone verb (`add` / `create` / `delete`) with no object. The typical case is a fresh repo whose only commits are placeholders like `init` or `wip`. The list is illustrative, not exhaustive — the test is whether the subject names something specific ("Add rate limiting" and "Update OTel to v1.30" do; bare `add` or `update` does not).
+
+A single vague commit is not a style; mimicking it just yields more one-word commits (`create`, `add`, `delete`). Default to: imperative-with-s subject ("Adds X"), prose body explaining what + why. Do **not** copy the placeholder's genericity, and do **not** introduce conventional commits (`feat:`, `fix:`) as a default — that is a project-wide editorial decision, not a sensible default.
+
+Boundary: a short, no-body subject that is _specific_ ("Fix off-by-one in pagination cursor", "Remove the deprecated auth flag") is a real style — match it. Only bare, context-free subjects are disqualified.
 
 ## Artifact triage (before staging)
 

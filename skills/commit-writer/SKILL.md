@@ -14,7 +14,7 @@ metadata:
 
 # Commit Writer
 
-**NEVER invent a commit style. ALWAYS match the existing one.** Run `git log -5 | cat` first; copy what you see. A repo with imperative "Adds X" / "Refines Y" subjects gets the same — do not introduce `feat:` or `fix:` prefixes. A repo using conventional commits gets conventional commits. A repo with one-line subjects and no bodies gets the same minimalism — until a change earns more.
+**NEVER invent a commit style. ALWAYS match the existing one.** Run `git log -5 | cat` first; copy what you see. A repo with imperative "Adds X" / "Refines Y" subjects gets the same — do not introduce `feat:` or `fix:` prefixes. A repo using conventional commits gets conventional commits. A repo with one-line subjects and no bodies gets the same minimalism — until a change earns more — provided those subjects are specific; a lone `init` or other bare generic placeholder is not a style to copy (see the fallback below).
 
 **Core principle:** a future engineer reading `git log` should understand the intent without reading the diff. The diff already shows _what_ — the message says _why_.
 
@@ -56,7 +56,7 @@ Extract and use:
 - **Body shape**: prose paragraphs, bullet lists, or no body at all. Match.
 - **Co-author / footer style**: only include footers the repo already uses. Solo work without prior co-author tags gets no co-author tag.
 
-If the repo has **zero commits** (true fresh `git init`), fall back to imperative-present-with-s ("Adds X") + prose body. Do not introduce conventional-commits prefixes as a default — they are a project-wide editorial decision, not a sensible default.
+If the repo has **zero commits** (true fresh `git init`) — or, after ignoring housekeeping (version bumps, merge/squash commits), every sampled subject is a **bare generic placeholder** that names nothing specific (a lone `init` / `Initial commit`, `wip`, `update`, `stuff` standing alone, or a lone verb like `add` / `create` with no object; illustrative, not exhaustive) — fall back to imperative-present-with-s ("Adds X") + prose body. A single vague commit is not a style: don't copy its genericity, and don't introduce conventional-commits prefixes as a default — they are a project-wide editorial decision, not a sensible default. Match a short, no-body style only when its subjects are _specific_ (e.g. "Fix off-by-one in pagination cursor"); the bare placeholders above are the anti-patterns below, not a convention. If the sample holds _any_ specific subject, that is the style — learn from it, not from the noise.
 
 ## Format (after extracting)
 
@@ -121,7 +121,7 @@ Closes: #2341
 
 - **Invented prefix.** Adding `feat:` to a repo whose history is `Adds X` / `Refines Y` is style fragmentation. Do not introduce a new convention; ask the user first if you think the repo should switch.
 - **Empty body on a non-trivial change** — write the why.
-- **Vague subject** — "Fixes bug", "Updates stuff", "WIP", "Final commit".
+- **Vague subject** — "Fixes bug", "Updates stuff", "WIP", "Final commit", or a bare placeholder standing alone (`init`, `add`, `update`). Do not _learn_ a style from these either — see the zero-/low-signal fallback above.
 - **Mixed concerns in one commit** — "Fix bug and add feature and rename X". Split.
 - **Co-author tag on solo work** — only when there was an actual collaborator.
 - **Future tense** — "Will add X". Use imperative present.
@@ -142,6 +142,7 @@ For a feature branch with many commits:
 - About to write a body in bullet form when the repo uses prose → match prose
 - About to add `Co-Authored-By:` on a solo change → check if the repo has any prior co-author tags; if not, drop it
 - About to invent a new "style" because the user said "make it better" → ask them first
+- About to copy the style of a lone `init` (or other bare placeholder) commit → that is not a style; use the fallback default
 
 ## Hand-off
 

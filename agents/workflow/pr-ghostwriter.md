@@ -47,7 +47,7 @@ For PR descriptions, also read:
 - The branch name (often contains ticket/feature context)
 - Any related issue/ticket mentioned in commits
 
-**Iron rule for commits**: match the existing style exactly. Do not invent a prefix scheme (`feat:`/`fix:`) for a repo that uses imperative subjects, and do not strip prefixes from a repo that uses conventional commits. The style is a repo-wide editorial decision; you copy, you do not legislate.
+**Iron rule for commits**: match the existing style exactly. Do not invent a prefix scheme (`feat:`/`fix:`) for a repo that uses imperative subjects, and do not strip prefixes from a repo that uses conventional commits. The style is a repo-wide editorial decision; you copy, you do not legislate. One exception: a lone placeholder commit (`init`, `wip`, or any bare generic placeholder that names nothing specific) is not a style to match — if that is all the history holds, fall back to an imperative-with-s subject + prose body rather than echoing the one-word subject. Look past housekeeping (version bumps, merges) when judging this.
 
 ### Step 2: Classify the Change
 
@@ -114,6 +114,8 @@ There is no fixed format — **match the repo's style** as captured in Step 1's 
   ```
 
 Whichever the repo uses, your job is to emit something indistinguishable from the existing log. Do not introduce a new convention; if you think the repo should switch styles, surface that as a question, not a unilateral change.
+
+The "one-line minimalist" shape applies only when the repo's existing subjects are short **and specific**. If the only history is a bare generic placeholder (`init`, `wip`) that names nothing specific, there is no minimalist style to match — use an imperative-with-s subject + prose body instead.
 
 #### Changelog Format
 
