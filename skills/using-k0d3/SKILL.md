@@ -44,6 +44,7 @@ Before exploring to learn how to build / test / run / lint / release, **check th
 - Spend research budget proportional to the task. A one-line change doesn't warrant a codebase survey.
 - Structural questions (what calls what, where X is defined) go to codegraph — sub-millisecond index reads beat grep+read loops.
 - On small, well-scoped tasks, act directly rather than fanning out Explore/Plan agents — they bias toward research by design.
+- Writing a concrete reference — env var, path, command, schema, version — into a plan or code? Confirm it exists first (`Skill(verify-before-asserting)`); a name that fits the convention is still a guess.
 
 ## Right-size the process — execution ceremony proportional to the stakes
 

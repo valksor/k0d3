@@ -8,7 +8,7 @@ metadata:
   status: active
   invokes_shell: false
   shell_reviewed: "valksor 2026-06-16"
-  related: [tdd, debugging, finishing-a-development-branch, code-review, using-k0d3, subagent-driven-development]
+  related: [tdd, debugging, finishing-a-development-branch, code-review, using-k0d3, subagent-driven-development, verify-before-asserting]
   owns: honest-completion
 ---
 
@@ -73,3 +73,5 @@ Each is the wall in disguise. Stop, then verify or report honestly:
 ## Enforcement
 
 The `verify-before-stop` hook enforces this at stop-time: when this turn's tool output shows a failure signature (auth, build/test failure, command-not-found, non-zero exit) and you try to end, it blocks once and asks you to re-verify or report honestly. The hook catches the obvious walls; this skill is the discipline that generalizes to the ones a regex can't match.
+
+For verifying references *before* you write them — mid-turn, not at stop-time — see `verify-before-asserting`.

@@ -8,7 +8,7 @@ metadata:
   status: active
   invokes_shell: false
   shell_reviewed: "valksor 2026-05-17"
-  related: [brainstorming, tdd, subagent-driven-development, using-git-worktrees]
+  related: [brainstorming, tdd, subagent-driven-development, using-git-worktrees, verify-before-asserting]
   owns: planning
 ---
 
