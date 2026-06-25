@@ -8,7 +8,7 @@
     {
       "name": "k0d3",
       "description": "valksor's consolidated Claude Code skills, agents, commands, and hooks — single source of truth.",
-      "version": "0.1.27",
+      "version": "0.1.28",
       "source": "./",
       "author": {
         "name": "valksor"
