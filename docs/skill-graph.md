@@ -20,6 +20,7 @@ graph LR
   brainstorming --> requirements-gathering
   brainstorming --> tdd
   brainstorming --> interview-first
+  brainstorming --> verify-before-asserting
   bun-essentials --> node-essentials
   bun-essentials --> pnpm-essentials
   bun-essentials --> typescript
@@ -212,6 +213,7 @@ graph LR
   honest-completion --> code-review
   honest-completion --> using-k0d3
   honest-completion --> subagent-driven-development
+  honest-completion --> verify-before-asserting
   incident-response --> debugging
   incident-response --> root-cause
   incident-response --> observability-essentials
@@ -316,6 +318,7 @@ graph LR
   planning --> tdd
   planning --> subagent-driven-development
   planning --> using-git-worktrees
+  planning --> verify-before-asserting
   pnpm-essentials --> bun-essentials
   pnpm-essentials --> node-essentials
   pnpm-essentials --> typescript
@@ -406,6 +409,7 @@ graph LR
   requirements-gathering --> brainstorming
   requirements-gathering --> planning
   requirements-gathering --> interview-first
+  requirements-gathering --> verify-before-asserting
   rest-essentials --> graphql-essentials
   rest-essentials --> websocket-essentials
   rest-essentials --> observability-essentials
@@ -562,6 +566,12 @@ graph LR
   ux-essentials --> frontend-design-essentials
   ux-wcag-a11y --> ux-essentials
   ux-wcag-a11y --> frontend-design-essentials
+  verify-before-asserting --> honest-completion
+  verify-before-asserting --> planning
+  verify-before-asserting --> brainstorming
+  verify-before-asserting --> requirements-gathering
+  verify-before-asserting --> debugging
+  verify-before-asserting --> code-review
   websocket-essentials --> rest-essentials
   websocket-essentials --> graphql-essentials
   websocket-essentials --> observability-essentials
