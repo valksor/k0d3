@@ -1,0 +1,21 @@
+{
+  "_comment": "k0d3 hooks. The 16 wired below are enabled by default (old-claude parity + ensure-memory-gitignore + codegraph autoindex/nudge/auto-allow + verify-before-stop on Stop/SubagentStop + review-plan-before-exit on ExitPlanMode, all safe globally and fail-soft). The 3 append-only loggers (log-changes, log-failures, log-stop-verdict) run with \"async\": true so they never block the tool/turn pipeline; verify-before-stop and review-plan-before-exit are the default-on gates that BLOCK, so they run synchronously (no \"async\"). The 3 in _disabled_examples are k0d3-repo-dev-specific and opt-in. Paths use ${CLAUDE_PLUGIN_ROOT} so they resolve in any project regardless of the user's cwd. See docs/hooks.md.",
+  "_disabled_examples": {
+    "_doc": "Opt-in / k0d3-repo-dev-specific hooks. To enable one, add a nested entry under the matching hooks.<event> array above: a matcher plus a hooks[] list whose command is \"${CLAUDE_PLUGIN_ROOT}\"/hooks/<name>.sh. The flat objects below are catalog notation, NOT valid live config.",
+    "validate-skill-frontmatter": {
+      "event": "PreToolUse",
+      "matcher": "Write|Edit",
+      "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/validate-skill-frontmatter.sh"
+    },
+    "check-name-collisions": {
+      "event": "SessionStart",
+      "matcher": "startup",
+      "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/check-name-collisions.sh"
+    },
+    "block-deferred-issues": {
+      "event": "PreToolUse",
+      "matcher": "Bash",
+      "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/block-deferred-issues.sh"
+    }
+  }
+}

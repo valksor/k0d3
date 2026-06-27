@@ -14,6 +14,12 @@ on:
       - "hooks/prefer-codegraph.sh"
       - "hooks/allow-codegraph.sh"
       - "hooks/hooks.json"
+      - ".mcp.codex.json"
+      - ".codex-plugin/plugin.json"
+      - ".agents/plugins/marketplace.json"
+      - "hooks/codex-hooks-shim.sh"
+      - "scripts/install-codex-hooks.sh"
+      - "scripts/test-codex.sh"
       - ".github/workflows/mcp-guard.yml"
   pull_request:
     paths:
@@ -27,6 +33,12 @@ on:
       - "hooks/prefer-codegraph.sh"
       - "hooks/allow-codegraph.sh"
       - "hooks/hooks.json"
+      - ".mcp.codex.json"
+      - ".codex-plugin/plugin.json"
+      - ".agents/plugins/marketplace.json"
+      - "hooks/codex-hooks-shim.sh"
+      - "scripts/install-codex-hooks.sh"
+      - "scripts/test-codex.sh"
       - ".github/workflows/mcp-guard.yml"
   schedule:
     # Daily — the bundled servers track npm `latest` (unpinned), so a daily smoke catches
@@ -65,3 +77,6 @@ jobs:
 
       - name: Test — allow-codegraph auto-approve
         run: bash scripts/test-allow-codegraph.sh
+
+      - name: Test — Codex integration (manifests, MCP, derived hooks, guard behavior)
+        run: bash scripts/test-codex.sh
