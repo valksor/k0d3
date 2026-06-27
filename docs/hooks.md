@@ -5,6 +5,8 @@ Most hooks in `hooks/hooks.json` ship **enabled by default** — old-claude pari
 > **Config shape & paths (read before editing `hooks.json`).** A live hook entry is the **nested** form
 > `hooks.<event>: [ { "matcher": "…", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/<name>.sh" } ] } ]`.
 > Always reference scripts via **`${CLAUDE_PLUGIN_ROOT}`** (the plugin's install dir) — **not** `$CLAUDE_PROJECT_DIR` (the user's current project), or the hook won't be found once k0d3 is installed in some other project. The flat `{event, matcher, command}` objects in `_disabled_examples` are a **catalog**, not valid live config.
+>
+> **Catalog location:** the `_disabled_examples` catalog lives in **`hooks/hooks.examples.json`** (a sibling file), not in `hooks/hooks.json`. This keeps `hooks/hooks.json` a strict `{"hooks": {…}}` object so that **both** Claude Code and OpenAI Codex parse it — Codex's plugin-hook parser rejects any top-level key other than `hooks` (including `_comment`/`_disabled_examples`). `hooks/hooks.json` itself carries no inline `_comment` for the same reason; this doc is its reference.
 
 ## TL;DR
 
@@ -75,7 +77,7 @@ Wired on **`PreToolUse` matcher `ExitPlanMode`**, enabled by default, and the se
 ## Step-by-step procedure (per hook)
 
 1. **Read the hook's source.** All hooks are short (≤200 lines). Confirm you understand the deny conditions before flipping it on.
-2. **Open `hooks/hooks.json`.** Locate the matching entry in `_disabled_examples`.
+2. **Open `hooks/hooks.examples.json`.** Locate the matching entry in `_disabled_examples`.
 3. **Add a nested entry to `hooks.<event>`.** Don't paste the flat catalog object — write the nested form: `{ "matcher": "<matcher, or omit for all>", "hooks": [ { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/<name>.sh" } ] }`. Leave `_disabled_examples` as the reference catalog.
 4. **Validate JSON syntax.** Run `jq empty hooks/hooks.json` — must exit 0.
 5. **Restart Claude Code.** The new session picks up the hook config at startup.

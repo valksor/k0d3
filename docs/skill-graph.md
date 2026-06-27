@@ -11,11 +11,16 @@ graph LR
   agent-design --> acp-protocol
   agent-design --> claude-api
   agent-design --> dispatching-parallel-agents
+  archaeologist --> debugging
+  archaeologist --> root-cause
+  archaeologist --> tooling-git-advanced
   architecture-essentials --> architecture-event-driven-cqrs
   architecture-essentials --> refactoring
   architecture-essentials --> debugging
   architecture-event-driven-cqrs --> architecture-essentials
   architecture-event-driven-cqrs --> observability-essentials
+  auditor --> code-review
+  auditor --> honest-completion
   brainstorming --> planning
   brainstorming --> requirements-gathering
   brainstorming --> tdd
@@ -53,6 +58,8 @@ graph LR
   database-sqlite-pure-go --> postgres
   database-sqlite-pure-go --> migrations-overview
   database-sqlite-pure-go --> infra-docker-images
+  debt-collector --> refactoring
+  debt-collector --> code-review
   debugging --> root-cause
   debugging --> tdd
   deploy-checklist --> finishing-a-development-branch
@@ -61,6 +68,8 @@ graph LR
   deploy-checklist --> observability-essentials
   dispatching-parallel-agents --> subagent-driven-development
   dispatching-parallel-agents --> debugging
+  error-whisperer --> debugging
+  error-whisperer --> root-cause
   finishing-a-development-branch --> using-git-worktrees
   finishing-a-development-branch --> code-review
   finishing-a-development-branch --> subagent-driven-development
@@ -290,6 +299,8 @@ graph LR
   observability-sentry --> debugging
   observability-sentry --> root-cause
   observability-sentry --> security
+  onboarding-sherpa --> technical-writing
+  onboarding-sherpa --> architecture-essentials
   orm-overview --> sql
   orm-overview --> postgres
   orm-overview --> migrations-overview
@@ -329,6 +340,8 @@ graph LR
   pr-description --> commit-writer
   pr-description --> finishing-a-development-branch
   pr-description --> code-review
+  pr-ghostwriter --> commit-writer
+  pr-ghostwriter --> pr-description
   project-memory --> agent-design
   project-memory --> using-k0d3
   python-data-pipeline --> python-essentials
@@ -415,6 +428,9 @@ graph LR
   rest-essentials --> observability-essentials
   rest-essentials --> security
   root-cause --> debugging
+  rubber-duck --> brainstorming
+  rubber-duck --> requirements-gathering
+  rubber-duck --> unsticker
   rust-async-tokio --> rust-essentials
   rust-async-tokio --> rust-axum-actix
   rust-async-tokio --> rust-testing
@@ -558,6 +574,9 @@ graph LR
   unix-socket-essentials --> rest-essentials
   unix-socket-essentials --> websocket-essentials
   unix-socket-essentials --> security
+  unsticker --> debugging
+  unsticker --> root-cause
+  unsticker --> rubber-duck
   using-git-worktrees --> planning
   using-git-worktrees --> subagent-driven-development
   using-git-worktrees --> finishing-a-development-branch
@@ -575,4 +594,6 @@ graph LR
   websocket-essentials --> rest-essentials
   websocket-essentials --> graphql-essentials
   websocket-essentials --> observability-essentials
+  yak-shave-detector --> requirements-gathering
+  yak-shave-detector --> brainstorming
 ```

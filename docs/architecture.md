@@ -3,6 +3,8 @@
 > This doc is a **one-time orientation** to k0d3's conceptual layout. It is NOT a live reference — for that, see `docs/skill-graph.md` (auto-generated) and `Skill(skill-discovery)` (auto-regenerated routing table). It will not be revised every time a new skill lands.
 >
 > **Counts here are illustrative and may not match the live catalogue.** Use this doc for the _conceptual grouping_; rely on `docs/skill-graph.md` and `ls skills/` for current counts.
+>
+> **Dual-harness:** k0d3 runs in both Claude Code and OpenAI Codex CLI from this one repo. The Codex side adds `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` (pointing at the same `skills/`), a Codex MCP manifest (`.mcp.codex.json`), and a separate hooks installer. See [`docs/codex.md`](codex.md).
 
 ## Layout decision: flat skills/, slug-prefixed namespace
 

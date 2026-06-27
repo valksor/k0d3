@@ -1,8 +1,8 @@
 # k0d3
 
-valksor's consolidated Claude Code skills, agents, commands, and hooks. Single source of truth. Zero plugin dependencies.
+valksor's consolidated skills, agents, commands, and hooks for **Claude Code and OpenAI Codex CLI**. Single source of truth. Zero plugin dependencies.
 
-## Install
+## Install (Claude Code)
 
 ```bash
 # From GitHub
@@ -19,6 +19,16 @@ For local development on the plugin itself:
 ```
 
 After install, in any Claude Code session, type `Skill(k0d3:using-k0d3)` as a message in the chat (not a slash command). Claude Code's Skill tool loads the named skill into context.
+
+## Install (OpenAI Codex CLI)
+
+```bash
+codex plugin marketplace add valksor/k0d3 --ref v0.1.30   # tag-pinned
+codex plugin add k0d3@valksor-k0d3
+scripts/install-codex-hooks.sh                            # optional: hooks
+```
+
+The same `skills/` and MCP servers ride a Codex plugin; hooks install separately (the hook scripts need an env the installer's shim provides). Full guide: [`docs/codex.md`](docs/codex.md).
 
 ## Dependencies
 

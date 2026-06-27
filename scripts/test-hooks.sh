@@ -254,15 +254,15 @@ run_plan_case "plan-rearm-2-consumes" "ExitPlanMode" "allow"
 run_plan_case "plan-rearm-3-denies-again" "ExitPlanMode" "deny"
 rm -f "$PLAN_GATE"
 
-# The deny output must carry the /k0d3:review-plan routing instruction (a regression
+# The deny output must carry the /k0d3:review:review-plan routing instruction (a regression
 # that emptied/misdirected the reason would otherwise pass the decision-only checks).
 deny_out="$(printf '{"tool_name":"ExitPlanMode","tool_input":{"plan":"x"}}' |
   bash "$REPO_ROOT/$REVIEW_PLAN" 2> /dev/null)"
 if printf '%s' "$deny_out" | jq -e -r '.hookSpecificOutput.permissionDecisionReason' 2> /dev/null |
-  grep -q "/k0d3:review-plan"; then
+  grep -q "/k0d3:review:review-plan"; then
   PASS=$((PASS + 1))
 else
-  echo "FAIL plan-deny-reason-routes: reason lacks /k0d3:review-plan; out=$deny_out" >&2
+  echo "FAIL plan-deny-reason-routes: reason lacks /k0d3:review:review-plan; out=$deny_out" >&2
   FAIL=$((FAIL + 1))
 fi
 rm -f "$PLAN_GATE"

@@ -63,6 +63,14 @@ jobs:
           MP_VERSION=$(jq -r '.plugins[] | select(.name == "k0d3") | .version' .claude-plugin/marketplace.json)
           [[ "$MP_VERSION" == "$NEW_VERSION" ]] || { echo "marketplace.json not synced: $MP_VERSION != $NEW_VERSION"; exit 1; }
 
+          # Codex plugin manifest shares the same version (single source, dual harness)
+          jq --arg v "$NEW_VERSION" '.version = $v' .codex-plugin/plugin.json > /tmp/codex-plugin.json
+          mv /tmp/codex-plugin.json .codex-plugin/plugin.json
+
+          # Fail loud if the Codex manifest didn't actually update
+          CODEX_VERSION=$(jq -r '.version' .codex-plugin/plugin.json)
+          [[ "$CODEX_VERSION" == "$NEW_VERSION" ]] || { echo ".codex-plugin/plugin.json not synced: $CODEX_VERSION != $NEW_VERSION"; exit 1; }
+
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
 
       - name: Commit, tag, and push
@@ -71,7 +79,7 @@ jobs:
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add .claude-plugin/plugin.json .claude-plugin/marketplace.json
+          git add .claude-plugin/plugin.json .claude-plugin/marketplace.json .codex-plugin/plugin.json
           git commit -m "Bump version to $NEW_VERSION [skip ci]"
           git pull --rebase origin master
           # Tag the rebased HEAD, then push branch + tag in one atomic transaction:

@@ -1,0 +1,37 @@
+{
+  "name": "k0d3",
+  "version": "0.1.30",
+  "description": "valksor's consolidated skills, agents, commands, and hooks — single source of truth, now for Codex too.",
+  "author": {
+    "name": "valksor"
+  },
+  "homepage": "https://github.com/valksor/k0d3",
+  "repository": "https://github.com/valksor/k0d3",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "agents",
+    "commands",
+    "go",
+    "python",
+    "typescript",
+    "react",
+    "rust",
+    "php",
+    "postgres",
+    "security",
+    "testing",
+    "code-review"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.codex.json",
+  "hooks": "./.codex-plugin/no-plugin-hooks.json",
+  "interface": {
+    "displayName": "k0d3",
+    "shortDescription": "Skills, agents-as-skills, and bundled MCP servers for engineering work.",
+    "longDescription": "valksor's consolidated engineering toolkit: language/runtime/database/domain skills, reviewer and expert personas reframed as skills, plus bundled MCP servers (context7, memory, sequential-thinking, codegraph). Hooks are installed separately via scripts/install-codex-hooks.sh — the plugin deliberately ships no plugin-channel hooks (the `hooks` pointer is an empty file) because the scripts need a project-dir env the installer's shim provides.",
+    "developerName": "valksor",
+    "category": "Developer Tools",
+    "capabilities": []
+  }
+}
