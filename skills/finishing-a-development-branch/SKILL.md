@@ -170,6 +170,11 @@ esac
 ```
 
 **`WORKTREE_PATH == MAIN_ROOT`:** the user ran `finishing-a-development-branch` from inside the main repo, not from a worktree — nothing to clean. Done.
+**Worktree under `.claude/worktrees/`** (`EnterWorktree`-owned): call `ExitWorktree(action: "keep")` first — updates harness cwd before deletion; skipping causes `ENOENT posix_spawn '/bin/sh'` on the next Stop hook (Node.js can't spawn with a missing cwd). Then:
+```bash
+git worktree remove "$WORKTREE_PATH"
+git worktree prune
+```
 
 **Worktree under `.worktrees/`, `worktrees/`, or `~/.config/k0d3/worktrees/`:** we own cleanup.
 
@@ -179,7 +184,6 @@ cd "$MAIN_ROOT"
 git worktree remove "$WORKTREE_PATH"
 git worktree prune
 ```
-
 **Otherwise (harness-owned):** do NOT remove. If your platform provides a workspace-exit tool, use it. Otherwise leave it.
 
 ## Quick reference
@@ -194,7 +198,6 @@ git worktree prune
 ## Red flags
 
 **Never:**
-
 - Proceed with failing tests
 - Merge without verifying tests on the result
 - Delete work without typed confirmation
@@ -203,9 +206,8 @@ git worktree prune
 - Run `git worktree remove` from inside the worktree (silent failure)
 
 **Always:**
-
 - Verify tests before offering options
 - Present exactly 4 options (or 3 for detached HEAD)
 - Get typed "discard" for Option 4
 - Cleanup for Options 1 & 4 only
-- `cd` to main repo root before worktree removal
+- Call `ExitWorktree` before `git worktree remove` for `.claude/worktrees/` paths
