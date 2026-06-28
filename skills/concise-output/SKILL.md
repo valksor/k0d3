@@ -1,6 +1,6 @@
 ---
 name: concise-output
-description: Use when the user wants terser, token-lean replies ("be brief", "less tokens", /concise) — terse prose now, substance exact; point at the durable k0d3:concise output style.
+description: Use when the user wants terser replies ("be brief", "less tokens", /concise) — sets the durable k0d3:concise output style.
 metadata:
   added: 2026-06-01
   last_reviewed: 2026-06-02

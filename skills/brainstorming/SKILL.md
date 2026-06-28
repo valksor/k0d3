@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: Use after requirements are clear, before implementation — turn a clear request into an approved design via Socratic dialogue. Mandatory gate — no code until approved.
+description: Use before implementation — turns an approved spec into a design via Socratic dialogue. No code until approved.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

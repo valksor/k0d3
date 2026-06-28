@@ -1,6 +1,6 @@
 ---
 name: acp-protocol
-description: Use when integrating the Agent Client Protocol (ACP), Zed's editor↔agent protocol — JSON-RPC envelope, capability negotiation, client fs/terminal, permissions.
+description: Use when integrating ACP, Zed's editor↔agent protocol — JSON-RPC, capability negotiation, fs/terminal, permissions.
 metadata:
   added: 2026-05-19
   last_reviewed: 2026-05-19

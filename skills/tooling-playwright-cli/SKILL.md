@@ -1,6 +1,6 @@
 ---
 name: tooling-playwright-cli
-description: Use when driving a browser from the command line with playwright-cli — navigation, locators by ref, snapshots, sessions, tracing, and the headless vs headed loop.
+description: Use when driving a browser from the command line with playwright-cli — locators, snapshots, sessions, tracing, headless vs headed.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-20

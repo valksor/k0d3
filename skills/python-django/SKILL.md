@@ -1,6 +1,6 @@
 ---
 name: python-django
-description: Use when working in Django — models, views, ORM, migrations, settings, REST APIs with Django REST Framework (DRF), testing with pytest-django, version upgrades.
+description: Use when working in Django — models, views, ORM, migrations, REST APIs with DRF, pytest-django.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

@@ -1,6 +1,6 @@
 ---
 name: storage-object-s3
-description: Use when using S3 / MinIO / GCS object storage — presigned URLs, multipart upload, lifecycle, server-side encryption, content-disposition, lifecycle policies.
+description: Use when using S3 / MinIO / GCS — presigned URLs, multipart upload, lifecycle, server-side encryption, content-disposition.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

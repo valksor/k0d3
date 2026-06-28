@@ -1,6 +1,6 @@
 ---
 name: rubber-duck
-description: Use when you want to think out loud and reach the answer yourself — a Socratic partner that ONLY asks questions to surface assumptions. For direct answers, use unsticker.
+description: Use when you want to think out loud and reach the answer yourself — a Socratic partner that only asks questions to surface assumptions.
 metadata:
   added: 2026-06-27
   last_reviewed: 2026-06-27

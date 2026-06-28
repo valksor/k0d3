@@ -1,6 +1,6 @@
 ---
 name: archaeologist
-description: Use when you need to understand WHY existing code is the way it is — "why this way?", "safe to change?", "who added this?" — via git history, blame, and commit messages.
+description: Use when you need to understand WHY code is the way it is — "safe to change?", "who added this?" — via git history.
 metadata:
   added: 2026-06-27
   last_reviewed: 2026-06-27

@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Use when implementing any feature or bugfix, before writing implementation code. Red-Green-Refactor. The iron law — no production code without a failing test first.
+description: Use when implementing any feature or bugfix — Red-Green-Refactor. No production code without a failing test first.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

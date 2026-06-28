@@ -1,6 +1,6 @@
 ---
 name: frontend-react-router
-description: Use when routing with react-router v6/v7 — data router (createBrowserRouter), loaders, actions, error boundaries, route lazy-loading, search params, navigation hooks.
+description: Use when routing with react-router v6/v7 — data router, loaders, actions, error boundaries, lazy routes, navigation hooks.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

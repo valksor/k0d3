@@ -1,6 +1,6 @@
 ---
 name: infra-gotenberg
-description: Use when running Gotenberg for HTML/Markdown/URL → PDF — Docker Compose service, HTTP API (Chromium / LibreOffice / PDF engines), sizing, queueing, common pitfalls.
+description: Use when running Gotenberg for HTML/Markdown/URL → PDF — Docker Compose, HTTP API engines, sizing, queueing, pitfalls.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

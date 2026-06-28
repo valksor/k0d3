@@ -1,6 +1,6 @@
 ---
 name: gdscript
-description: Use when writing GDScript — syntax, types, signals, lifecycle, Godot APIs, and the perf patterns that matter. For deep perf workups, see references/gdscript-performance.md.
+description: Use when writing GDScript — syntax, types, signals, lifecycle, Godot APIs, and the perf patterns that matter.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

@@ -1,6 +1,6 @@
 ---
 name: claude-api
-description: Use when designing against Anthropic's Messages API — model selection, prompt caching, extended thinking, tool use, batch / files / citations, streaming SSE shapes.
+description: Use when designing against Anthropic's Messages API — model selection, prompt caching, extended thinking, tool use, batch, streaming.
 metadata:
   added: 2026-05-19
   last_reviewed: 2026-05-19

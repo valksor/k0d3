@@ -1,6 +1,6 @@
 ---
 name: deploy-checklist
-description: Use before shipping to production — verifying readiness, sequencing a deploy with migrations or flags, and writing the rollback triggers down before you need them.
+description: Use before shipping to production — readiness check, migration sequencing, rollback triggers.
 metadata:
   added: 2026-05-24
   last_reviewed: 2026-05-24

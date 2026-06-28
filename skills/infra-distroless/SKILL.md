@@ -1,6 +1,6 @@
 ---
 name: infra-distroless
-description: Use when shipping distroless containers — image picker (static/base/cc/python/nodejs/java), nonroot user, debugging without a shell, version pinning, common pitfalls.
+description: Use when shipping distroless containers — image selection, nonroot user, debugging without a shell, common pitfalls.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

@@ -1,6 +1,6 @@
 ---
 name: llm-essentials
-description: Use when designing any LLM-backed feature, any provider — token economics, sampling, structured outputs, retries, eval harnesses, cost guardrails, context windows.
+description: Use when designing any LLM-backed feature, any provider — token economics, sampling, structured outputs, retries, eval harnesses.
 metadata:
   added: 2026-05-19
   last_reviewed: 2026-05-19

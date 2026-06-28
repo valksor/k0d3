@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Use when reviewing code or requesting a review — what a reviewer should catch (silent failures, weak types, comment rot, missing tests) and which reviewer to dispatch.
+description: Use when reviewing code or requesting a review — what reviewers should catch and which reviewer to dispatch.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-27
@@ -9,6 +9,7 @@ metadata:
   invokes_shell: false
   shell_reviewed: "valksor 2026-05-18"
   related: [security, receiving-code-review, subagent-driven-development, tdd, finishing-a-development-branch]
+  keywords: [silent failures, weak types, comment rot, missing tests]
 ---
 
 # Code Review

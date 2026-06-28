@@ -1,6 +1,6 @@
 ---
 name: php-symfony
-description: Use when building apps with Symfony 8 — framework-bundle, attribute routing, DI/autowiring, console, Form/Validator, Serializer, Twig, asset-mapper, FrankenPHP runtime.
+description: Use when building apps with Symfony 8 — attribute routing, DI/autowiring, Form/Validator, Twig, asset-mapper.
 metadata:
   added: 2026-05-23
   last_reviewed: 2026-05-23

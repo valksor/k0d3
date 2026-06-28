@@ -1,6 +1,6 @@
 ---
 name: pr-description
-description: Use when opening a pull request. Writes a description focused on what reviewers need to know — why the change exists, what it does, how to verify it, and what to watch for.
+description: Use when opening a pull request — generates a reviewer-focused description covering why, what, how to verify, and what to watch for.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

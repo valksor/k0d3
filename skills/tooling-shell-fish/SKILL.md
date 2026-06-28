@@ -1,6 +1,6 @@
 ---
 name: tooling-shell-fish
-description: Use when scripting or configuring the fish shell — syntax differences from bash/zsh, abbreviations, functions, completions, the fisher package manager, and env vars.
+description: Use when scripting or configuring the fish shell — syntax, functions, completions, fisher, env vars.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

@@ -1,6 +1,6 @@
 ---
 name: refactoring
-description: Use when changing the structure of code without changing its behavior. Tests must stay green throughout. Small steps, frequent commits, one transformation at a time.
+description: Use when restructuring code without changing behavior — tests green throughout, small steps, frequent commits.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

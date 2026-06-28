@@ -1,6 +1,6 @@
 ---
 name: receiving-code-review
-description: Use when receiving code review feedback, before implementing suggestions — especially if unclear or questionable. Verify before implementing, ask before assuming.
+description: Use when receiving code review feedback — before implementing unclear or questionable suggestions. Verify first, ask before assuming.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

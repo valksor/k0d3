@@ -1,6 +1,6 @@
 ---
 name: planning
-description: Use after brainstorming (spec approved) to write a comprehensive implementation plan. Bite-sized tasks, exact files, full code, TDD throughout. No placeholders.
+description: Use after brainstorming to write an implementation plan — bite-sized tasks, exact files, TDD throughout. No placeholders.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-06-17

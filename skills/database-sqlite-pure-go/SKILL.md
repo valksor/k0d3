@@ -1,6 +1,6 @@
 ---
 name: database-sqlite-pure-go
-description: Use when using SQLite from Go — modernc.org/sqlite (pure-Go, no CGo) vs mattn/go-sqlite3 (CGo); WAL mode; busy timeouts; concurrency model; migration patterns.
+description: Use when using SQLite from Go — modernc.org/sqlite (pure-Go) vs mattn/go-sqlite3; WAL mode, concurrency, migrations.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

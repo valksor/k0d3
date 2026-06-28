@@ -1,6 +1,6 @@
 ---
 name: auditor
-description: Use when quality-checking agent or session output — verify completeness, catch rule contradictions, detect regressions and gaps, then issue a PASS/WARN/FAIL/INCIDENT verdict.
+description: Use when quality-checking agent or session output — completeness, contradictions, regressions, gaps. Issues PASS/WARN/FAIL/INCIDENT.
 metadata:
   added: 2026-06-27
   last_reviewed: 2026-06-27

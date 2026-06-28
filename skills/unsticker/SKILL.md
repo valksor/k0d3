@@ -1,6 +1,6 @@
 ---
 name: unsticker
-description: Use when stuck and you want direct answers — a root-cause analyst that diagnoses why work is blocked and prescribes a path forward. For questions instead, use rubber-duck.
+description: Use when stuck and you want direct answers — diagnoses why work is blocked and prescribes a path forward.
 metadata:
   added: 2026-06-27
   last_reviewed: 2026-06-27

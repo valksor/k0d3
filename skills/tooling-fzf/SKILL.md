@@ -1,6 +1,6 @@
 ---
 name: tooling-fzf
-description: Use when adding fzf to a workflow — fuzzy finding, key bindings (ctrl-t, ctrl-r, alt-c), tmux integration, and the --preview flag that makes everything better.
+description: Use when adding fzf to a workflow — fuzzy finding, key bindings, tmux integration, --preview flag.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

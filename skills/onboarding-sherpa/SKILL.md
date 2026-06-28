@@ -1,6 +1,6 @@
 ---
 name: onboarding-sherpa
-description: Use when joining or returning to a codebase, or inheriting an undocumented one — maps architecture, key patterns, tribal knowledge, and the files to start with, fast.
+description: Use when joining, returning to, or inheriting an undocumented codebase — maps architecture, key patterns, and the files to start with.
 metadata:
   added: 2026-06-27
   last_reviewed: 2026-06-27

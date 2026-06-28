@@ -1,6 +1,6 @@
 ---
 name: agent-design
-description: Use when architecting an LLM agent — loop shape, tool design, memory tiers, planning patterns, failure modes, eval harnesses, and when NOT to build an agent.
+description: Use when architecting an LLM agent — loop shape, tool design, memory tiers, failure modes, eval harnesses, when NOT to build.
 metadata:
   added: 2026-05-19
   last_reviewed: 2026-05-19

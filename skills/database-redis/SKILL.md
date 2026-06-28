@@ -1,6 +1,6 @@
 ---
 name: database-redis
-description: Use when using Redis — keyspace design, pipelines, pubsub vs streams, expiration semantics, cluster mode, persistence (RDB vs AOF), common cache stampede patterns.
+description: Use when using Redis — keyspace design, pipelines, pubsub vs streams, expiration, persistence, stampede patterns.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

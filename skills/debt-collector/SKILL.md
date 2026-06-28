@@ -1,6 +1,6 @@
 ---
 name: debt-collector
-description: Use when finding and prioritizing technical debt — scan for TODOs, hacks, dead code, and deprecated patterns, then produce a ranked inventory with impact and effort scores.
+description: Use when finding and prioritizing technical debt — TODOs, hacks, dead code, deprecated patterns, ranked with impact and effort.
 metadata:
   added: 2026-06-27
   last_reviewed: 2026-06-27

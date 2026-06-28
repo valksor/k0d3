@@ -1,6 +1,6 @@
 ---
 name: frontend-feature-sliced-design
-description: Use when applying Feature-Sliced Design (FSD) to a React app — layer model (app/pages/widgets/features/entities/shared), Steiger linter, when FSD shines vs hurts.
+description: Use when applying Feature-Sliced Design (FSD) to a React app — layer model, Steiger linter, when FSD shines vs hurts.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

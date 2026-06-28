@@ -1,6 +1,6 @@
 ---
 name: error-whisperer
-description: Use when facing a cryptic error, stack trace, build failure, or dependency conflict and you need it translated to plain English plus a concrete copy-paste fix.
+description: Use when facing a cryptic error, stack trace, or build failure — translates to plain English and provides a copy-paste fix.
 metadata:
   added: 2026-06-27
   last_reviewed: 2026-06-27

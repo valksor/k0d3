@@ -1,6 +1,6 @@
 ---
 name: pr-ghostwriter
-description: Use when writing a PR description, commit message, or changelog from a diff — reads the actual changes, infers intent, and matches the repo's existing style.
+description: Use when writing a PR description, commit message, or changelog from a diff — reads changes, infers intent, matches repo style.
 metadata:
   added: 2026-06-27
   last_reviewed: 2026-06-27

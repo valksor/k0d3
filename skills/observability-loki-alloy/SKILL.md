@@ -1,6 +1,6 @@
 ---
 name: observability-loki-alloy
-description: Use when shipping logs to Loki via Grafana Alloy — pipeline config, label cardinality, query (LogQL) basics, retention, multi-tenant, migration from Promtail.
+description: Use when shipping logs to Loki via Grafana Alloy — pipeline config, label cardinality, LogQL, retention, multi-tenant.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

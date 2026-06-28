@@ -1,6 +1,6 @@
 ---
 name: root-cause
-description: Use when a bug is fixed but you don't yet know WHY it occurred — or when "the same bug keeps coming back." Forces you past the symptom to the actual cause.
+description: Use when a bug is fixed but you don't know WHY, or the same bug keeps returning. Forces past the symptom to the actual cause.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18

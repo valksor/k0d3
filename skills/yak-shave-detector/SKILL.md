@@ -1,6 +1,6 @@
 ---
 name: yak-shave-detector
-description: Use when you suspect you've drifted from the goal — a fast, blunt scope check comparing what you're doing NOW against the original task to tell you if you're yak shaving.
+description: Use when you suspect you've drifted from the original goal — a blunt scope check that tells you if you're yak shaving.
 metadata:
   added: 2026-06-27
   last_reviewed: 2026-06-27

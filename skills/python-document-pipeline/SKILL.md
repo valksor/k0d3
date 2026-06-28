@@ -1,6 +1,6 @@
 ---
 name: python-document-pipeline
-description: Use when generating PDFs, DOCX, XLSX, or processing PDFs/images in Python — reportlab, docxtpl, docxcompose, openpyxl, pikepdf, pyvips, Pillow, Gotenberg HTTP.
+description: Use when generating PDFs, DOCX, XLSX, or processing documents/images in Python — reportlab, docxtpl, openpyxl, pikepdf, Gotenberg.
 metadata:
   added: 2026-05-18
   last_reviewed: 2026-05-18
