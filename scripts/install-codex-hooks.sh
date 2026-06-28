@@ -5,7 +5,9 @@
 # k0d3 Codex plugin delivers skills + MCP but NOT hooks. This script installs the
 # hooks at the user level (~/.codex/hooks.json) or project level (.codex/hooks.json),
 # deriving the Codex wiring from the single source of truth, hooks/hooks.json:
-#   - drops ExitPlanMode (no Codex plan-mode hook) and PostToolUseFailure (no Codex event)
+#   - drops ExitPlanMode (no Codex plan-mode hook), PostToolUseFailure (no Codex event),
+#     and Stop/SubagentStop (output schema mismatch — Codex uses {continue, stopReason},
+#     k0d3 hooks output {decision, reason} — see docs/codex.md)
 #   - routes every hook command through codex-hooks-shim.sh (synthesizes CLAUDE_* env)
 #   - merges into any existing hooks.json WITHOUT clobbering the user's own hooks
 #
@@ -57,6 +59,12 @@ derive_hooks() {
     --arg hd "$HD" '
     .hooks
     | del(.PostToolUseFailure)
+    # Stop/SubagentStop excluded: Codex uses {continue, stopReason} (deny_unknown_fields);
+    # k0d3 hooks output {decision, reason} (Claude Code format) — schema mismatch.
+    # verify-before-stop.sh and log-stop-verdict.sh are still copied to $HD by the glob
+    # below but are intentionally unreferenced in the derived hooks.json.
+    | del(.Stop)
+    | del(.SubagentStop)
     | .PreToolUse |= map(select(.matcher != "ExitPlanMode"))
     | walk(
         if type == "object" and has("command")
@@ -88,6 +96,13 @@ merge_into_target() {
               (($ex[$evt] // [])
                 | map(select([ .hooks[]?.command // "" | contains($hd) ] | any | not)))
               + $new[$evt])))) as $merged
+      # Strip stale k0d3 entries from Stop/SubagentStop — excluded from $new so the
+      # reduce loop above never visits them, leaving prior-install entries intact.
+      | ($merged
+         | .Stop |= (. // [] | map(select([ .hooks[]?.command // "" | contains($hd) ] | any | not)))
+         | if (.Stop // [] | length) == 0 then del(.Stop) else . end
+         | .SubagentStop |= (. // [] | map(select([ .hooks[]?.command // "" | contains($hd) ] | any | not)))
+         | if (.SubagentStop // [] | length) == 0 then del(.SubagentStop) else . end) as $merged
       | .hooks = $merged
     ' "$TARGET"
   else

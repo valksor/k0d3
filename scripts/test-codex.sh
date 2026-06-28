@@ -58,6 +58,8 @@ case "$AUTH" in ON_INSTALL|ON_USE) pass "marketplace auth variant ($AUTH)" ;; *)
 HJSON=$(bash scripts/install-codex-hooks.sh --print)
 if printf '%s' "$HJSON" | jq empty 2>/dev/null; then pass "derived hooks JSON parses"; else fail "derived hooks JSON invalid"; fi
 printf '%s' "$HJSON" | jq -e '.hooks.PostToolUseFailure == null' >/dev/null && pass "PostToolUseFailure dropped" || fail "PostToolUseFailure present"
+printf '%s' "$HJSON" | jq -e '.hooks.Stop == null' >/dev/null && pass "Stop dropped from Codex hooks" || fail "Stop present in Codex hooks (verify-before-stop uses Claude Code output format)"
+printf '%s' "$HJSON" | jq -e '.hooks.SubagentStop == null' >/dev/null && pass "SubagentStop dropped from Codex hooks" || fail "SubagentStop present in Codex hooks"
 printf '%s' "$HJSON" | jq -e '[.hooks.PreToolUse[].matcher] | index("ExitPlanMode") == null' >/dev/null && pass "ExitPlanMode dropped" || fail "ExitPlanMode present"
 printf '%s' "$HJSON" | jq -e '[.hooks.PreToolUse[].matcher] | index("mcp__codegraph__.*") != null' >/dev/null && pass "allow-codegraph retained" || fail "codegraph matcher dropped"
 UNSHIMMED=$(printf '%s' "$HJSON" | jq -r '[.. | objects | select(has("command")) | .command | select(contains("codex-hooks-shim.sh") | not)] | length')
@@ -67,6 +69,16 @@ UNSHIMMED=$(printf '%s' "$HJSON" | jq -r '[.. | objects | select(has("command"))
 DANGER='{"hook_event_name":"PreToolUse","tool_name":"Bash","tool_input":{"command":"rm -rf /etc"},"cwd":"/tmp"}'
 DECISION=$(printf '%s' "$DANGER" | bash hooks/codex-hooks-shim.sh "$ROOT/hooks/guard-bash.sh" | jq -r '.hookSpecificOutput.permissionDecision // empty')
 [ "$DECISION" = "deny" ] && pass "guard-bash denies dangerous command via shim" || fail "guard-bash did not deny (got: '$DECISION')"
+
+# 7. Behavioral: auto-review-merge.sh exits cleanly (no output) for a Codex Stop event
+#    with a non-worktree cwd — confirms the hook_event_name detection branch doesn't crash.
+CODEX_STOP='{"hook_event_name":"Stop","cwd":"/tmp","stop_hook_active":false}'
+if [ -f "$HOME/.codex/hooks/auto-review-merge.sh" ]; then
+  OUT=$(printf '%s' "$CODEX_STOP" | bash "$HOME/.codex/hooks/auto-review-merge.sh" 2>/dev/null || true)
+  [ -z "$OUT" ] && pass "auto-review-merge: no output for non-worktree cwd under Codex" || fail "auto-review-merge: unexpected output for non-worktree cwd: '$OUT'"
+else
+  pass "auto-review-merge: hook not installed at ~/.codex/hooks/ (skip)"
+fi
 
 echo "----"
 if [ "$FAIL" -eq 0 ]; then echo "test-codex.sh: all checks passed"; exit 0; else echo "test-codex.sh: $FAIL check(s) failed" >&2; exit 1; fi
