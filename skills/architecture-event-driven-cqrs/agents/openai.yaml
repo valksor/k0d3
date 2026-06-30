@@ -1,0 +1,4 @@
+interface:
+  display_name: Architecture Event Driven Cqrs
+  short_description: designing async systems
+  default_prompt: Use $architecture-event-driven-cqrs — designing async systems

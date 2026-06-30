@@ -1,0 +1,4 @@
+interface:
+  display_name: Receiving Code Review
+  short_description: receiving code review feedback
+  default_prompt: Use $receiving-code-review — receiving code review feedback

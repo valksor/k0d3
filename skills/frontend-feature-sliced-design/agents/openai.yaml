@@ -1,0 +1,5 @@
+interface:
+  display_name: Frontend Feature Sliced Design
+  short_description: applying Feature-Sliced Design (FSD) to a React app
+  default_prompt: Use $frontend-feature-sliced-design — applying Feature-Sliced Design
+    (FSD) to a React app

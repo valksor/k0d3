@@ -1,0 +1,4 @@
+interface:
+  display_name: Go Cobra
+  short_description: building Go CLIs with Cobra
+  default_prompt: Use $go-cobra — building Go CLIs with Cobra

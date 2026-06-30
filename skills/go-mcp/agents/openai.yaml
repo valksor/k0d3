@@ -1,0 +1,4 @@
+interface:
+  display_name: Go Mcp
+  short_description: building an MCP server in Go with mark3labs/mcp-go
+  default_prompt: Use $go-mcp — building an MCP server in Go with mark3labs/mcp-go

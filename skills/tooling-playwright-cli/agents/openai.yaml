@@ -1,0 +1,5 @@
+interface:
+  display_name: Tooling Playwright Cli
+  short_description: driving a browser from the command line with playwright-cli
+  default_prompt: Use $tooling-playwright-cli — driving a browser from the command
+    line with playwright-cli

@@ -1,0 +1,4 @@
+interface:
+  display_name: Typescript
+  short_description: writing any TypeScript
+  default_prompt: Use $typescript — writing any TypeScript

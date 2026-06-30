@@ -1,0 +1,4 @@
+interface:
+  display_name: Go Grpc
+  short_description: building gRPC services in Go
+  default_prompt: Use $go-grpc — building gRPC services in Go

@@ -1,0 +1,4 @@
+interface:
+  display_name: Observability Sentry
+  short_description: working with Sentry
+  default_prompt: Use $observability-sentry — working with Sentry

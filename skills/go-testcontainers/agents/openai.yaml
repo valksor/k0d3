@@ -1,0 +1,4 @@
+interface:
+  display_name: Go Testcontainers
+  short_description: writing integration tests with testcontainers-go
+  default_prompt: Use $go-testcontainers — writing integration tests with testcontainers-go

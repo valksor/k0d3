@@ -1,0 +1,4 @@
+interface:
+  display_name: Go Chi
+  short_description: building HTTP services with chi
+  default_prompt: Use $go-chi — building HTTP services with chi

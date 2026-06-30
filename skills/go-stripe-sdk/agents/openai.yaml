@@ -1,0 +1,4 @@
+interface:
+  display_name: Go Stripe Sdk
+  short_description: integrating Stripe in Go
+  default_prompt: Use $go-stripe-sdk — integrating Stripe in Go

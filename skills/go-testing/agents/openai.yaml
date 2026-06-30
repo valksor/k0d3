@@ -1,0 +1,4 @@
+interface:
+  display_name: Go Testing
+  short_description: writing Go tests
+  default_prompt: Use $go-testing — writing Go tests

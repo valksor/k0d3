@@ -1,0 +1,4 @@
+interface:
+  display_name: Tdd
+  short_description: implementing any feature or bugfix
+  default_prompt: Use $tdd — implementing any feature or bugfix

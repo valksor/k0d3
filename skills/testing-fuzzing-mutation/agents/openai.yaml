@@ -1,0 +1,6 @@
+interface:
+  display_name: Testing Fuzzing Mutation
+  short_description: fuzzing parsers and security boundaries or measuring whether
+    tests actually catch bugs
+  default_prompt: Use $testing-fuzzing-mutation — fuzzing parsers and security boundaries
+    or measuring whether tests actually catch bugs

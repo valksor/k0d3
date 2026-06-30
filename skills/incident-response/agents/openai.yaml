@@ -1,0 +1,4 @@
+interface:
+  display_name: Incident Response
+  short_description: production breaks
+  default_prompt: Use $incident-response — production breaks

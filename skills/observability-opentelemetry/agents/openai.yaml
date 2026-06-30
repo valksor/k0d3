@@ -1,0 +1,4 @@
+interface:
+  display_name: Observability Opentelemetry
+  short_description: instrumenting with OpenTelemetry
+  default_prompt: Use $observability-opentelemetry — instrumenting with OpenTelemetry

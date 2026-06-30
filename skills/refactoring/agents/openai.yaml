@@ -1,0 +1,4 @@
+interface:
+  display_name: Refactoring
+  short_description: restructuring code without changing behavior
+  default_prompt: Use $refactoring — restructuring code without changing behavior

@@ -1,0 +1,4 @@
+interface:
+  display_name: Php Testing
+  short_description: testing PHP
+  default_prompt: Use $php-testing — testing PHP

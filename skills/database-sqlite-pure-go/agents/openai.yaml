@@ -1,0 +1,4 @@
+interface:
+  display_name: Database Sqlite Pure Go
+  short_description: using SQLite from Go
+  default_prompt: Use $database-sqlite-pure-go — using SQLite from Go

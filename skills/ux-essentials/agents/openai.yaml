@@ -1,0 +1,4 @@
+interface:
+  display_name: Ux Essentials
+  short_description: evaluating or designing UI
+  default_prompt: Use $ux-essentials — evaluating or designing UI

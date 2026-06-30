@@ -1,0 +1,4 @@
+interface:
+  display_name: Pnpm Essentials
+  short_description: working with pnpm
+  default_prompt: Use $pnpm-essentials — working with pnpm

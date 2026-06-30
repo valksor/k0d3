@@ -1,0 +1,4 @@
+interface:
+  display_name: Infra Docker Images
+  short_description: choosing or writing Dockerfiles
+  default_prompt: Use $infra-docker-images — choosing or writing Dockerfiles

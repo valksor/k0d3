@@ -1,0 +1,4 @@
+interface:
+  display_name: Frontend Shadcn Ui
+  short_description: adopting shadcn/ui
+  default_prompt: Use $frontend-shadcn-ui — adopting shadcn/ui

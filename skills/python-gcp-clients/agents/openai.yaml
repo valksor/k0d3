@@ -1,0 +1,4 @@
+interface:
+  display_name: Python Gcp Clients
+  short_description: using google-cloud-* clients in Python
+  default_prompt: Use $python-gcp-clients — using google-cloud-* clients in Python

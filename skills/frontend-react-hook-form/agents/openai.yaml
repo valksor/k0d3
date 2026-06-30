@@ -1,0 +1,4 @@
+interface:
+  display_name: Frontend React Hook Form
+  short_description: building forms with react-hook-form
+  default_prompt: Use $frontend-react-hook-form — building forms with react-hook-form

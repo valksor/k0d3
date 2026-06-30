@@ -1,0 +1,4 @@
+interface:
+  display_name: Gdscript
+  short_description: writing GDScript
+  default_prompt: Use $gdscript — writing GDScript

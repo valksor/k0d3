@@ -1,0 +1,4 @@
+interface:
+  display_name: Deploy Checklist
+  short_description: shipping to production
+  default_prompt: Use $deploy-checklist — shipping to production

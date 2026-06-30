@@ -20,6 +20,12 @@ on:
       - "hooks/codex-hooks-shim.sh"
       - "scripts/install-codex-hooks.sh"
       - "scripts/test-codex.sh"
+      - "hooks/hooks.codex.json"
+      - "hooks/verify-before-stop.sh"
+      - "scripts/generate-codex-hooks.sh"
+      - "scripts/generate-codex-skill-manifests.sh"
+      - "scripts/_generate_codex_skill_manifests.py"
+      - "skills/**/agents/openai.yaml"
       - ".github/workflows/mcp-guard.yml"
   pull_request:
     paths:
@@ -39,6 +45,12 @@ on:
       - "hooks/codex-hooks-shim.sh"
       - "scripts/install-codex-hooks.sh"
       - "scripts/test-codex.sh"
+      - "hooks/hooks.codex.json"
+      - "hooks/verify-before-stop.sh"
+      - "scripts/generate-codex-hooks.sh"
+      - "scripts/generate-codex-skill-manifests.sh"
+      - "scripts/_generate_codex_skill_manifests.py"
+      - "skills/**/agents/openai.yaml"
       - ".github/workflows/mcp-guard.yml"
   schedule:
     # Daily — the bundled servers track npm `latest` (unpinned), so a daily smoke catches

@@ -1,0 +1,4 @@
+interface:
+  display_name: Python Essentials
+  short_description: writing any Python
+  default_prompt: Use $python-essentials — writing any Python

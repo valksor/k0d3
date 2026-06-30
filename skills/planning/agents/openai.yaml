@@ -1,0 +1,4 @@
+interface:
+  display_name: Planning
+  short_description: brainstorming to write an implementation plan
+  default_prompt: Use $planning — brainstorming to write an implementation plan

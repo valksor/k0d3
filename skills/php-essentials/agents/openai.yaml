@@ -1,0 +1,4 @@
+interface:
+  display_name: Php Essentials
+  short_description: writing any PHP
+  default_prompt: Use $php-essentials — writing any PHP

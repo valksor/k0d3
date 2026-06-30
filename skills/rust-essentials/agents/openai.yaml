@@ -1,0 +1,4 @@
+interface:
+  display_name: Rust Essentials
+  short_description: writing any Rust
+  default_prompt: Use $rust-essentials — writing any Rust

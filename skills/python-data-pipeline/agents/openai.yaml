@@ -1,0 +1,5 @@
+interface:
+  display_name: Python Data Pipeline
+  short_description: picking pandas vs polars vs pyarrow for tabular data
+  default_prompt: Use $python-data-pipeline — picking pandas vs polars vs pyarrow
+    for tabular data

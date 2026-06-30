@@ -1,0 +1,4 @@
+interface:
+  display_name: Ts Vitest
+  short_description: writing tests with Vitest
+  default_prompt: Use $ts-vitest — writing tests with Vitest

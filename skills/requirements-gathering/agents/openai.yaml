@@ -1,0 +1,4 @@
+interface:
+  display_name: Requirements Gathering
+  short_description: a request is ambiguous or vague
+  default_prompt: Use $requirements-gathering — a request is ambiguous or vague

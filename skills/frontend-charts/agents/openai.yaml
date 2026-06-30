@@ -1,0 +1,4 @@
+interface:
+  display_name: Frontend Charts
+  short_description: picking a React chart lib
+  default_prompt: Use $frontend-charts — picking a React chart lib

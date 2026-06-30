@@ -1,0 +1,4 @@
+interface:
+  display_name: Rust Testing
+  short_description: testing Rust
+  default_prompt: Use $rust-testing — testing Rust

@@ -1,0 +1,4 @@
+interface:
+  display_name: Websocket Essentials
+  short_description: designing real-time WebSocket systems
+  default_prompt: Use $websocket-essentials — designing real-time WebSocket systems

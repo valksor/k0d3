@@ -1,0 +1,5 @@
+interface:
+  display_name: Tooling Eslint Prettier
+  short_description: configuring ESLint flat config + Prettier (or Biome as alternative)
+  default_prompt: Use $tooling-eslint-prettier — configuring ESLint flat config +
+    Prettier (or Biome as alternative)

@@ -1,0 +1,5 @@
+interface:
+  display_name: Concise Output
+  short_description: the user wants terser replies ("be brief", "less tokens", /concise)
+  default_prompt: Use $concise-output — the user wants terser replies ("be brief",
+    "less tokens", /concise)

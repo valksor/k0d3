@@ -1,0 +1,4 @@
+interface:
+  display_name: Llm Essentials
+  short_description: designing any LLM-backed feature, any provider
+  default_prompt: Use $llm-essentials — designing any LLM-backed feature, any provider

@@ -1,0 +1,4 @@
+interface:
+  display_name: Python Job Queues
+  short_description: picking a Python async job queue
+  default_prompt: Use $python-job-queues — picking a Python async job queue

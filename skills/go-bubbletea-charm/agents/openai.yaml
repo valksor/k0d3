@@ -1,0 +1,5 @@
+interface:
+  display_name: Go Bubbletea Charm
+  short_description: building Go TUIs with Bubble Tea, lipgloss, and bubbles
+  default_prompt: Use $go-bubbletea-charm — building Go TUIs with Bubble Tea, lipgloss,
+    and bubbles

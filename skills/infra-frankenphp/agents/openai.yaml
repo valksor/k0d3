@@ -1,0 +1,4 @@
+interface:
+  display_name: Infra Frankenphp
+  short_description: running PHP on FrankenPHP
+  default_prompt: Use $infra-frankenphp — running PHP on FrankenPHP

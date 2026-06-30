@@ -1,0 +1,4 @@
+interface:
+  display_name: Sql
+  short_description: writing or reviewing SQL
+  default_prompt: Use $sql — writing or reviewing SQL

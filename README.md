@@ -25,10 +25,10 @@ After install, in any Claude Code session, type `Skill(k0d3:using-k0d3)` as a me
 ```bash
 codex plugin marketplace add valksor/k0d3 --ref v0.1.30   # tag-pinned
 codex plugin add k0d3@valksor-k0d3
-scripts/install-codex-hooks.sh                            # optional: hooks
+codex                                                     # then /hooks → trust the k0d3 hooks
 ```
 
-The same `skills/` and MCP servers ride a Codex plugin; hooks install separately (the hook scripts need an env the installer's shim provides). Full guide: [`docs/codex.md`](docs/codex.md).
+Skills, MCP servers, **and hooks** all ride the Codex plugin. Upgrading from a build that used `scripts/install-codex-hooks.sh`? Run `scripts/install-codex-hooks.sh --uninstall` once **before upgrading** to drop the old out-of-band hooks (else they double-fire). Full guide: [`docs/codex.md`](docs/codex.md).
 
 ## Dependencies
 

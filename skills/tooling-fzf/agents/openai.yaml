@@ -1,0 +1,4 @@
+interface:
+  display_name: Tooling Fzf
+  short_description: adding fzf to a workflow
+  default_prompt: Use $tooling-fzf — adding fzf to a workflow

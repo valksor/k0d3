@@ -1,0 +1,4 @@
+interface:
+  display_name: Tooling Shell Fish
+  short_description: scripting or configuring the fish shell
+  default_prompt: Use $tooling-shell-fish — scripting or configuring the fish shell

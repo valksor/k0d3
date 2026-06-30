@@ -1,0 +1,4 @@
+interface:
+  display_name: Rust Gdext
+  short_description: binding Rust to Godot via gdext (godot-rust v4)
+  default_prompt: Use $rust-gdext — binding Rust to Godot via gdext (godot-rust v4)

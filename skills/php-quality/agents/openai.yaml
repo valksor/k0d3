@@ -1,0 +1,4 @@
+interface:
+  display_name: Php Quality
+  short_description: linting and static-analysing PHP
+  default_prompt: Use $php-quality — linting and static-analysing PHP

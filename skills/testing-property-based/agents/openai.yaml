@@ -1,0 +1,5 @@
+interface:
+  display_name: Testing Property Based
+  short_description: a unit has invariants that hold for many inputs
+  default_prompt: Use $testing-property-based — a unit has invariants that hold for
+    many inputs

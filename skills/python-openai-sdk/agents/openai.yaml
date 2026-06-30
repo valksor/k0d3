@@ -1,0 +1,4 @@
+interface:
+  display_name: Python Openai Sdk
+  short_description: calling OpenAI from Python
+  default_prompt: Use $python-openai-sdk — calling OpenAI from Python

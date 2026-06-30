@@ -1,0 +1,4 @@
+interface:
+  display_name: Frontend Tailwind
+  short_description: working with Tailwind CSS
+  default_prompt: Use $frontend-tailwind — working with Tailwind CSS

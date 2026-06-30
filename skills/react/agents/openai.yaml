@@ -1,0 +1,4 @@
+interface:
+  display_name: React
+  short_description: writing React
+  default_prompt: Use $react — writing React

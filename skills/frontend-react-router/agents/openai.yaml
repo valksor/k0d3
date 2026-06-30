@@ -1,0 +1,4 @@
+interface:
+  display_name: Frontend React Router
+  short_description: routing with react-router v6/v7
+  default_prompt: Use $frontend-react-router — routing with react-router v6/v7

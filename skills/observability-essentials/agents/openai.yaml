@@ -1,0 +1,4 @@
+interface:
+  display_name: Observability Essentials
+  short_description: adding logs, metrics, or traces
+  default_prompt: Use $observability-essentials — adding logs, metrics, or traces

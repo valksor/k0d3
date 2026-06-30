@@ -1,0 +1,4 @@
+interface:
+  display_name: Ts Vite
+  short_description: configuring Vite 6+
+  default_prompt: Use $ts-vite — configuring Vite 6+

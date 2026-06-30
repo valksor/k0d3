@@ -1,0 +1,5 @@
+interface:
+  display_name: Migrations Overview
+  short_description: picking or operating a schema migration tool
+  default_prompt: Use $migrations-overview — picking or operating a schema migration
+    tool

@@ -1,0 +1,104 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/guard-bash.sh\""
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/backup-before-write.sh\""
+          },
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/completeness-gate.sh\""
+          }
+        ]
+      },
+      {
+        "matcher": "Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/prefer-codegraph.sh\""
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__codegraph__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/allow-codegraph.sh\""
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/pre-compact-handoff.sh\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/session-reset.sh\""
+          },
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/ensure-memory-gitignore.sh\""
+          },
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/codegraph-autoindex.sh\""
+          }
+        ]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/post-compact-resume.sh\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/verify-before-stop.sh\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/verify-before-stop.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}

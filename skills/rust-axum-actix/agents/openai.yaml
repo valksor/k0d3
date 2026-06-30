@@ -1,0 +1,4 @@
+interface:
+  display_name: Rust Axum Actix
+  short_description: building HTTP servers in Rust
+  default_prompt: Use $rust-axum-actix — building HTTP servers in Rust

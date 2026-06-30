@@ -1,0 +1,4 @@
+interface:
+  display_name: Python Fastapi
+  short_description: building HTTP APIs with FastAPI
+  default_prompt: Use $python-fastapi — building HTTP APIs with FastAPI

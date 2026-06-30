@@ -1,0 +1,4 @@
+interface:
+  display_name: Python Uv
+  short_description: managing Python deps with uv
+  default_prompt: Use $python-uv — managing Python deps with uv

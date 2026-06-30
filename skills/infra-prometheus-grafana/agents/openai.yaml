@@ -1,0 +1,5 @@
+interface:
+  display_name: Infra Prometheus Grafana
+  short_description: building observability with Prometheus + Grafana
+  default_prompt: Use $infra-prometheus-grafana — building observability with Prometheus
+    + Grafana

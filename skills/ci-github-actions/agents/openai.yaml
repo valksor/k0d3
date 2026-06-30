@@ -1,0 +1,4 @@
+interface:
+  display_name: Ci Github Actions
+  short_description: writing or reviewing GitHub Actions workflows
+  default_prompt: Use $ci-github-actions — writing or reviewing GitHub Actions workflows

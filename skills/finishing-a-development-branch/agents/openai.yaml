@@ -1,0 +1,5 @@
+interface:
+  display_name: Finishing A Development Branch
+  short_description: implementation is done and tests pass, to integrate the work
+  default_prompt: Use $finishing-a-development-branch — implementation is done and
+    tests pass, to integrate the work

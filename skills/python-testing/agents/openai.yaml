@@ -1,0 +1,4 @@
+interface:
+  display_name: Python Testing
+  short_description: writing Python tests
+  default_prompt: Use $python-testing — writing Python tests

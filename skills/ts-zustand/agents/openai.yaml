@@ -1,0 +1,4 @@
+interface:
+  display_name: Ts Zustand
+  short_description: building React state with Zustand
+  default_prompt: Use $ts-zustand — building React state with Zustand

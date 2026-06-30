@@ -1,0 +1,4 @@
+interface:
+  display_name: Node Essentials
+  short_description: working with Node.js
+  default_prompt: Use $node-essentials — working with Node.js

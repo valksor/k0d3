@@ -1,0 +1,4 @@
+interface:
+  display_name: Secrets Vault
+  short_description: integrating HashiCorp Vault
+  default_prompt: Use $secrets-vault — integrating HashiCorp Vault

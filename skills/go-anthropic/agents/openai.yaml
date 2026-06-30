@@ -1,0 +1,5 @@
+interface:
+  display_name: Go Anthropic
+  short_description: calling Anthropic's Messages API from Go via anthropic-sdk-go
+  default_prompt: Use $go-anthropic — calling Anthropic's Messages API from Go via
+    anthropic-sdk-go

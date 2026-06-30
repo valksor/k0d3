@@ -1,0 +1,4 @@
+interface:
+  display_name: Python Strawberry Graphql
+  short_description: building GraphQL APIs with Strawberry
+  default_prompt: Use $python-strawberry-graphql — building GraphQL APIs with Strawberry

@@ -1,0 +1,5 @@
+interface:
+  display_name: Python Keycloak Oidc
+  short_description: integrating Keycloak (or generic OIDC) into Python
+  default_prompt: Use $python-keycloak-oidc — integrating Keycloak (or generic OIDC)
+    into Python

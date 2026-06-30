@@ -1,0 +1,4 @@
+interface:
+  display_name: Agent Design
+  short_description: architecting an LLM agent
+  default_prompt: Use $agent-design — architecting an LLM agent

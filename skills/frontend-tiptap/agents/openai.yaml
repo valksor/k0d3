@@ -1,0 +1,4 @@
+interface:
+  display_name: Frontend Tiptap
+  short_description: building a rich-text editor with TipTap
+  default_prompt: Use $frontend-tiptap — building a rich-text editor with TipTap

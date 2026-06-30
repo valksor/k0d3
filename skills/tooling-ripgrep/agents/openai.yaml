@@ -1,0 +1,4 @@
+interface:
+  display_name: Tooling Ripgrep
+  short_description: searching code with ripgrep (rg)
+  default_prompt: Use $tooling-ripgrep — searching code with ripgrep (rg)

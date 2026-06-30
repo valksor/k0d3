@@ -1,0 +1,4 @@
+interface:
+  display_name: Php Doctrine
+  short_description: persisting PHP objects with Doctrine ORM 3
+  default_prompt: Use $php-doctrine — persisting PHP objects with Doctrine ORM 3

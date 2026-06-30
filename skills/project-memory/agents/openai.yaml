@@ -1,0 +1,6 @@
+interface:
+  display_name: Project Memory
+  short_description: persistent, cross-session memory of project decisions, conventions,
+    and named entities in a local k…
+  default_prompt: Use $project-memory — persistent, cross-session memory of project
+    decisions, conventions, and named entities in a local k…

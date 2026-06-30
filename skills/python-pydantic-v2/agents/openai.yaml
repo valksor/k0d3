@@ -1,0 +1,4 @@
+interface:
+  display_name: Python Pydantic V2
+  short_description: writing Pydantic v2
+  default_prompt: Use $python-pydantic-v2 — writing Pydantic v2

@@ -1,0 +1,5 @@
+interface:
+  display_name: Infra Cloudflare Workers
+  short_description: shipping Cloudflare Workers via Wrangler
+  default_prompt: Use $infra-cloudflare-workers — shipping Cloudflare Workers via
+    Wrangler

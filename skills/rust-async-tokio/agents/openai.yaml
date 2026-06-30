@@ -1,0 +1,4 @@
+interface:
+  display_name: Rust Async Tokio
+  short_description: writing async Rust with Tokio
+  default_prompt: Use $rust-async-tokio — writing async Rust with Tokio

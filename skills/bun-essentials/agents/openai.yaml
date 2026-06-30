@@ -1,0 +1,4 @@
+interface:
+  display_name: Bun Essentials
+  short_description: working with Bun
+  default_prompt: Use $bun-essentials — working with Bun

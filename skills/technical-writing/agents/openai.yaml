@@ -1,0 +1,4 @@
+interface:
+  display_name: Technical Writing
+  short_description: writing engineering docs
+  default_prompt: Use $technical-writing — writing engineering docs

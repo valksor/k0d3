@@ -1,0 +1,4 @@
+interface:
+  display_name: Go Sqlc
+  short_description: generating typed Go code from .sql files
+  default_prompt: Use $go-sqlc — generating typed Go code from .sql files

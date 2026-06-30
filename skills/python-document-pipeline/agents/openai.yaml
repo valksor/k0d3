@@ -1,0 +1,6 @@
+interface:
+  display_name: Python Document Pipeline
+  short_description: generating PDFs, DOCX, XLSX, or processing documents/images in
+    Python
+  default_prompt: Use $python-document-pipeline — generating PDFs, DOCX, XLSX, or
+    processing documents/images in Python

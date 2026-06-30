@@ -1,0 +1,4 @@
+interface:
+  display_name: Mcp Protocol
+  short_description: designing MCP servers/clients across languages
+  default_prompt: Use $mcp-protocol — designing MCP servers/clients across languages

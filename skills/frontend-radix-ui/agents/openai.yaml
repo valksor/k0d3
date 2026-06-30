@@ -1,0 +1,4 @@
+interface:
+  display_name: Frontend Radix Ui
+  short_description: building accessible UI with Radix UI primitives
+  default_prompt: Use $frontend-radix-ui — building accessible UI with Radix UI primitives

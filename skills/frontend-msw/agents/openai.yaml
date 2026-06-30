@@ -1,0 +1,4 @@
+interface:
+  display_name: Frontend Msw
+  short_description: mocking APIs with MSW (Mock Service Worker)
+  default_prompt: Use $frontend-msw — mocking APIs with MSW (Mock Service Worker)

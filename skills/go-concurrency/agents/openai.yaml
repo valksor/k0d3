@@ -1,0 +1,4 @@
+interface:
+  display_name: Go Concurrency
+  short_description: writing concurrent Go
+  default_prompt: Use $go-concurrency — writing concurrent Go
