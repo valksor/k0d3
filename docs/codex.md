@@ -2,7 +2,7 @@
 
 k0d3 runs in **both** Claude Code and OpenAI Codex CLI from one repo. Claude Code installs it as a plugin via the Claude marketplace; Codex installs the **same** `skills/`, MCP servers, **and hooks** as a Codex plugin. This is additive — nothing about the Claude Code experience changes.
 
-> **Upgrading from an older k0d3?** If you ever ran `scripts/install-codex-hooks.sh` to install hooks into `~/.codex/hooks.json`, run **`scripts/install-codex-hooks.sh --uninstall` once** before/after upgrading. k0d3 now ships hooks through the plugin channel; leaving the old out-of-band copy in place makes every hook **double-fire**, and the stale `verify-before-stop.sh` re-emits the old `{decision,reason}` Stop schema that Codex rejects (`hook returned invalid stop hook JSON output`). See [Hooks](#hooks).
+> **Upgrading from an older k0d3?** If you ever ran `scripts/install-codex-hooks.sh` to install hooks into `~/.codex/hooks.json`, run **`scripts/install-codex-hooks.sh --uninstall` once, before upgrading the plugin** (the plugin hooks go live the moment `codex plugin add`/`upgrade` completes, so removing the old copy first avoids any double-fire window). k0d3 now ships hooks through the plugin channel; leaving the old out-of-band copy in place makes every hook **double-fire**, and the stale `verify-before-stop.sh` re-emits the old `{decision,reason}` Stop schema that Codex rejects (`hook returned invalid stop hook JSON output`). See [Hooks](#hooks).
 
 ## Install (Codex)
 

@@ -43,8 +43,9 @@ EXCLUDE='["log-changes.sh","log-stop-verdict.sh"]'
 
 derive() {
   jq --argjson excl "$EXCLUDE" '
-    # extract "<name>.sh" from a command string, or null if absent
-    def script_name: (try (capture("hooks/(?<n>[A-Za-z0-9._-]+\\.sh)").n) catch null);
+    # extract "<name>.sh" — anchored to the trailing /hooks/<name>.sh component so a
+    # stray "hooks/" elsewhere in the path cannot be mismatched; null if absent.
+    def script_name: (try (capture("/hooks/(?<n>[A-Za-z0-9._-]+\\.sh)\"?$").n) catch null);
 
     .hooks
     | del(.PostToolUseFailure)

@@ -6,9 +6,10 @@ k0d3 skills. Codex reads agents/openai.yaml (the `interface` block) — NOT the 
 frontmatter — to title and describe a skill in its `/skills` UI and `$slug` menu. The
 format mirrors the bundled `documents` plugin's openai.yaml (the authoritative example).
 
-YAML is emitted via PyYAML (never f-string interpolation) so colons, parentheses, `$`,
-and em-dashes in descriptions cannot produce malformed manifests that Codex's parser
-rejects.
+Every YAML value is serialized by PyYAML (`yaml.dump` quotes scalars as needed), so
+colons, parentheses, `$`, and em-dashes in descriptions cannot produce malformed
+manifests that Codex's parser rejects — even where a value is assembled with an f-string
+first (e.g. `default_prompt`), the dump step does the escaping, not the f-string.
 
 `allow_implicit_invocation` is intentionally NOT emitted: it is absent from the bundled
 `documents` openai.yaml, so its acceptance/placement is unconfirmed. Skills remain

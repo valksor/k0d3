@@ -28,7 +28,7 @@ codex plugin add k0d3@valksor-k0d3
 codex                                                     # then /hooks → trust the k0d3 hooks
 ```
 
-Skills, MCP servers, **and hooks** all ride the Codex plugin. Upgrading from a build that used `scripts/install-codex-hooks.sh`? Run `scripts/install-codex-hooks.sh --uninstall` once to drop the old out-of-band hooks (else they double-fire). Full guide: [`docs/codex.md`](docs/codex.md).
+Skills, MCP servers, **and hooks** all ride the Codex plugin. Upgrading from a build that used `scripts/install-codex-hooks.sh`? Run `scripts/install-codex-hooks.sh --uninstall` once **before upgrading** to drop the old out-of-band hooks (else they double-fire). Full guide: [`docs/codex.md`](docs/codex.md).
 
 ## Dependencies
 

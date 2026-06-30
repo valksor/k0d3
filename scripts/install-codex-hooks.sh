@@ -91,13 +91,23 @@ strip_from_target() {
 }
 
 if [ -f "$TARGET" ]; then
-  OUT="$(strip_from_target)"
-  if [ "$DRY" = "1" ]; then
-    echo "[dry-run] would rewrite $TARGET to:"
-    echo "$OUT"
+  # Only act if k0d3 entries are actually present, so the message is truthful.
+  HAD=$(jq --arg hd "$HD" '[.. | objects | select(has("command")) | .command | select(contains($hd))] | length' "$TARGET" 2> /dev/null || echo 0)
+  if [ "${HAD:-0}" = "0" ]; then
+    echo "no k0d3 hooks in $TARGET — nothing to remove"
   else
-    printf '%s\n' "$OUT" > "$TARGET"
-    echo "removed k0d3 hooks from $TARGET"
+    OUT="$(strip_from_target)"
+    if [ "$DRY" = "1" ]; then
+      echo "[dry-run] would rewrite $TARGET to:"
+      echo "$OUT"
+    else
+      # Atomic: write to a temp file and rename, so an interrupted run never
+      # truncates the user's hooks.json into an empty/partial file.
+      TMP="$(mktemp)"
+      trap 'rm -f "$TMP"' EXIT
+      printf '%s\n' "$OUT" > "$TMP" && mv "$TMP" "$TARGET"
+      echo "removed k0d3 hooks from $TARGET"
+    fi
   fi
 else
   echo "no $TARGET — nothing to remove"

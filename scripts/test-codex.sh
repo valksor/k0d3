@@ -64,7 +64,7 @@ case "$AUTH" in ON_INSTALL | ON_USE) pass "marketplace auth variant ($AUTH)" ;; 
 #    events/keys dropped, Stop/SubagentStop kept, codegraph retained, every command shimmed.
 HJ="hooks/hooks.codex.json"
 if jq empty "$HJ" 2> /dev/null; then pass "hooks.codex.json parses"; else fail "hooks.codex.json invalid JSON"; fi
-bash scripts/generate-codex-hooks.sh --check > /dev/null 2>&1 && pass "hooks.codex.json in sync with generator" || fail "hooks.codex.json stale — run scripts/generate-codex-hooks.sh"
+bash scripts/generate-codex-hooks.sh --check > /dev/null && pass "hooks.codex.json in sync with generator" || fail "hooks.codex.json stale/errored — run scripts/generate-codex-hooks.sh"
 jq -e '.hooks.PostToolUseFailure == null' "$HJ" > /dev/null && pass "PostToolUseFailure dropped" || fail "PostToolUseFailure present (no such Codex event)"
 jq -e '[.hooks.PreToolUse[].matcher] | index("ExitPlanMode") == null' "$HJ" > /dev/null && pass "ExitPlanMode dropped" || fail "ExitPlanMode present"
 jq -e '.hooks.Stop != null and .hooks.SubagentStop != null' "$HJ" > /dev/null && pass "Stop/SubagentStop present" || fail "Stop/SubagentStop missing from Codex hooks"
@@ -80,12 +80,14 @@ TELEM=$(jq -r '[.. | objects | select(has("command")) | .command | select(test("
 
 # 6. Codex skill manifests: every non-draft skill has a parseable agents/openai.yaml
 #    with the interface fields Codex surfaces; committed files are in sync.
-bash scripts/generate-codex-skill-manifests.sh --check > /dev/null 2>&1 && pass "openai.yaml manifests in sync" || fail "openai.yaml stale — run scripts/generate-codex-skill-manifests.sh"
+bash scripts/generate-codex-skill-manifests.sh --check > /dev/null && pass "openai.yaml manifests in sync" || fail "openai.yaml stale/errored — run scripts/generate-codex-skill-manifests.sh"
 MISS=0
 for d in skills/*/; do
   [ -f "$d/SKILL.md" ] || continue
   case "$(basename "$d")" in _probe-*) continue ;; esac
-  status=$(awk '/^  status:/{print $2; exit}' "$d/SKILL.md" 2> /dev/null || true)
+  # Draft detection must match the generator's PyYAML path exactly (metadata.status),
+  # not a raw text sniff, or the two could disagree on which skills are draft.
+  status=$(python3 -c "import sys,yaml; t=open(sys.argv[1]).read().split('---',2); fm=yaml.safe_load(t[1]) if len(t)>=3 else {}; print(((fm or {}).get('metadata') or {}).get('status') or '')" "$d/SKILL.md" 2> /dev/null || true)
   [ "$status" = "draft" ] && continue
   [ -f "$d/agents/openai.yaml" ] || {
     MISS=$((MISS + 1))
@@ -119,8 +121,12 @@ STOP_EVT=$(jq -n --arg t "$TT" '{hook_event_name:"Stop",stop_hook_active:false,t
 COUT=$(printf '%s' "$STOP_EVT" | K0D3_HOST=codex bash hooks/verify-before-stop.sh)
 echo "$COUT" | jq -e '.continue == false and (.stopReason | type == "string") and (has("decision") | not)' > /dev/null 2>&1 &&
   pass "verify-before-stop emits Codex schema under K0D3_HOST=codex" || fail "Codex Stop schema wrong: $COUT"
-# Claude host (no marker) -> {decision:block}
-LOUT=$(printf '%s' "$STOP_EVT" | env -u K0D3_HOST bash hooks/verify-before-stop.sh)
+# Claude host (no marker) -> {decision:block}. Use a subshell unset (portable;
+# `env -u` is a GNU extension absent from BSD/macOS env).
+LOUT=$(printf '%s' "$STOP_EVT" | (
+  unset K0D3_HOST
+  exec bash hooks/verify-before-stop.sh
+))
 echo "$LOUT" | jq -e '.decision == "block" and (.reason | type == "string") and (has("continue") | not)' > /dev/null 2>&1 &&
   pass "verify-before-stop emits Claude schema without marker" || fail "Claude Stop schema wrong: $LOUT"
 # Backstop: stop_hook_active true -> no output (no infinite block).
