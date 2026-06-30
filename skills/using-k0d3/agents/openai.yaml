@@ -1,0 +1,5 @@
+interface:
+  display_name: Using K0D3
+  short_description: Use at session start to orient Claude in a k0d3-enabled repo
+  default_prompt: Use $using-k0d3 — Use at session start to orient Claude in a k0d3-enabled
+    repo

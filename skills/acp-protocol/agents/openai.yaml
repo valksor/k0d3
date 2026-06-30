@@ -1,0 +1,4 @@
+interface:
+  display_name: Acp Protocol
+  short_description: integrating ACP, Zed's editor↔agent protocol
+  default_prompt: Use $acp-protocol — integrating ACP, Zed's editor↔agent protocol

@@ -1,0 +1,5 @@
+interface:
+  display_name: Subagent Driven Development
+  short_description: execute an APPROVED multi-task plan
+  default_prompt: Use $subagent-driven-development — execute an APPROVED multi-task
+    plan

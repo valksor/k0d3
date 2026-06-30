@@ -1,0 +1,4 @@
+interface:
+  display_name: Secrets Kms
+  short_description: using AWS KMS or GCP KMS
+  default_prompt: Use $secrets-kms — using AWS KMS or GCP KMS

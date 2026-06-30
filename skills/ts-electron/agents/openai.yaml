@@ -1,0 +1,4 @@
+interface:
+  display_name: Ts Electron
+  short_description: building desktop apps with Electron
+  default_prompt: Use $ts-electron — building desktop apps with Electron

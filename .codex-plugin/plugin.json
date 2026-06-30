@@ -25,11 +25,11 @@
   ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.codex.json",
-  "hooks": "./.codex-plugin/no-plugin-hooks.json",
+  "hooks": "./hooks/hooks.codex.json",
   "interface": {
     "displayName": "k0d3",
     "shortDescription": "Skills, agents-as-skills, and bundled MCP servers for engineering work.",
-    "longDescription": "valksor's consolidated engineering toolkit: language/runtime/database/domain skills, reviewer and expert personas reframed as skills, plus bundled MCP servers (context7, memory, sequential-thinking, codegraph). Hooks are installed separately via scripts/install-codex-hooks.sh — the plugin deliberately ships no plugin-channel hooks (the `hooks` pointer is an empty file) because the scripts need a project-dir env the installer's shim provides.",
+    "longDescription": "valksor's consolidated engineering toolkit: language/runtime/database/domain skills, reviewer and expert personas reframed as skills, plus bundled MCP servers (context7, memory, sequential-thinking, codegraph). Hooks ship via the plugin channel (hooks/hooks.codex.json, generated from hooks/hooks.json by scripts/generate-codex-hooks.sh); review and trust them with /hooks on first run.",
     "developerName": "valksor",
     "category": "Developer Tools",
     "capabilities": []

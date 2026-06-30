@@ -1,0 +1,4 @@
+interface:
+  display_name: Pr Description
+  short_description: opening a pull request
+  default_prompt: Use $pr-description — opening a pull request

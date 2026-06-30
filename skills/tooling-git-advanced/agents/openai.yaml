@@ -1,0 +1,4 @@
+interface:
+  display_name: Tooling Git Advanced
+  short_description: reaching for git's deeper toolset
+  default_prompt: Use $tooling-git-advanced — reaching for git's deeper toolset

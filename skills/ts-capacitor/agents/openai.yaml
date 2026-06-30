@@ -1,0 +1,4 @@
+interface:
+  display_name: Ts Capacitor
+  short_description: wrapping a web app for mobile with Capacitor
+  default_prompt: Use $ts-capacitor — wrapping a web app for mobile with Capacitor

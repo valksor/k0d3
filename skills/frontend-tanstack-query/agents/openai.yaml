@@ -1,0 +1,5 @@
+interface:
+  display_name: Frontend Tanstack Query
+  short_description: fetching server state with TanStack Query (React Query)
+  default_prompt: Use $frontend-tanstack-query — fetching server state with TanStack
+    Query (React Query)

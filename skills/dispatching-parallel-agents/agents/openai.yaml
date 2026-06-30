@@ -1,0 +1,5 @@
+interface:
+  display_name: Dispatching Parallel Agents
+  short_description: 2+ INDEPENDENT investigations runnable CONCURRENTLY
+  default_prompt: Use $dispatching-parallel-agents — 2+ INDEPENDENT investigations
+    runnable CONCURRENTLY

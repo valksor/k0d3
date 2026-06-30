@@ -1,0 +1,4 @@
+interface:
+  display_name: Infra Docker Swarm
+  short_description: running Docker Swarm
+  default_prompt: Use $infra-docker-swarm — running Docker Swarm

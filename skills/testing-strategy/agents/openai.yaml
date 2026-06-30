@@ -1,0 +1,4 @@
+interface:
+  display_name: Testing Strategy
+  short_description: deciding what to test where
+  default_prompt: Use $testing-strategy — deciding what to test where

@@ -1,0 +1,4 @@
+interface:
+  display_name: Skill Discovery
+  short_description: Routing table
+  default_prompt: Use $skill-discovery — Routing table

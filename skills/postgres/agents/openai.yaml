@@ -1,0 +1,4 @@
+interface:
+  display_name: Postgres
+  short_description: designing or operating Postgres
+  default_prompt: Use $postgres — designing or operating Postgres

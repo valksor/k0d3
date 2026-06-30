@@ -1,0 +1,5 @@
+interface:
+  display_name: Observability Loki Alloy
+  short_description: shipping logs to Loki via Grafana Alloy
+  default_prompt: Use $observability-loki-alloy — shipping logs to Loki via Grafana
+    Alloy

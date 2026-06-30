@@ -1,0 +1,5 @@
+interface:
+  display_name: Frontend Daisyui
+  short_description: reaching for semantic component classes on top of Tailwind
+  default_prompt: Use $frontend-daisyui — reaching for semantic component classes
+    on top of Tailwind

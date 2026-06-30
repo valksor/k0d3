@@ -1,0 +1,4 @@
+interface:
+  display_name: Storage Object S3
+  short_description: using S3 / MinIO / GCS
+  default_prompt: Use $storage-object-s3 — using S3 / MinIO / GCS

@@ -1,0 +1,4 @@
+interface:
+  display_name: Godot
+  short_description: building in Godot 4
+  default_prompt: Use $godot — building in Godot 4

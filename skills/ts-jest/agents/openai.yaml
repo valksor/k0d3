@@ -1,0 +1,4 @@
+interface:
+  display_name: Ts Jest
+  short_description: testing JS/TS with Jest
+  default_prompt: Use $ts-jest — testing JS/TS with Jest

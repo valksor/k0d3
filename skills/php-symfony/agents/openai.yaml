@@ -1,0 +1,4 @@
+interface:
+  display_name: Php Symfony
+  short_description: building apps with Symfony 8
+  default_prompt: Use $php-symfony — building apps with Symfony 8

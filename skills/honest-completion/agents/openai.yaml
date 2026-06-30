@@ -1,0 +1,4 @@
+interface:
+  display_name: Honest Completion
+  short_description: about to report a task done
+  default_prompt: Use $honest-completion — about to report a task done

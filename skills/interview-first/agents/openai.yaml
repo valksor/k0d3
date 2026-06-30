@@ -1,0 +1,6 @@
+interface:
+  display_name: Interview First
+  short_description: asked to interview you before acting ("interview me first", "ask
+    before building")
+  default_prompt: Use $interview-first — asked to interview you before acting ("interview
+    me first", "ask before building")

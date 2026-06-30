@@ -1,0 +1,4 @@
+interface:
+  display_name: Go Langchaingo
+  short_description: integrating LLMs in Go with langchaingo
+  default_prompt: Use $go-langchaingo — integrating LLMs in Go with langchaingo

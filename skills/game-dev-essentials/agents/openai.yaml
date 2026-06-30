@@ -1,0 +1,4 @@
+interface:
+  display_name: Game Dev Essentials
+  short_description: designing engine-agnostic game systems
+  default_prompt: Use $game-dev-essentials — designing engine-agnostic game systems

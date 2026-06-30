@@ -1,0 +1,4 @@
+interface:
+  display_name: Code Review
+  short_description: reviewing code or requesting a review
+  default_prompt: Use $code-review — reviewing code or requesting a review

@@ -1,0 +1,4 @@
+interface:
+  display_name: Python Ruff Mypy
+  short_description: configuring Python lint + type-check
+  default_prompt: Use $python-ruff-mypy — configuring Python lint + type-check

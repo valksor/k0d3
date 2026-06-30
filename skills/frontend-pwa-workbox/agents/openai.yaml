@@ -1,0 +1,4 @@
+interface:
+  display_name: Frontend Pwa Workbox
+  short_description: building a PWA with Workbox
+  default_prompt: Use $frontend-pwa-workbox — building a PWA with Workbox

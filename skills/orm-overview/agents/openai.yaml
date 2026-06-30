@@ -1,0 +1,5 @@
+interface:
+  display_name: Orm Overview
+  short_description: choosing a database access layer across Go, Python, TS/JS
+  default_prompt: Use $orm-overview — choosing a database access layer across Go,
+    Python, TS/JS

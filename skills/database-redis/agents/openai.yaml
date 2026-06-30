@@ -1,0 +1,4 @@
+interface:
+  display_name: Database Redis
+  short_description: using Redis
+  default_prompt: Use $database-redis — using Redis

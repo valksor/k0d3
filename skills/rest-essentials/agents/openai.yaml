@@ -1,0 +1,4 @@
+interface:
+  display_name: Rest Essentials
+  short_description: designing or reviewing REST APIs
+  default_prompt: Use $rest-essentials — designing or reviewing REST APIs

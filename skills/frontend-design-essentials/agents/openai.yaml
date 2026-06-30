@@ -1,0 +1,6 @@
+interface:
+  display_name: Frontend Design Essentials
+  short_description: design tokens, design systems, Figma→code, component architecture,
+    typography, color
+  default_prompt: Use $frontend-design-essentials — design tokens, design systems,
+    Figma→code, component architecture, typography, color

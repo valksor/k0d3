@@ -1,0 +1,4 @@
+interface:
+  display_name: Claude Api
+  short_description: designing against Anthropic's Messages API
+  default_prompt: Use $claude-api — designing against Anthropic's Messages API

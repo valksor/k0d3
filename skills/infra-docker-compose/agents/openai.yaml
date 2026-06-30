@@ -1,0 +1,5 @@
+interface:
+  display_name: Infra Docker Compose
+  short_description: defining multi-container apps with Docker Compose
+  default_prompt: Use $infra-docker-compose — defining multi-container apps with Docker
+    Compose

@@ -1,0 +1,4 @@
+interface:
+  display_name: Go Pgx
+  short_description: accessing Postgres from Go with pgx/v5
+  default_prompt: Use $go-pgx — accessing Postgres from Go with pgx/v5

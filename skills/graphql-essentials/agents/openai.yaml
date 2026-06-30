@@ -1,0 +1,4 @@
+interface:
+  display_name: Graphql Essentials
+  short_description: building or reviewing GraphQL APIs
+  default_prompt: Use $graphql-essentials — building or reviewing GraphQL APIs

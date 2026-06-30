@@ -1,0 +1,4 @@
+interface:
+  display_name: Go Essentials
+  short_description: writing any Go
+  default_prompt: Use $go-essentials — writing any Go

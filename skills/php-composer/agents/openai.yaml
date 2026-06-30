@@ -1,0 +1,4 @@
+interface:
+  display_name: Php Composer
+  short_description: managing PHP dependencies with Composer
+  default_prompt: Use $php-composer — managing PHP dependencies with Composer

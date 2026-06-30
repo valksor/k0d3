@@ -1,0 +1,4 @@
+interface:
+  display_name: Commit Writer
+  short_description: writing a git commit message
+  default_prompt: Use $commit-writer — writing a git commit message

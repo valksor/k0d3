@@ -1,0 +1,4 @@
+interface:
+  display_name: Brainstorming
+  short_description: implementation
+  default_prompt: Use $brainstorming — implementation

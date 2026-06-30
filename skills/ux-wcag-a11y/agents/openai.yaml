@@ -1,0 +1,4 @@
+interface:
+  display_name: Ux Wcag A11Y
+  short_description: building or auditing web UI for accessibility
+  default_prompt: Use $ux-wcag-a11y — building or auditing web UI for accessibility

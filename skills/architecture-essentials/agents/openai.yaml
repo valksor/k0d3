@@ -1,0 +1,4 @@
+interface:
+  display_name: Architecture Essentials
+  short_description: making architecture decisions
+  default_prompt: Use $architecture-essentials — making architecture decisions

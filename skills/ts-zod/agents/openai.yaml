@@ -1,0 +1,4 @@
+interface:
+  display_name: Ts Zod
+  short_description: validating data at TypeScript boundaries with Zod
+  default_prompt: Use $ts-zod — validating data at TypeScript boundaries with Zod

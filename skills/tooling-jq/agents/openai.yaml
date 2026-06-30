@@ -1,0 +1,4 @@
+interface:
+  display_name: Tooling Jq
+  short_description: processing JSON on the command line with jq
+  default_prompt: Use $tooling-jq — processing JSON on the command line with jq

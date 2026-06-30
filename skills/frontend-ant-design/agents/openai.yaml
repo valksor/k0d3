@@ -1,0 +1,4 @@
+interface:
+  display_name: Frontend Ant Design
+  short_description: building UI with Ant Design (antd)
+  default_prompt: Use $frontend-ant-design — building UI with Ant Design (antd)

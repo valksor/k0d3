@@ -18,8 +18,12 @@
 # allows the stop (exit 0, no output). The signature list below is the tunable
 # surface — deliberately high-precision (no bare "error"/"failed"/"no such file").
 #
-# Output contract: on a match, prints {"decision":"block","reason":"..."} (the
-# Stop-hook block schema) to stdout and exits 0. No match → exit 0, no output.
+# Output contract: on a match, prints the block schema to stdout and exits 0; no
+# match → exit 0, no output. The block schema differs by host: Claude Code wants
+# {"decision":"block","reason":"..."}; Codex's deny_unknown_fields Stop schema wants
+# {"continue":false,"stopReason":"..."} and rejects the Claude fields. The Codex
+# hook shim exports K0D3_HOST=codex (a Codex Stop carries hook_event_name="Stop"
+# just like Claude, so only the marker distinguishes the hosts).
 
 INPUT=$(cat)
 
@@ -40,7 +44,8 @@ command -v python3 > /dev/null 2>&1 || exit 0
 
 # Scan THIS turn's tool_result output for a high-precision failure signature.
 # Prints the matched signal label to stdout (empty if none / on any error).
-SIGNAL=$(python3 - "$TRANSCRIPT" << 'PY' 2> /dev/null
+SIGNAL=$(
+  python3 - "$TRANSCRIPT" << 'PY' 2> /dev/null
 import json, re, sys
 
 try:
@@ -153,5 +158,9 @@ if [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
   fi
 fi
 
-jq -n --arg reason "$REASON" '{decision: "block", reason: $reason}'
+if [ "${K0D3_HOST:-}" = "codex" ]; then
+  jq -n --arg reason "$REASON" '{continue: false, stopReason: $reason}'
+else
+  jq -n --arg reason "$REASON" '{decision: "block", reason: $reason}'
+fi
 exit 0

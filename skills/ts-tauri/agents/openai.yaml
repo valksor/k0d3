@@ -1,0 +1,4 @@
+interface:
+  display_name: Ts Tauri
+  short_description: building desktop apps with Tauri 2
+  default_prompt: Use $ts-tauri — building desktop apps with Tauri 2

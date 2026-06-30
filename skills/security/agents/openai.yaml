@@ -1,0 +1,4 @@
+interface:
+  display_name: Security
+  short_description: writing or reviewing any code for security
+  default_prompt: Use $security — writing or reviewing any code for security

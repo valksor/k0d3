@@ -1,0 +1,4 @@
+interface:
+  display_name: Python Django
+  short_description: working in Django
+  default_prompt: Use $python-django — working in Django

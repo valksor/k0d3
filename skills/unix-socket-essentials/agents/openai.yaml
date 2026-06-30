@@ -1,0 +1,5 @@
+interface:
+  display_name: Unix Socket Essentials
+  short_description: building local IPC over Unix domain sockets
+  default_prompt: Use $unix-socket-essentials — building local IPC over Unix domain
+    sockets

@@ -2,10 +2,11 @@
 # install-git-hooks.sh [--force]
 # Inputs: optional --force to overwrite an existing .git/hooks/pre-commit
 # Exit codes: 0 on success; 1 if .git missing or pre-commit exists without --force
-# Side effects: writes .git/hooks/pre-commit (wrapper that runs validate-skills + regenerates skill-graph)
+# Side effects: writes .git/hooks/pre-commit (wrapper that runs validate-skills,
+#               regenerates skill-graph, and regenerates the Codex hooks + skill manifests)
 #
-# Uses `set -e` in the generated pre-commit so a failing generate-skill-graph.sh
-# does NOT silently swallow errors — the commit fails rather than proceeding with a stale graph.
+# Uses `set -e` in the generated pre-commit so a failing generator does NOT silently
+# swallow errors — the commit fails rather than proceeding with a stale artifact.
 
 set -euo pipefail
 
@@ -43,6 +44,11 @@ bash scripts/validate-skills.sh
 # 2) Regenerate skill graph + skill-discovery, stage the diff
 bash scripts/generate-skill-graph.sh
 git add docs/skill-graph.md skills/skill-discovery/SKILL.md 2>/dev/null || true
+
+# 3) Regenerate Codex plugin-channel hooks + skill manifests, stage the diff
+bash scripts/generate-codex-hooks.sh
+bash scripts/generate-codex-skill-manifests.sh
+git add hooks/hooks.codex.json 'skills/*/agents/openai.yaml' 2>/dev/null || true
 HOOK
 
 chmod +x "$HOOK_PATH"

@@ -1,0 +1,5 @@
+interface:
+  display_name: Infra Gotenberg
+  short_description: running Gotenberg for HTML/Markdown/URL → PDF
+  default_prompt: Use $infra-gotenberg — running Gotenberg for HTML/Markdown/URL →
+    PDF

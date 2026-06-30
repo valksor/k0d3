@@ -1,0 +1,6 @@
+interface:
+  display_name: Verify Before Asserting
+  short_description: 'writing a concrete reference (env, path, command, version) into
+    a plan or code: confirm it exists o…'
+  default_prompt: 'Use $verify-before-asserting — writing a concrete reference (env,
+    path, command, version) into a plan or code: confirm it exists o…'

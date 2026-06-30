@@ -1,0 +1,4 @@
+interface:
+  display_name: Infra Nginx
+  short_description: configuring nginx as a reverse proxy
+  default_prompt: Use $infra-nginx — configuring nginx as a reverse proxy

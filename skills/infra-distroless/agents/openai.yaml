@@ -1,0 +1,4 @@
+interface:
+  display_name: Infra Distroless
+  short_description: shipping distroless containers
+  default_prompt: Use $infra-distroless — shipping distroless containers

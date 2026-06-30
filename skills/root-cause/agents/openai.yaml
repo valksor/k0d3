@@ -1,0 +1,6 @@
+interface:
+  display_name: Root Cause
+  short_description: a bug is fixed but you don't know WHY, or the same bug keeps
+    returning
+  default_prompt: Use $root-cause — a bug is fixed but you don't know WHY, or the
+    same bug keeps returning

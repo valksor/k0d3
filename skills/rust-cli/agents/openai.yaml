@@ -1,0 +1,4 @@
+interface:
+  display_name: Rust Cli
+  short_description: building a Rust CLI
+  default_prompt: Use $rust-cli — building a Rust CLI
