@@ -153,7 +153,7 @@ Restate the real status (verified-done / blocked / needs-input) and stop."
 if [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
   LOG_DIR="$CLAUDE_PROJECT_DIR/.claude/logs"
   if mkdir -p "$LOG_DIR" 2> /dev/null; then
-    printf -- '- `%s` | VERIFY | BLOCK | %s\n' "$(date +"%Y-%m-%d %H:%M:%S")" "$SIGNAL" \
+    printf -- "- \`%s\` | VERIFY | BLOCK | %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$SIGNAL" \
       >> "$LOG_DIR/incident-log.md" 2> /dev/null || true
   fi
 fi

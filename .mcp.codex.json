@@ -8,8 +8,8 @@
       }
     },
     "memory": {
-      "command": "./hooks/start-memory.sh",
-      "cwd": "."
+      "command": "bash",
+      "args": ["-c", "exec \"${CLAUDE_PLUGIN_ROOT:?}/hooks/start-memory.sh\""]
     },
     "sequential-thinking": {
       "command": "npx",

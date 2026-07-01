@@ -70,7 +70,7 @@ PLAN=$(printf '%s' "$INPUT" | jq -r '.tool_input.plan // empty' 2> /dev/null || 
 MARKER_LINE=$(printf '%s' "$PLAN" |
   awk '/^[[:space:]]*<!--[[:space:]]*k0d3:commit-plan[[:space:]]*-->[[:space:]]*$/ { print NR; exit }')
 if [ -n "$MARKER_LINE" ]; then
-  printf -- '- `%s` | PLAN-REVIEW | SKIP | commit-plan marker on line %s (session %s), review bypassed\n' \
+  printf -- "- \`%s\` | PLAN-REVIEW | SKIP | commit-plan marker on line %s (session %s), review bypassed\n" \
     "$(date +"%Y-%m-%d %H:%M:%S")" "$MARKER_LINE" "${SID:-none}" >> "$LOG_DIR/incident-log.md" 2> /dev/null || true
   exit 0
 fi
@@ -96,7 +96,7 @@ Note: this is a 4-reviewer pass (tokens + latency). The gate can only be disable
 with K0D3_SKIP_PLAN_REVIEW=1 in the environment — it cannot be toggled from inside a running session."
 
 # Best-effort observability (fail-soft); mirrors completeness-gate / verify-before-stop.
-printf -- '- `%s` | PLAN-REVIEW | DENY | armed gate, routed to /review:review-plan\n' \
+printf -- "- \`%s\` | PLAN-REVIEW | DENY | armed gate, routed to /review:review-plan\n" \
   "$(date +"%Y-%m-%d %H:%M:%S")" >> "$LOG_DIR/incident-log.md" 2> /dev/null || true
 
 jq -n --arg reason "$SHORT" --arg ctx "$CONTEXT" '{

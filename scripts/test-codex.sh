@@ -9,6 +9,7 @@
 # dual-emits the Codex vs Claude block schema; the shim fails closed on a bad delegate.
 #
 # Mirrors scripts/test-hooks.sh; wired into the mcp-guard workflow.
+# shellcheck disable=SC2015 # pass/fail helpers are side-effect-only checks and return success.
 set -eu
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -43,7 +44,15 @@ if jq empty .mcp.codex.json 2> /dev/null; then pass ".mcp.codex.json parses"; el
 BADTYPE=$(jq -r '[.mcpServers[] | select(.type=="stdio")] | length' .mcp.codex.json)
 [ "$BADTYPE" = "0" ] && pass "no Claude-only type:stdio in codex mcp" || fail "$BADTYPE servers use type:stdio (Codex omits it)"
 MEMCMD=$(jq -r '.mcpServers.memory.command' .mcp.codex.json)
-case "$MEMCMD" in *start-memory.sh) pass "memory uses launcher" ;; *) fail "memory command not launcher: $MEMCMD" ;; esac
+MEMARG0=$(jq -r '.mcpServers.memory.args[0] // empty' .mcp.codex.json)
+MEMARG1=$(jq -r '.mcpServers.memory.args[1] // empty' .mcp.codex.json)
+MEM_LAUNCHER="exec \"\${CLAUDE_PLUGIN_ROOT:?}/hooks/start-memory.sh\""
+MEM_LAUNCHER_OK=0
+[ "$MEMCMD" = "bash" ] && [ "$MEMARG0" = "-c" ] && [ "$MEMARG1" = "$MEM_LAUNCHER" ] && MEM_LAUNCHER_OK=1
+[ "$MEM_LAUNCHER_OK" = "1" ] &&
+  pass "memory uses plugin-root launcher" || fail "memory command not plugin-root launcher: $MEMCMD $MEMARG0 $MEMARG1"
+MEM_KEYS=$(jq -r '[.mcpServers.memory | keys[] | select(. == "cwd")] | length' .mcp.codex.json)
+[ "$MEM_KEYS" = "0" ] && pass "memory does not depend on relative cwd" || fail "memory still sets cwd"
 jq -e 'has("_comment") | not' .mcp.codex.json > /dev/null && pass ".mcp.codex.json has no _comment" || fail ".mcp.codex.json has _comment (strict-parser risk)"
 
 # 3b. Strict-parser hygiene + plugin-channel hooks pointer.
@@ -109,9 +118,39 @@ else
   pass "shim fails closed on a missing delegate"
 fi
 
+# 7c. Behavioral: the Codex memory MCP command must resolve from outside the plugin
+# cwd. This catches regressions where the manifest points at ./hooks/start-memory.sh
+# and Codex launches from the user's session directory instead of the plugin root.
+MEM_TMP="$(mktemp -d)"
+trap 'rm -rf "${TT:-}" "${MEM_TMP:-}"' EXIT
+MEM_OUT="$MEM_TMP/out.txt"
+MEM_ERR="$MEM_TMP/err.txt"
+mkdir -p "$MEM_TMP/bin"
+cat > "$MEM_TMP/bin/npx" << 'FAKE_NPX'
+#!/usr/bin/env bash
+printf '%s\n' "$MEMORY_FILE_PATH" > "$K0D3_MEMORY_TEST_OUT"
+printf '%s\n' "$*" > "$K0D3_MEMORY_TEST_ARGS"
+exit 0
+FAKE_NPX
+chmod +x "$MEM_TMP/bin/npx"
+if [ "$MEM_LAUNCHER_OK" != "1" ]; then
+  fail "memory MCP launcher smoke skipped because manifest command validation failed"
+elif (
+  cd /tmp
+  env PATH="$MEM_TMP/bin:$PATH" CLAUDE_PLUGIN_ROOT="$ROOT" CODEX_PROJECT_DIR="$MEM_TMP/project" \
+    K0D3_MEMORY_TEST_OUT="$MEM_TMP/memory-path.txt" K0D3_MEMORY_TEST_ARGS="$MEM_TMP/npx-args.txt" \
+    "$MEMCMD" "$MEMARG0" "$MEMARG1" > "$MEM_OUT" 2> "$MEM_ERR" < /dev/null
+); then
+  [ -d "$MEM_TMP/project/.codex" ] &&
+    [ "$(cat "$MEM_TMP/memory-path.txt" 2> /dev/null)" = "$MEM_TMP/project/.codex/memory.jsonl" ] &&
+    [ "$(cat "$MEM_TMP/npx-args.txt" 2> /dev/null)" = "-y @modelcontextprotocol/server-memory" ] &&
+    pass "memory MCP launcher resolves from non-plugin cwd" || fail "memory MCP launcher did not resolve the expected project-local path"
+else
+  fail "memory MCP command failed from non-plugin cwd: $(cat "$MEM_ERR" "$MEM_OUT" 2> /dev/null | tr '\n' ' ' | sed 's/  */ /g')"
+fi
+
 # 8. Behavioral: verify-before-stop.sh dual-emits the right block schema per host.
 TT="$(mktemp)"
-trap 'rm -f "$TT"' EXIT
 {
   printf '%s\n' '{"message":{"role":"user","content":[{"type":"text","text":"fix it"}]}}'
   printf '%s\n' '{"message":{"role":"user","content":[{"type":"tool_result","content":[{"type":"text","text":"bash: foo: command not found"}]}]}}'
