@@ -3,11 +3,11 @@ name: observability-sentry
 description: Use when working with Sentry — SDK init, breadcrumbs/tags/context, releases + source maps, performance monitoring, the sentry CLI.
 metadata:
   added: 2026-05-18
-  last_reviewed: 2026-05-20
+  last_reviewed: 2026-07-01
   type: observability
   status: active
-  invokes_shell: true
-  shell_reviewed: "valksor 2026-05-20"
+  invokes_shell: false
+  shell_reviewed: "valksor 2026-07-01"
   related: [observability-essentials, debugging, root-cause, security]
 ---
 

@@ -3,11 +3,11 @@ name: tooling-playwright-cli
 description: Use when driving a browser from the command line with playwright-cli — locators, snapshots, sessions, tracing, headless vs headed.
 metadata:
   added: 2026-05-18
-  last_reviewed: 2026-05-20
+  last_reviewed: 2026-07-01
   type: tooling
   status: active
-  invokes_shell: true
-  shell_reviewed: "valksor 2026-05-20"
+  invokes_shell: false
+  shell_reviewed: "valksor 2026-07-01"
   related: [tooling-shell-fish, tooling-fzf, tooling-jq, debugging]
 ---
 
