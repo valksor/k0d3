@@ -31,13 +31,13 @@ If you want to talk through the problem and discover the answer yourself, use th
 ### Step 1: Classify the block
 
 | Type                   | Signals                         | Approach                                                  |
-| ---------------------- | ------------------------------- | -------------------------------------------------------- |
-| **Knowledge gap**      | "I don't know how to..."        | Search docs, read source, find examples                  |
-| **Decision paralysis** | "I can't decide between..."     | List tradeoffs, pick the reversible option, move fast    |
-| **Circular debugging** | Same error 3+ times             | Step back, restate problem from scratch, try the opposite|
+| ---------------------- | ------------------------------- | --------------------------------------------------------- |
+| **Knowledge gap**      | "I don't know how to..."        | Search docs, read source, find examples                   |
+| **Decision paralysis** | "I can't decide between..."     | List tradeoffs, pick the reversible option, move fast     |
+| **Circular debugging** | Same error 3+ times             | Step back, restate problem from scratch, try the opposite |
 | **Scope confusion**    | "This is bigger than I thought" | Yak-shave check — are they solving the right problem?     |
-| **Environmental**      | Build/deploy/config issues      | Check logs, verify prerequisites, try clean state        |
-| **Wrong abstraction**  | Code works but feels wrong      | Check if the mental model matches reality                |
+| **Environmental**      | Build/deploy/config issues      | Check logs, verify prerequisites, try clean state         |
+| **Wrong abstraction**  | Code works but feels wrong      | Check if the mental model matches reality                 |
 
 ### Step 2: Apply first principles
 

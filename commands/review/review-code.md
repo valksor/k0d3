@@ -1,6 +1,6 @@
 ---
 name: review-code
-description: Dispatch the 4 calibrated reviewer agents in parallel against local uncommitted code changes, then validate and auto-fix the findings.
+description: Dispatch the 4 calibrated reviewer agents against local uncommitted code changes, then validate, fix, verify, and closure-review the result.
 argument-hint: "[all | file paths]"
 allowed-tools: [Read, Edit, Write, Glob, Bash(git:*), Agent, Skill]
 ---
@@ -41,6 +41,6 @@ Process:
 
    Each reviewer emits all four sections (Blockers / Concerns / Advisories / Verdict) — empty sections are written as `- None` so the orchestrator's parse stays predictable.
 
-6. Disposition the findings: **Read `references/review-finding-disposition.md` and follow it** — validate each against the actual code, fix **every** valid finding directly (all tiers), skip false positives with a one-line reason, never push, and **do not ask for permission**. The reference covers the validation standard, the report format, and the plan-mode / remote-PR guard clauses.
+6. Disposition the findings: **Read `references/review-finding-disposition.md` and follow it** — validate each against the actual code, fix **every** valid finding directly (all tiers), skip false positives with a one-line reason, run relevant verification, perform the required closure review of the post-fix diff, never push, and **do not ask for permission**. The reference covers the validation standard, verification, closure review, the report format, and the plan-mode / remote-PR guard clauses.
 
 Pattern: the four reviewers are calibrated for code review of uncommitted work (real bugs, regression risk in fresh edits, security in code, end-user impact). For branch-diff review use `/k0d3:review-impl`. For plan-document review use `/k0d3:review-plan`.

@@ -46,13 +46,32 @@ finding:
    wait for approval. The user ran a review command to get the code fixed, not to receive a
    to-do list. Asking is the failure mode this protocol exists to prevent.
 
-5. **Report the disposition.** After fixing, print a report: for each **fixed** finding, its
-   tier and `(spec)`/`(code)` tag, `file:line`, and a one-line description of the change you made; for each **skipped**
-   finding, the one-line reason — name the category (_false positive_, _lateral rewrite_, or
-   _deliberate choice_) so the user can tell a deliberate skip from a missed defect. These
-   commands do **not** run the test suite or build — close
-   the report by reminding the user to inspect the changes (`git diff`) and run their tests to
-   confirm nothing regressed, and that they can re-run the command for a fresh pass.
+5. **Verify the fixes.** If you changed source, config, tests, or checked-in generated output,
+   run the smallest meaningful project verification that exercises the touched area (test,
+   lint, typecheck, build, or the repo's documented quality command). If the command reports
+   errors or failures, **fix all errors in that output, not just the ones introduced by the
+   review fixes**, then re-run the failing command. Continue until the relevant verification
+   passes or you are genuinely blocked by missing credentials, access, or a user-only decision.
+   If no runnable verification exists, say exactly what you inspected instead; do not call the
+   work verified.
+
+6. **Run a closure review.** After valid findings have been fixed, perform a follow-up review
+   of the post-fix diff before reporting done. For calibrated commands (`/review-code`,
+   `/review-impl`, `/review-plan`), this means one additional pass with the same review
+   perspectives over the updated diff/plan, focused on whether the original findings are
+   closed and whether the fixes introduced new Blockers or Concerns. For the single-pass
+   `/review` and `security-audit` commands, do the same closure pass in-session against the
+   updated diff. Disposition any new valid finding from that closure pass using this same
+   protocol. Do not stop after merely proving that a review was run; the point is a clean,
+   followed-up result.
+
+7. **Report the disposition and closure evidence.** After fixing and follow-up, print a report:
+   for each **fixed** finding, its tier and `(spec)`/`(code)` tag, `file:line`, and a one-line
+   description of the change you made; for each **skipped** finding, the one-line reason — name
+   the category (_false positive_, _lateral rewrite_, or _deliberate choice_) so the user can
+   tell a deliberate skip from a missed defect. Close with the verification command(s) you ran
+   and the follow-up review verdict. If verification or closure review could not be completed,
+   state the exact blocker instead of implying the review is done.
 
 **The `(spec)`/`(code)` tag is a routing hint, not a tier.** Reviewers tag each finding
 `(spec)` (the work fails a requirement stated in the provided plan/spec) or `(code)` (a defect
@@ -85,8 +104,9 @@ skip the review because edits are restricted.
 
 - **Not a re-classification pass.** The consolidated severities stand — you validate whether a
   finding is _true_, not whether its tier is _right_.
-- **Not an automatic review loop.** Fix once and report. The user re-runs the command if they
-  want another pass; you do not re-dispatch reviewers on your own.
+- **Not a performative review.** Running reviewers is not completion. Completion means the
+  first-pass findings were validated, valid ones were fixed, verification passed or was
+  honestly blocked, and a closure review checked the post-fix diff.
 - **Not a re-litigation of settled choices.** When the code already reflects a deliberate,
   equally-valid decision, a different-but-equivalent approach is not a defect — reversing it is
   how review becomes churn instead of value. Validate against what is broken, not against how

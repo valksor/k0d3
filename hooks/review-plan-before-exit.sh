@@ -67,8 +67,8 @@ mkdir -p "$LOG_DIR" 2> /dev/null || exit 0
 # (grep's behavior on an unterminated last line is POSIX-undefined), and it carries no
 # pipefail/SIGPIPE or colon-split fragility.
 PLAN=$(printf '%s' "$INPUT" | jq -r '.tool_input.plan // empty' 2> /dev/null || echo '')
-MARKER_LINE=$(printf '%s' "$PLAN" \
-  | awk '/^[[:space:]]*<!--[[:space:]]*k0d3:commit-plan[[:space:]]*-->[[:space:]]*$/ { print NR; exit }')
+MARKER_LINE=$(printf '%s' "$PLAN" |
+  awk '/^[[:space:]]*<!--[[:space:]]*k0d3:commit-plan[[:space:]]*-->[[:space:]]*$/ { print NR; exit }')
 if [ -n "$MARKER_LINE" ]; then
   printf -- '- `%s` | PLAN-REVIEW | SKIP | commit-plan marker on line %s (session %s), review bypassed\n' \
     "$(date +"%Y-%m-%d %H:%M:%S")" "$MARKER_LINE" "${SID:-none}" >> "$LOG_DIR/incident-log.md" 2> /dev/null || true

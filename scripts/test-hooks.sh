@@ -317,12 +317,12 @@ run_marker_case "marker-first-line-skips" $'<!-- k0d3:commit-plan -->\n## Commit
 run_marker_case "marker-leading-ws-skips" $'   <!-- k0d3:commit-plan -->\n## Commit Plan' "allow" "absent"
 run_marker_case "marker-below-line-1-skips" $'## Plan\n<!-- k0d3:commit-plan -->\nstep 1' "allow" "absent" # was marker-on-line-2-denies — the exact real-world failure, now the regression guard
 run_marker_case "marker-preceded-by-body-skips" $'# Title\n\nsome context\n\n## Commit Plan\n<!-- k0d3:commit-plan -->\n### Commit 1' "allow" "absent"
-run_marker_case "marker-in-fenced-block-skips" $'## Plan\n```\n<!-- k0d3:commit-plan -->\n```\nstep 1' "allow" "absent" # accepted false-skip: a standalone marker anywhere skips, even in a fence (only meta-plans carry it)
-run_marker_case "marker-crlf-skips" $'<!-- k0d3:commit-plan -->\r\n## Commit Plan' "allow" "absent" # locks CR tolerance via [[:space:]]*$
+run_marker_case "marker-in-fenced-block-skips" $'## Plan\n```\n<!-- k0d3:commit-plan -->\n```\nstep 1' "allow" "absent"                # accepted false-skip: a standalone marker anywhere skips, even in a fence (only meta-plans carry it)
+run_marker_case "marker-crlf-skips" $'<!-- k0d3:commit-plan -->\r\n## Commit Plan' "allow" "absent"                                    # locks CR tolerance via [[:space:]]*$
 run_marker_case "marker-all-crlf-skips" $'# Title\r\n\r\n## Commit Plan\r\n<!-- k0d3:commit-plan -->\r\n### Commit 1' "allow" "absent" # whole body CRLF-encoded
-run_marker_case "marker-tab-indented-skips" $'\t<!-- k0d3:commit-plan -->\t' "allow" "absent" # [[:space:]] covers tabs
-run_marker_case "marker-only-skips" $'<!-- k0d3:commit-plan -->' "allow" "absent" # plan is ONLY the marker, no trailing newline
-run_marker_case "marker-last-line-no-newline-skips" $'## Heading\n<!-- k0d3:commit-plan -->' "allow" "absent" # sentinel is the final, unterminated line — awk reads it (grep's POSIX-undefined edge)
+run_marker_case "marker-tab-indented-skips" $'\t<!-- k0d3:commit-plan -->\t' "allow" "absent"                                          # [[:space:]] covers tabs
+run_marker_case "marker-only-skips" $'<!-- k0d3:commit-plan -->' "allow" "absent"                                                      # plan is ONLY the marker, no trailing newline
+run_marker_case "marker-last-line-no-newline-skips" $'## Heading\n<!-- k0d3:commit-plan -->' "allow" "absent"                          # sentinel is the final, unterminated line — awk reads it (grep's POSIX-undefined edge)
 # Still reviewed (deny, gate armed): marker embedded mid-line (not standalone) or a
 # near-miss prefix — the standalone-line + close-`-->` anchoring is what these prove.
 run_marker_case "marker-in-prose-denies" $'## Plan\nWe edit the <!-- k0d3:commit-plan --> marker.' "deny" "armed"

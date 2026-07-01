@@ -39,12 +39,12 @@ There is **no `k0d3:` prefix** in Codex (that is a Claude Code plugin-namespacin
 
 ## What rides the plugin
 
-| Surface | Codex delivery |
-|---|---|
-| **Skills** (143) | Plugin, via `skills/<slug>/`. Codex surfaces each skill from a generated **`skills/<slug>/agents/openai.yaml`** (`interface.display_name` / `short_description` / `default_prompt`), produced from the `SKILL.md` frontmatter by `scripts/generate-codex-skill-manifests.sh`. The instructions still live in `SKILL.md`. |
-| **MCP servers** (4) | Plugin, via `.mcp.codex.json` (context7, memory, sequential-thinking, codegraph). |
-| **Agents / commands** | Reframed as skills (Codex plugins don't bundle subagents or slash-commands). |
-| **Hooks** | Plugin, via **`hooks/hooks.codex.json`** (generated from `hooks/hooks.json` by `scripts/generate-codex-hooks.sh`, referenced by `.codex-plugin/plugin.json`). Trust them with `/hooks`. |
+| Surface               | Codex delivery                                                                                                                                                                                                                                                                                                           |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Skills** (144)      | Plugin, via `skills/<slug>/`. Codex surfaces each skill from a generated **`skills/<slug>/agents/openai.yaml`** (`interface.display_name` / `short_description` / `default_prompt`), produced from the `SKILL.md` frontmatter by `scripts/generate-codex-skill-manifests.sh`. The instructions still live in `SKILL.md`. |
+| **MCP servers** (4)   | Plugin, via `.mcp.codex.json` (context7, memory, sequential-thinking, codegraph).                                                                                                                                                                                                                                        |
+| **Agents / commands** | Reframed as skills (Codex plugins don't bundle subagents or slash-commands).                                                                                                                                                                                                                                             |
+| **Hooks**             | Plugin, via **`hooks/hooks.codex.json`** (generated from `hooks/hooks.json` by `scripts/generate-codex-hooks.sh`, referenced by `.codex-plugin/plugin.json`). Trust them with `/hooks`.                                                                                                                                  |
 
 ## Hooks
 
@@ -64,7 +64,7 @@ The Codex derivation drops what Codex doesn't support and keeps the rest:
 - **`ExitPlanMode` review gate** — Codex has no plan-mode hook (it uses `permission_mode: "plan"`). The `review-plan-before-exit` gate is Claude-only.
 - **`PostToolUseFailure` audit trail** — Codex has no equivalent event, so `log-failures.sh` (the `.claude/logs` failure log) does not run.
 - **Async telemetry** — `log-changes.sh` and `log-stop-verdict.sh` are excluded because Codex has no async-hook support and running them synchronously would add per-event latency.
-- **Parallel reviewers** — `/review-impl` etc. dispatch four isolated subagents *in parallel* on Claude. A skill can't spawn isolated parallel subagents, so the Codex equivalent runs **sequentially in-session**. Same perspectives, one pass.
+- **Parallel reviewers** — `/review-impl` etc. dispatch four isolated subagents _in parallel_ on Claude. A skill can't spawn isolated parallel subagents, so the Codex equivalent runs **sequentially in-session**. Same perspectives, one pass.
 - **Claude-only `.mcp.json` keys** — `alwaysLoad` (codegraph eager-load) is a Claude concept; the Codex MCP manifest (`.mcp.codex.json`) omits it.
 
 **Writing your own Codex Stop hook:** use the universal schema — to block: `jq -n --arg r "$reason" '{continue: false, stopReason: $r}'`; see `hooks/verify-before-stop.sh` for the transcript-scanning, single-fire, dual-emit pattern to adapt.

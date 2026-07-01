@@ -91,7 +91,9 @@ Last scan: [date]
 | 1   | file:line | security | [desc]      | HIGH   | 30m    |
 
 ## High (fix this month)
+
 ## Medium (fix when nearby)
+
 ## Low (track, don't fix)
 
 (same columns)

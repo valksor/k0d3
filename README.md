@@ -47,7 +47,7 @@ When another installed plugin defines the same name, **type the explicit `k0d3:`
 ```
 .claude-plugin/plugin.json    — manifest
 .mcp.json                     — bundled MCP servers (context7 + memory + sequential-thinking + codegraph, auto-enabled)
-skills/                       — 143 active at one level (slug == directory)
+skills/                       — 144 active at one level (slug == directory)
 agents/                       — workflow/, reviewers/, experts/
 commands/                     — workflow/, plan/, execute/, review/, analyze/
 hooks/                        — 18 shell hooks (15 enabled by default in hooks.json; 3 opt-in)
