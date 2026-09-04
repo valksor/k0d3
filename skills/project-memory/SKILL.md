@@ -20,23 +20,24 @@ graph) before you assume.** It is not a scratchpad for transient chatter.
 
 This is k0d3's bundled local memory server: the official, Anthropic-maintained
 `@modelcontextprotocol/server-memory` (stdio, zero network at runtime, zero embeddings). Tools surface
-as `mcp__memory__*`. One store per project: `.claude/memory.jsonl` under Claude Code and
-`.codex/memory.jsonl` under Codex.
+as `mcp__memory__*`. Each project has a host-specific store: Claude uses
+`${CLAUDE_PROJECT_DIR}/.claude/memory.jsonl`; Codex uses `<project>/.codex/memory.jsonl`.
 
 ## Storage, safety & setup — read before first use
 
 - **It's plaintext on disk.** See the iron rule. Record _that_ a secret exists and where it is
   configured — never its value.
-- **Gitignored automatically.** k0d3's `ensure-memory-gitignore` SessionStart hook adds `memory.jsonl`
-  to the host-appropriate `.claude/.gitignore` or `.codex/.gitignore`, so the store can't be committed
-  by accident. Running the server without k0d3's hooks? Gitignore that host's `memory.jsonl` yourself.
-- **The server does not create its parent dir.** A write to a missing state directory returns `ENOENT`;
-  k0d3's SessionStart hook guarantees the host-appropriate directory exists first.
+- **Gitignored automatically.** k0d3's `ensure-memory-gitignore` SessionStart hook adds
+  `memory.jsonl` and `memory.jsonl.*` to the host-appropriate `.claude/.gitignore` or
+  `.codex/.gitignore`, so the store and its sidecars can't be committed by accident. Running the
+  server without k0d3's hooks? Gitignore the matching host directory yourself.
+- **The server does not create its parent dir.** A write to a missing state directory returns
+  `ENOENT`; k0d3's SessionStart hook guarantees the host-appropriate directory exists first.
 - **First use needs Node + network.** `npx` fetches the package once (cached after). If Node is absent
   or the first run is offline, the server simply does not start — **memory features are disabled** and
   the rest of k0d3 keeps working. There are no network calls once cached.
 - **Where is my store?** Run `/mcp` to confirm the `memory` server is connected, then look for
-  `.claude/memory.jsonl` (Claude Code) or `.codex/memory.jsonl` (Codex) in the project root.
+  `.claude/memory.jsonl` under Claude or `.codex/memory.jsonl` under Codex.
 
 ## Two memory systems — know which one
 

@@ -28,11 +28,11 @@ jobs:
           COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
           if [[ "$COMMIT_MSG" =~ \[major\] ]]; then
-            echo "BUMP_TYPE=major" >> $GITHUB_OUTPUT
+            echo "BUMP_TYPE=major" >> "$GITHUB_OUTPUT"
           elif [[ "$COMMIT_MSG" =~ \[minor\] ]]; then
-            echo "BUMP_TYPE=minor" >> $GITHUB_OUTPUT
+            echo "BUMP_TYPE=minor" >> "$GITHUB_OUTPUT"
           else
-            echo "BUMP_TYPE=patch" >> $GITHUB_OUTPUT
+            echo "BUMP_TYPE=patch" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Bump version
@@ -71,7 +71,7 @@ jobs:
           CODEX_VERSION=$(jq -r '.version' .codex-plugin/plugin.json)
           [[ "$CODEX_VERSION" == "$NEW_VERSION" ]] || { echo ".codex-plugin/plugin.json not synced: $CODEX_VERSION != $NEW_VERSION"; exit 1; }
 
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Commit, tag, and push
         env:
