@@ -20,31 +20,33 @@ graph) before you assume.** It is not a scratchpad for transient chatter.
 
 This is k0d3's bundled local memory server: the official, Anthropic-maintained
 `@modelcontextprotocol/server-memory` (stdio, zero network at runtime, zero embeddings). Tools surface
-as `mcp__memory__*`. One store per project at `${CLAUDE_PROJECT_DIR}/.claude/memory.jsonl`.
+as `mcp__memory__*`. Each project has a host-specific store: Claude uses
+`${CLAUDE_PROJECT_DIR}/.claude/memory.jsonl`; Codex uses `<project>/.codex/memory.jsonl`.
 
 ## Storage, safety & setup — read before first use
 
 - **It's plaintext on disk.** See the iron rule. Record _that_ a secret exists and where it is
   configured — never its value.
-- **Gitignored automatically.** k0d3's `ensure-memory-gitignore` SessionStart hook adds `memory.jsonl`
-  to `.claude/.gitignore` in any git project, so the store can't be committed by accident. Running the
-  server without k0d3's hooks? Gitignore `.claude/memory.jsonl` yourself.
-- **The server does not create its parent dir.** A write to a missing `.claude/` returns `ENOENT`;
-  k0d3's SessionStart hook guarantees `.claude/` exists first.
+- **Gitignored automatically.** k0d3's `ensure-memory-gitignore` SessionStart hook adds
+  `memory.jsonl` and `memory.jsonl.*` to both `.claude/.gitignore` and `.codex/.gitignore`, so the
+  store and its sidecars can't be committed by accident. Running the server without k0d3's hooks?
+  Gitignore the matching host directory yourself.
+- **The server does not create its parent dir.** A write to a missing `.claude/` or `.codex/`
+  returns `ENOENT`; k0d3's SessionStart hook guarantees both directories exist first.
 - **First use needs Node + network.** `npx` fetches the package once (cached after). If Node is absent
   or the first run is offline, the server simply does not start — **memory features are disabled** and
   the rest of k0d3 keeps working. There are no network calls once cached.
-- **Where is my store?** Run `/mcp` (a Claude Code session command) to confirm the `memory` server is
-  connected, then look for `.claude/memory.jsonl` in the project root.
+- **Where is my store?** Run `/mcp` to confirm the `memory` server is connected, then look for
+  `.claude/memory.jsonl` under Claude or `.codex/memory.jsonl` under Codex.
 
 ## Two memory systems — know which one
 
 Putting a fact in the wrong store is the most common mistake.
 
-| Store                                                                   | Holds                                                         | Read/written by        | Shape            |
-| ----------------------------------------------------------------------- | ------------------------------------------------------------- | ---------------------- | ---------------- |
-| **Knowledge graph (JSONL)** — `.claude/memory.jsonl` (`mcp__memory__*`) | Durable, queryable facts: entities + observations + relations | **You**, via MCP tools | Structured graph |
-| **Markdown memory** — `.claude/memory.md`, `knowledge-base.md`          | Human-readable session narrative, confirmed rules             | `/safe-clear`, you     | Prose            |
+| Store                                                                                            | Holds                                                         | Read/written by        | Shape            |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------- | ---------------------- | ---------------- |
+| **Knowledge graph (JSONL)** — `.claude/memory.jsonl` or `.codex/memory.jsonl` (`mcp__memory__*`) | Durable, queryable facts: entities + observations + relations | **You**, via MCP tools | Structured graph |
+| **Markdown memory** — `.claude/memory.md`, `knowledge-base.md`                                   | Human-readable session narrative, confirmed rules             | `/safe-clear`, you     | Prose            |
 
 Rule of thumb: if a human reads it as a story, it's markdown. If _you_ will query it later by name or
 keyword, it's the graph. Don't write the same fact into both — they drift.

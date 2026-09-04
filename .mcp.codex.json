@@ -9,7 +9,10 @@
     },
     "memory": {
       "command": "bash",
-      "args": ["-c", "exec \"${CLAUDE_PLUGIN_ROOT:?}/hooks/start-memory.sh\""]
+      "args": [
+        "-c",
+        "set -eu; project_dir=\"${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$PWD}}\"; if [ -z \"$project_dir\" ] || [ \"$project_dir\" = \"$HOME\" ]; then store_dir=\"$HOME/.codex/k0d3\"; else store_dir=\"$project_dir/.codex\"; fi; mkdir -p \"$store_dir\"; export MEMORY_FILE_PATH=\"$store_dir/memory.jsonl\"; exec npx -y @modelcontextprotocol/server-memory"
+      ]
     },
     "sequential-thinking": {
       "command": "npx",
