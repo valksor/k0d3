@@ -167,12 +167,12 @@ Group related attrs — keeps query DSLs (Loki, Datadog) clean.
 
 ## Red flags
 
-| Thought                         | Reality                                                      |
-| ------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------- |
-| "JSON is hard to read in dev"   | Run `...                                                     | jq` or use TextHandler **only in dev** via env switch |
-| "Just one printf for debugging" | It ships to prod, gets parsed as garbage, costs $$ to ingest |
-| "slog is too verbose"           | The verbosity is the value — every field is queryable        |
-| "I'll add request IDs later"    | First incident without them = retrofit in a hurry            |
+| Thought                         | Reality                                                               |
+| ------------------------------- | --------------------------------------------------------------------- |
+| "JSON is hard to read in dev"   | Pipe through `jq`, or use TextHandler **only in dev** via env switch. |
+| "Just one printf for debugging" | It ships to prod, gets parsed as garbage, costs $$ to ingest.         |
+| "slog is too verbose"           | The verbosity is the value — every field is queryable.                |
+| "I'll add request IDs later"    | First incident without them means a retrofit in a hurry.              |
 
 ## Hand-off
 

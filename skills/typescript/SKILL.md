@@ -122,10 +122,7 @@ declare module "legacy-lib" {
 
 ```ts
 type FetchState<T> =
-  | { status: "idle" }
-  | { status: "loading" }
-  | { status: "success"; data: T }
-  | { status: "error"; error: Error };
+  { status: "idle" } | { status: "loading" } | { status: "success"; data: T } | { status: "error"; error: Error };
 
 function assertNever(x: never): never {
   throw new Error(`unhandled: ${JSON.stringify(x)}`);

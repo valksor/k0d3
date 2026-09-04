@@ -66,15 +66,15 @@ Sort every change into:
 
 ## New Features
 
-- [feature]: [description] ([commit hash])
+- [feature]: [description] "<commit-hash>"
 
 ## Improvements
 
-- [improvement] ([commit hash])
+- [improvement] (<commit-hash>)
 
 ## Bug Fixes
 
-- [fix] ([commit hash])
+- [fix] (<commit-hash>)
 
 ## Dependencies
 

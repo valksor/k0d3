@@ -26,10 +26,10 @@ metadata:
 ## Why Zod (vs Yup / Valibot / ArkType)
 
 | Library     | Verdict                                                                               |
-| ----------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| ----------- | ------------------------------------------------------------------------------------- |
 | **Zod**     | mature, huge ecosystem (RHF, tRPC, OpenAPI), inferred types — **default**             |
 | **Valibot** | ~10x smaller bundle (tree-shakable), Zod-similar API; pick when bundle size dominates |
-| **ArkType** | type-syntax schemas (`"string                                                         | number"`), 100x faster than Zod at runtime; newer, smaller ecosystem |
+| **ArkType** | type-syntax schemas for unions, 100x faster than Zod at runtime; smaller ecosystem    |
 | **Yup**     | older, weaker types, more weight; skip for new projects                               |
 | **io-ts**   | functional, very correct, steep learning curve                                        |
 

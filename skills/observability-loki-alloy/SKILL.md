@@ -175,9 +175,9 @@ Bootstrap: `alloy convert --source-format=promtail --output=config.alloy promtai
 ## Red flags
 
 | Thought                                    | Reality                                                                  |
-| ------------------------------------------ | ------------------------------------------------------------------------ | --- | ----------------------------------------------------------- |
+| ------------------------------------------ | ------------------------------------------------------------------------ |
 | "More labels = better queries"             | More labels = more streams = OOM. Labels are for routing, not search.    |
-| "We'll search log content with `           | ~`"                                                                      | `   | ~` on petabytes is slow. Filter by label first, regex last. |
+| "We'll regex-search all log content"       | Regex on petabytes is slow. Filter by label first, regex last.           |
 | "Promtail still works, why migrate?"       | EOL Feb 2025. Security fixes stop. Migrate before you forget.            |
 | "30 days retention is fine for everything" | Audit logs need longer; debug noise needs shorter. Per-stream retention. |
 

@@ -59,15 +59,15 @@ SELECT data->>'user_id' FROM events;                      -- text extract
 SELECT (data->>'amount')::numeric FROM events;            -- typed extract
 ```
 
-| Operator           | Use                                                                        |
-| ------------------ | -------------------------------------------------------------------------- | ---------------------- |
-| `->`               | Get JSON sub-object/array (returns JSONB)                                  |
-| `->>`              | Get value as text                                                          |
-| `@>`               | Left contains right (GIN-indexable)                                        |
-| `?` / `?&` / `?    | `                                                                          | Key exists / all / any |
-| `#>` / `#>>`       | Path access (`data#>>'{a,b}'`)                                             |
-| `jsonb_path_query` | SQL/JSON path with filters                                                 |
-| `JSON_TABLE(...)`  | (PG 17+) project JSON arrays to rows — cleaner than `jsonb_array_elements` |
+| Operator                 | Use                                                                        |
+| ------------------------ | -------------------------------------------------------------------------- |
+| `->`                     | Get JSON sub-object/array (returns JSONB)                                  |
+| `->>`                    | Get value as text                                                          |
+| `@>`                     | Left contains right (GIN-indexable)                                        |
+| `?`, `?&`, and `?&#124;` | Key exists / all keys exist / any key exists                               |
+| `#>` / `#>>`             | Path access (`data#>>'{a,b}'`)                                             |
+| `jsonb_path_query`       | SQL/JSON path with filters                                                 |
+| `JSON_TABLE(...)`        | (PG 17+) project JSON arrays to rows — cleaner than `jsonb_array_elements` |
 
 **Index strategy.** `CREATE INDEX ON events USING gin (data jsonb_path_ops);` — `jsonb_path_ops` is smaller and faster than the default; use unless you need key-existence ops. Hot field: expression index `((data->>'user_id'))`. JSONB rows are TOASTed when large; reads are cheap if you don't extract many fields. Updates rewrite the whole document — JSONB is not row-of-row.
 

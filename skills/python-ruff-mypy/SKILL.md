@@ -61,10 +61,10 @@ Commands: `ruff check .` (lint), `ruff check --fix .` (autofix safe rules), `ruf
 ## Rule families worth knowing
 
 | Family           | What it catches                                                            |
-| ---------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |
+| ---------------- | -------------------------------------------------------------------------- |
 | `F` (pyflakes)   | Unused imports, undefined names, redefined-while-unused — real bugs        |
 | `B` (bugbear)    | Mutable defaults, `for x in dict: del dict[x]`, function calls in defaults |
-| `UP` (pyupgrade) | `Optional[X]` → `X                                                         | None`, `List[X]`→`list[X]`, f-strings over `.format` |
+| `UP` (pyupgrade) | PEP 604 unions, built-in generics, and f-strings over `.format`            |
 | `S` (bandit)     | `eval`, `shell=True`, hardcoded creds, weak hashes                         |
 | `SIM`            | `if x: True else: False` → `bool(x)`, mergeable ifs                        |
 | `TCH`            | Move runtime-unused imports under `if TYPE_CHECKING:`                      |
