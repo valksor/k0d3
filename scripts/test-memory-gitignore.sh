@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # test-memory-gitignore.sh — verifies hooks/ensure-memory-gitignore.sh:
 #   1. creates .codex/ and ignores memory.jsonl + sidecars for Codex
-#   2. is idempotent (no duplicate rule on re-run)
+#   2. self-ignores its generated file and is idempotent
 #   3. does not clobber existing content
 #   4. skips writing when a parent ignore already covers .codex/
 #   5. fails open without CLAUDE_PROJECT_DIR
@@ -35,6 +35,7 @@ if [ -d "$T1/.codex" ]; then ok; else no "1a: .codex/ not created"; fi
 if git -C "$T1" check-ignore -q .codex/memory.jsonl; then ok; else no "1b: Codex memory.jsonl not ignored"; fi
 if git -C "$T1" check-ignore -q .codex/memory.jsonl.tmp; then ok; else no "1c: Codex memory sidecars not ignored"; fi
 if [ ! -e "$T1/.claude" ]; then ok; else no "1d: Codex run created .claude/"; fi
+if [ -z "$(git -C "$T1" status --porcelain)" ]; then ok; else no "1e: generated Codex ignore file dirtied the repo"; fi
 
 # 2. idempotent
 run_codex "$T1"
@@ -42,6 +43,8 @@ COUNT="$(grep -c '^memory\.jsonl$' "$T1/.codex/.gitignore" 2> /dev/null || true)
 if [ "$COUNT" = "1" ]; then ok; else no "2a: rule count is '$COUNT' (expected 1) on re-run"; fi
 SIDECAR_COUNT="$(grep -c '^memory\.jsonl\.\*$' "$T1/.codex/.gitignore" 2> /dev/null || true)"
 if [ "$SIDECAR_COUNT" = "1" ]; then ok; else no "2b: sidecar rule count is '$SIDECAR_COUNT' (expected 1)"; fi
+SELF_COUNT="$(grep -c '^\.gitignore$' "$T1/.codex/.gitignore" 2> /dev/null || true)"
+if [ "$SELF_COUNT" = "1" ]; then ok; else no "2c: self-ignore rule count is '$SELF_COUNT' (expected 1)"; fi
 
 # 3. does not clobber existing content
 T3="$(mktemp -d)"
