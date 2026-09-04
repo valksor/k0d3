@@ -39,26 +39,29 @@ MP=$(jq -r '.mcpServers' .codex-plugin/plugin.json)
 [ -f "$ROOT/${MP#./}" ] && pass "mcpServers pointer resolves ($MP)" || fail "mcpServers pointer missing: $MP"
 
 # 3. Codex MCP manifest: parses, stdio servers carry no Claude-only "type":"stdio",
-#    memory routes through the launcher using Codex's plugin-root placeholder,
-#    no _comment (strict-parser hygiene).
+#    memory bootstraps directly from the inherited workspace cwd without host
+#    variables, no _comment (strict-parser hygiene).
 if jq empty .mcp.codex.json 2> /dev/null; then pass ".mcp.codex.json parses"; else fail ".mcp.codex.json invalid JSON"; fi
 BADTYPE=$(jq -r '[.mcpServers[] | select(.type=="stdio")] | length' .mcp.codex.json)
 [ "$BADTYPE" = "0" ] && pass "no Claude-only type:stdio in codex mcp" || fail "$BADTYPE servers use type:stdio (Codex omits it)"
 MEMCMD=$(jq -r '.mcpServers.memory.command' .mcp.codex.json)
 MEMARG0=$(jq -r '.mcpServers.memory.args[0] // empty' .mcp.codex.json)
 MEMARG1=$(jq -r '.mcpServers.memory.args[1] // empty' .mcp.codex.json)
-MEM_LAUNCHER="\${PLUGIN_ROOT}/hooks/start-memory.sh"
-MEM_LAUNCHER_OK=0
-[ "$MEMCMD" = "bash" ] && [ "$MEMARG0" = "$MEM_LAUNCHER" ] && [ -z "$MEMARG1" ] && MEM_LAUNCHER_OK=1
-[ "$MEM_LAUNCHER_OK" = "1" ] &&
-  pass "memory uses Codex plugin-root launcher" || fail "memory command not Codex plugin-root launcher: $MEMCMD $MEMARG0 $MEMARG1"
+MEMARG2=$(jq -r '.mcpServers.memory.args[2] // empty' .mcp.codex.json)
+# shellcheck disable=SC2016 # The manifest script must retain these expansions for the child shell.
+MEM_SCRIPT='set -eu
+memory_dir="$(pwd -P)/.codex"
+mkdir -p "$memory_dir"
+export MEMORY_FILE_PATH="$memory_dir/memory.jsonl"
+exec npx -y @modelcontextprotocol/server-memory'
+MEM_BOOTSTRAP_OK=0
+[ "$MEMCMD" = "bash" ] && [ "$MEMARG0" = "-c" ] && [ "$MEMARG1" = "$MEM_SCRIPT" ] && [ -z "$MEMARG2" ] && MEM_BOOTSTRAP_OK=1
+[ "$MEM_BOOTSTRAP_OK" = "1" ] &&
+  pass "memory uses variable-free workspace bootstrap" || fail "memory command not variable-free workspace bootstrap"
 MEM_KEYS=$(jq -r '[.mcpServers.memory | keys[] | select(. == "cwd")] | length' .mcp.codex.json)
-[ "$MEM_KEYS" = "0" ] && pass "memory does not depend on relative cwd" || fail "memory still sets cwd"
-if grep -Eq 'CLAUDE_|CODEX_PROJECT_DIR' hooks/start-memory.sh; then
-  fail "memory launcher still depends on host-specific project/plugin variables"
-else
-  pass "memory launcher has no host-specific project/plugin variables"
-fi
+[ "$MEM_KEYS" = "0" ] && pass "memory preserves inherited workspace cwd" || fail "memory overrides workspace cwd"
+jq -e '.mcpServers.memory | tostring | test("CLAUDE_|CODEX_PROJECT_DIR|PLUGIN_ROOT|PLUGIN_DATA") | not' .mcp.codex.json > /dev/null &&
+  pass "memory bootstrap has no project/plugin variables" || fail "memory bootstrap depends on a project/plugin variable"
 jq -e 'has("_comment") | not' .mcp.codex.json > /dev/null && pass ".mcp.codex.json has no _comment" || fail ".mcp.codex.json has _comment (strict-parser risk)"
 
 # 3b. Strict-parser hygiene + plugin-channel hooks pointer.
@@ -124,9 +127,9 @@ else
   pass "shim fails closed on a missing delegate"
 fi
 
-# 7c. Behavioral: emulate Codex expanding ${PLUGIN_ROOT}, then launch from a
-# workspace with every project/plugin variable unset. The workspace cwd alone
-# must select <workspace>/.codex/memory.jsonl.
+# 7c. Behavioral: launch from a workspace with every project/plugin variable
+# unset. The inherited workspace cwd alone must select
+# <workspace>/.codex/memory.jsonl.
 MEM_TMP="$(mktemp -d)"
 trap 'rm -rf "${TT:-}" "${MEM_TMP:-}"' EXIT
 MEM_OUT="$MEM_TMP/out.txt"
@@ -140,20 +143,20 @@ printf '%s\n' "$*" > "$K0D3_MEMORY_TEST_ARGS"
 exit 0
 FAKE_NPX
 chmod +x "$MEM_TMP/bin/npx"
-if [ "$MEM_LAUNCHER_OK" != "1" ]; then
-  fail "memory MCP launcher smoke skipped because manifest command validation failed"
+if [ "$MEM_BOOTSTRAP_OK" != "1" ]; then
+  fail "memory MCP bootstrap smoke skipped because manifest command validation failed"
 elif (
   cd "$MEM_TMP/project"
   unset CLAUDE_PLUGIN_ROOT CLAUDE_PROJECT_DIR CODEX_PROJECT_DIR PLUGIN_ROOT PLUGIN_DATA
   export PATH="$MEM_TMP/bin:$PATH"
   export K0D3_MEMORY_TEST_OUT="$MEM_TMP/memory-path.txt"
   export K0D3_MEMORY_TEST_ARGS="$MEM_TMP/npx-args.txt"
-  "$MEMCMD" "$ROOT/hooks/start-memory.sh" > "$MEM_OUT" 2> "$MEM_ERR" < /dev/null
+  "$MEMCMD" "$MEMARG0" "$MEMARG1" > "$MEM_OUT" 2> "$MEM_ERR" < /dev/null
 ); then
   [ -d "$MEM_PROJECT/.codex" ] &&
     [ "$(cat "$MEM_TMP/memory-path.txt" 2> /dev/null)" = "$MEM_PROJECT/.codex/memory.jsonl" ] &&
     [ "$(cat "$MEM_TMP/npx-args.txt" 2> /dev/null)" = "-y @modelcontextprotocol/server-memory" ] &&
-    pass "memory MCP launcher uses workspace cwd without project/plugin variables" || fail "memory MCP launcher did not resolve the expected project-local path"
+    pass "memory MCP bootstrap uses workspace cwd without project/plugin variables" || fail "memory MCP bootstrap did not resolve the expected project-local path"
 else
   fail "memory MCP command failed without project/plugin variables: $(cat "$MEM_ERR" "$MEM_OUT" 2> /dev/null | tr '\n' ' ' | sed 's/  */ /g')"
 fi

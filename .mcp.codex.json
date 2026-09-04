@@ -9,7 +9,10 @@
     },
     "memory": {
       "command": "bash",
-      "args": ["${PLUGIN_ROOT}/hooks/start-memory.sh"]
+      "args": [
+        "-c",
+        "set -eu\nmemory_dir=\"$(pwd -P)/.codex\"\nmkdir -p \"$memory_dir\"\nexport MEMORY_FILE_PATH=\"$memory_dir/memory.jsonl\"\nexec npx -y @modelcontextprotocol/server-memory"
+      ]
     },
     "sequential-thinking": {
       "command": "npx",
