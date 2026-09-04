@@ -56,6 +56,15 @@ if grep -q '^logs/$' "$T3/.codex/.gitignore"; then ok; else no "3a: clobbered ex
 if grep -q '^memory\.jsonl$' "$T3/.codex/.gitignore"; then ok; else no "3b: rule not appended"; fi
 if grep -q '^memory\.jsonl\.\*$' "$T3/.codex/.gitignore"; then ok; else no "3c: sidecar rule not appended"; fi
 
+# 3d. upgrade an existing generated file that predates the self-ignore rule
+T3D="$(mktemp -d)"
+git -C "$T3D" init -q
+mkdir -p "$T3D/.codex"
+printf 'memory.jsonl\nmemory.jsonl.*\n' > "$T3D/.codex/.gitignore"
+run_codex "$T3D"
+if grep -Fxq '.gitignore' "$T3D/.codex/.gitignore"; then ok; else no "3d: existing generated file not upgraded with self-ignore"; fi
+if [ -z "$(git -C "$T3D" status --porcelain)" ]; then ok; else no "3e: upgraded ignore file still dirtied the repo"; fi
+
 # 4. parent already ignores .codex/ -> no redundant .codex/.gitignore
 T4="$(mktemp -d)"
 git -C "$T4" init -q

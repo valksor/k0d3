@@ -29,7 +29,8 @@ GITIGNORE_FILE="$MEMORY_DIR/.gitignore"
 
 # A parent rule may already cover the directory. Check the main file and a
 # representative sidecar because ignoring only memory.jsonl is insufficient.
-if git -C "$CLAUDE_PROJECT_DIR" check-ignore -q "$MEMORY_DIR/memory.jsonl" 2> /dev/null &&
+if [ ! -e "$GITIGNORE_FILE" ] &&
+  git -C "$CLAUDE_PROJECT_DIR" check-ignore -q "$MEMORY_DIR/memory.jsonl" 2> /dev/null &&
   git -C "$CLAUDE_PROJECT_DIR" check-ignore -q "$MEMORY_DIR/memory.jsonl.tmp" 2> /dev/null; then
   exit 0
 fi
