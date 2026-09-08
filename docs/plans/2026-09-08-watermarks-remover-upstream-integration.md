@@ -19,9 +19,9 @@
 
 **Out of scope:** Installing the upstream plugin into a real user profile or running its watermark-removal service.
 
-- [ ] **Step 1: Write the regression test**
-- [ ] **Step 2: Run it against the current marketplace and confirm it fails because the entry is absent**
-- [ ] **Step 3: Add the test to the existing skills guard workflow**
+- [x] **Step 1: Write the regression test**
+- [x] **Step 2: Run it against the current marketplace and confirm it fails because the entry is absent**
+- [x] **Step 3: Add the test to the existing skills guard workflow**
 
 ### Task 2: Publish the optional upstream entry
 
@@ -34,10 +34,10 @@
 
 **Out of scope:** Adding a `dependencies` field, copying upstream skills, or advertising Codex support upstream does not provide.
 
-- [ ] **Step 1: Add the GitHub source entry with upstream ownership and license metadata**
-- [ ] **Step 2: Document the separate install command, service boundary, and Claude-only scope**
-- [ ] **Step 3: Run the targeted regression test and strict Claude validator**
-- [ ] **Step 4: Run repository quality and test gates**
+- [x] **Step 1: Add the GitHub source entry with upstream ownership and license metadata**
+- [x] **Step 2: Document the separate install command, service boundary, and Claude-only scope**
+- [x] **Step 3: Run the targeted regression test and strict Claude validator**
+- [x] **Step 4: Run repository quality and test gates**
 
 ## Self-review
 

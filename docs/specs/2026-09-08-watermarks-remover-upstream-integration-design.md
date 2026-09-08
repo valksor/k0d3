@@ -12,6 +12,7 @@ Installing k0d3 does not install Watermarks Remover. Users opt in with a separat
 - No dependency declaration in k0d3's plugin manifest.
 - No upstream version duplicated in k0d3. Claude Code resolves the upstream plugin manifest from its GitHub source.
 - No bundled Watermarks Remover service. The upstream plugin documents its own service setup and optional hook behavior.
+- Document the current upstream version mismatch and use Claude Code's `--plugin-dir` development path when a fresh upstream checkout is required before upstream advances its plugin manifest version.
 
 ## Verification
 

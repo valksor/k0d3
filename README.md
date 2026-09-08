@@ -7,7 +7,7 @@ valksor's consolidated skills, agents, commands, and hooks for **Claude Code and
 ```bash
 # From GitHub
 /plugin marketplace add valksor/k0d3
-/plugin install k0d3@valksor
+/plugin install k0d3@valksor-k0d3
 ```
 
 For local development on the plugin itself:
@@ -15,10 +15,30 @@ For local development on the plugin itself:
 ```bash
 # Replace /path/to/k0d3 with your local checkout path
 /plugin marketplace add /path/to/k0d3
-/plugin install k0d3@local
+/plugin install k0d3@valksor-k0d3
 ```
 
 After install, in any Claude Code session, type `Skill(k0d3:using-k0d3)` as a message in the chat (not a slash command). Claude Code's Skill tool loads the named skill into context.
+
+### Optional upstream plugins
+
+The k0d3 marketplace also lists [Watermarks Remover](https://github.com/guillaumemeyer/watermarks-remover) directly from its upstream GitHub repository. It is not copied into k0d3 and is not installed with k0d3. Install it explicitly when wanted:
+
+```bash
+/plugin install watermarks-remover@valksor-k0d3
+```
+
+This integration is Claude Code-only because upstream does not publish a Codex plugin manifest. The upstream plugin supplies `remove-ai-marks` and `clean-user-facing-text`; its full file-cleaning workflow requires the separately operated Watermarks Remover service. It also registers a `PostToolUse` file-scanning hook in `check` mode by default. Review its README and configure its hook before enabling automatic cleaning.
+
+**Update caveat:** as verified on 2026-09-08, upstream's latest release tag is `v0.7.0`, but its plugin manifest still declares `0.5.0`. Claude Code uses that manifest version as the cache key, so it may treat newer upstream source as already installed. After upstream advances the manifest version, refresh normally:
+
+```bash
+/plugin marketplace update valksor-k0d3
+/plugin update watermarks-remover@valksor-k0d3
+/reload-plugins
+```
+
+Until then, use Claude Code's supported local-development path when the current upstream checkout is required: update a separate checkout of `guillaumemeyer/watermarks-remover`, then launch `claude --plugin-dir /path/to/watermarks-remover`. This bypasses the installed-plugin cache for that session without copying upstream files into k0d3.
 
 ## Install (OpenAI Codex CLI)
 
@@ -102,6 +122,7 @@ bash scripts/test-validator.sh    # CI for validate-skill-frontmatter.sh
 bash scripts/test-hooks.sh        # CI for guard-bash.sh (catastrophic-rm, secret-exfil, etc.)
 bash scripts/smoke-skills.sh      # iterate every status:active skill, write pass/fail log
 bash scripts/sharpness-check.sh   # advisory: iron-rule, anti-pattern section, body length, opinion signal
+bash scripts/test-third-party-marketplace.sh  # optional upstream entries remain explicit and unvendored
 bash scripts/test-memory-gitignore.sh  # CI for ensure-memory-gitignore.sh (parent-dir + gitignore enforcement)
 bash scripts/smoke-mcp-memory.sh               # launches the memory server, asserts store self-init (needs Node+network; skips otherwise)
 bash scripts/smoke-mcp-sequentialthinking.sh   # launches the sequential-thinking server, asserts the tool returns a result (needs Node+network; skips otherwise)

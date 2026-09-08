@@ -12,6 +12,9 @@ on:
       - "scripts/**"
       - "hooks/**"
       - "tests/**"
+      - ".claude-plugin/marketplace.json"
+      - ".claude-plugin/plugin.json"
+      - "README.md"
       - ".github/workflows/skills-guard.yml"
   pull_request:
     paths:
@@ -23,6 +26,9 @@ on:
       - "scripts/**"
       - "hooks/**"
       - "tests/**"
+      - ".claude-plugin/marketplace.json"
+      - ".claude-plugin/plugin.json"
+      - "README.md"
       - ".github/workflows/skills-guard.yml"
   workflow_dispatch:
 
@@ -62,3 +68,6 @@ jobs:
 
       - name: Test — ensure-memory-gitignore hook fixtures
         run: bash scripts/test-memory-gitignore.sh
+
+      - name: Test — optional third-party marketplace entries
+        run: bash scripts/test-third-party-marketplace.sh

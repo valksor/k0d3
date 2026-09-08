@@ -13,6 +13,34 @@
       "author": {
         "name": "valksor"
       }
+    },
+    {
+      "name": "watermarks-remover",
+      "displayName": "Watermarks Remover",
+      "description": "Remove multi-vendor AI provenance marks from authorized text and files using the upstream Watermarks Remover plugin.",
+      "source": {
+        "source": "github",
+        "repo": "guillaumemeyer/watermarks-remover"
+      },
+      "author": {
+        "name": "Guillaume Meyer and contributors",
+        "url": "https://github.com/guillaumemeyer/watermarks-remover"
+      },
+      "homepage": "https://github.com/guillaumemeyer/watermarks-remover#readme",
+      "repository": "https://github.com/guillaumemeyer/watermarks-remover",
+      "license": "MIT",
+      "category": "content",
+      "keywords": [
+        "watermark",
+        "c2pa",
+        "content-credentials",
+        "provenance",
+        "metadata",
+        "unicode",
+        "synthid",
+        "ai-detection"
+      ],
+      "tags": ["watermark", "c2pa", "metadata", "unicode"]
     }
   ]
 }
