@@ -45,10 +45,10 @@ else
   fail "Watermarks Remover must resolve directly from upstream GitHub"
 fi
 
-if jq -e 'has("dependencies") | not' "$PLUGIN_MANIFEST" > /dev/null; then
-  pass "k0d3 declares no transitive plugin dependency"
+if jq -e '.dependencies == ["watermarks-remover"]' "$PLUGIN_MANIFEST" > /dev/null; then
+  pass "k0d3 automatically installs Watermarks Remover"
 else
-  fail "k0d3 must not auto-install Watermarks Remover"
+  fail "k0d3 must declare Watermarks Remover as its sole plugin dependency"
 fi
 
 if [[ ! -e "$REPO_ROOT/skills/remove-ai-marks" && ! -e "$REPO_ROOT/skills/clean-user-facing-text" ]]; then
@@ -57,10 +57,10 @@ else
   fail "Watermarks Remover skills must remain upstream-owned"
 fi
 
-if grep -qF '/plugin install watermarks-remover@valksor-k0d3' "$REPO_ROOT/README.md"; then
-  pass "README documents the explicit install command"
+if grep -qF 'automatically installs and enables Watermarks Remover' "$REPO_ROOT/README.md"; then
+  pass "README documents automatic dependency installation"
 else
-  fail "README must document the explicit Watermarks Remover install command"
+  fail "README must document automatic Watermarks Remover installation"
 fi
 
 if grep -qF '/plugin update watermarks-remover@valksor-k0d3' "$REPO_ROOT/README.md" &&

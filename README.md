@@ -1,6 +1,6 @@
 # k0d3
 
-valksor's consolidated skills, agents, commands, and hooks for **Claude Code and OpenAI Codex CLI**. Single source of truth. Zero plugin dependencies.
+valksor's consolidated skills, agents, commands, and hooks for **Claude Code and OpenAI Codex CLI**. Single source of truth, with Watermarks Remover sourced directly from upstream for Claude Code.
 
 ## Install (Claude Code)
 
@@ -20,15 +20,15 @@ For local development on the plugin itself:
 
 After install, in any Claude Code session, type `Skill(k0d3:using-k0d3)` as a message in the chat (not a slash command). Claude Code's Skill tool loads the named skill into context.
 
-### Optional upstream plugins
+### Upstream plugin dependency
 
-The k0d3 marketplace also lists [Watermarks Remover](https://github.com/guillaumemeyer/watermarks-remover) directly from its upstream GitHub repository. It is not copied into k0d3 and is not installed with k0d3. Install it explicitly when wanted:
+Installing k0d3 automatically installs and enables Watermarks Remover from its [upstream GitHub repository](https://github.com/guillaumemeyer/watermarks-remover). No Watermarks Remover files are copied into k0d3. To install it separately or repair a missing dependency, run:
 
 ```bash
 /plugin install watermarks-remover@valksor-k0d3
 ```
 
-This integration is Claude Code-only because upstream does not publish a Codex plugin manifest. The upstream plugin supplies `remove-ai-marks` and `clean-user-facing-text`; its full file-cleaning workflow requires the separately operated Watermarks Remover service. It also registers a `PostToolUse` file-scanning hook in `check` mode by default. Review its README and configure its hook before enabling automatic cleaning.
+This automatic dependency is Claude Code-only because upstream does not publish a Codex plugin manifest. The upstream plugin supplies `remove-ai-marks` and `clean-user-facing-text`; its full file-cleaning workflow requires the separately operated Watermarks Remover service. It also registers a `PostToolUse` file-scanning hook in `check` mode by default. Review its README and configure its hook before enabling automatic cleaning.
 
 **Update caveat:** as verified on 2026-09-08, upstream's latest release tag is `v0.7.0`, but its plugin manifest still declares `0.5.0`. Claude Code uses that manifest version as the cache key, so it may treat newer upstream source as already installed. After upstream advances the manifest version, refresh normally:
 

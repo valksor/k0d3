@@ -39,5 +39,6 @@
     "shadcn",
     "memory",
     "reasoning"
-  ]
+  ],
+  "dependencies": ["watermarks-remover"]
 }
