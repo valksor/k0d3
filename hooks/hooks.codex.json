@@ -22,24 +22,6 @@
             "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/completeness-gate.sh\""
           }
         ]
-      },
-      {
-        "matcher": "Grep",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/prefer-codegraph.sh\""
-          }
-        ]
-      },
-      {
-        "matcher": "mcp__codegraph__.*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/allow-codegraph.sh\""
-          }
-        ]
       }
     ],
     "PreCompact": [
@@ -63,10 +45,6 @@
           {
             "type": "command",
             "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/ensure-memory-gitignore.sh\""
-          },
-          {
-            "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/codex-hooks-shim.sh\" \"${CLAUDE_PLUGIN_ROOT}/hooks/codegraph-autoindex.sh\""
           }
         ]
       },

@@ -42,7 +42,7 @@ See `AGENTS.md` for the agent catalogue. Three cohorts: `workflow/`, `reviewers/
 Before exploring to learn how to build / test / run / lint / release, **check the obvious entry points first**: `Makefile`, `package.json` scripts, `justfile`, `Taskfile.yml`, `pyproject.toml`, `composer.json`, `README`. The command almost always already exists — reuse it instead of rediscovering it with a grep-and-read sweep.
 
 - Spend research budget proportional to the task. A one-line change doesn't warrant a codebase survey.
-- Structural questions (what calls what, where X is defined) go to codegraph — sub-millisecond index reads beat grep+read loops.
+- Map code before reading several files; use ripwire for structural questions and grep for literal text.
 - On small, well-scoped tasks, act directly rather than fanning out Explore/Plan agents — they bias toward research by design.
 - Writing a concrete reference — env var, path, command, schema, version — into a plan or code? Confirm it exists first (`Skill(verify-before-asserting)`); a name that fits the convention is still a guess.
 

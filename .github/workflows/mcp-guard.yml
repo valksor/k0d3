@@ -7,12 +7,6 @@ on:
       - ".mcp.json"
       - "scripts/smoke-mcp-memory.sh"
       - "scripts/smoke-mcp-sequentialthinking.sh"
-      - "scripts/smoke-mcp-codegraph.sh"
-      - "scripts/test-prefer-codegraph.sh"
-      - "scripts/test-allow-codegraph.sh"
-      - "hooks/codegraph-autoindex.sh"
-      - "hooks/prefer-codegraph.sh"
-      - "hooks/allow-codegraph.sh"
       - "hooks/hooks.json"
       - ".mcp.codex.json"
       - ".codex-plugin/plugin.json"
@@ -32,12 +26,6 @@ on:
       - ".mcp.json"
       - "scripts/smoke-mcp-memory.sh"
       - "scripts/smoke-mcp-sequentialthinking.sh"
-      - "scripts/smoke-mcp-codegraph.sh"
-      - "scripts/test-prefer-codegraph.sh"
-      - "scripts/test-allow-codegraph.sh"
-      - "hooks/codegraph-autoindex.sh"
-      - "hooks/prefer-codegraph.sh"
-      - "hooks/allow-codegraph.sh"
       - "hooks/hooks.json"
       - ".mcp.codex.json"
       - ".codex-plugin/plugin.json"
@@ -65,8 +53,6 @@ permissions:
 jobs:
   guard:
     runs-on: ubuntu-slim
-    # codegraph's vendored-Node bundle is a heavier first fetch than the
-    # @modelcontextprotocol servers, so the job needs more than the default headroom.
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
@@ -80,15 +66,6 @@ jobs:
 
       - name: Smoke — sequential-thinking (launch + tool result)
         run: bash scripts/smoke-mcp-sequentialthinking.sh
-
-      - name: Smoke — codegraph (launch + advertises tools)
-        run: bash scripts/smoke-mcp-codegraph.sh
-
-      - name: Test — prefer-codegraph Grep nudge
-        run: bash scripts/test-prefer-codegraph.sh
-
-      - name: Test — allow-codegraph auto-approve
-        run: bash scripts/test-allow-codegraph.sh
 
       - name: Test — Codex integration (manifests, MCP, derived hooks, guard behavior)
         run: bash scripts/test-codex.sh

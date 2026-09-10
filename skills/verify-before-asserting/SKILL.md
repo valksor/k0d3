@@ -53,7 +53,7 @@ A concrete reference is anything a reader could copy and run or look up: an env 
 | CLI / make / just target   | read `package.json` scripts, `Makefile`, `justfile` — the target must exist |
 | port number                | read the binding in config / compose; don't assume `3000` / `8080` / `5432` |
 | DB table / column / schema | read the migration / model / schema file                                    |
-| function / symbol          | `codegraph_search` or grep — confirm it's defined                           |
+| function / symbol          | ripwire or grep — confirm it's defined                                      |
 | version / dependency       | read the lockfile / manifest, not memory                                    |
 | API field / response shape | read the type / schema / fixture                                            |
 

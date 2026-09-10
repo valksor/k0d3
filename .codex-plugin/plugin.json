@@ -29,7 +29,7 @@
   "interface": {
     "displayName": "k0d3",
     "shortDescription": "Skills, agents-as-skills, and bundled MCP servers for engineering work.",
-    "longDescription": "valksor's consolidated engineering toolkit: language/runtime/database/domain skills, reviewer and expert personas reframed as skills, plus bundled MCP servers (context7, memory, sequential-thinking, codegraph). Hooks ship via the plugin channel (hooks/hooks.codex.json, generated from hooks/hooks.json by scripts/generate-codex-hooks.sh); review and trust them with /hooks on first run.",
+    "longDescription": "valksor's consolidated engineering toolkit: language/runtime/database/domain skills, reviewer and expert personas reframed as skills, plus bundled MCP servers (context7, memory, sequential-thinking). Hooks ship via the plugin channel (hooks/hooks.codex.json, generated from hooks/hooks.json by scripts/generate-codex-hooks.sh); review and trust them with /hooks on first run.",
     "developerName": "valksor",
     "category": "Developer Tools",
     "capabilities": []

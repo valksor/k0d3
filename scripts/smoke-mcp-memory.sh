@@ -25,8 +25,8 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # not args[-1] — so it stays correct whether the server is pinned and if it ever gains
 # trailing subcommand args. All bundled servers are scoped, so the @scope/ prefix is
 # unambiguous; a future unscoped package would need this revisited.
-# Keep this selector identical across its four consumers — smoke-mcp-{memory,sequentialthinking,codegraph}.sh
-# and hooks/codegraph-autoindex.sh; no automated parity test guards them any more.
+# Keep this selector identical in the memory and sequential-thinking smoke tests;
+# no automated parity test guards them.
 SPEC="$(jq -r '.mcpServers.memory.args[]? | select(type == "string" and test("^@[A-Za-z0-9._-]+/[A-Za-z0-9._-]+"))' "$REPO_ROOT/.mcp.json" | head -1)"
 if [ -z "$SPEC" ]; then
   echo "SKIP smoke-mcp-memory: could not read memory server spec from .mcp.json" >&2

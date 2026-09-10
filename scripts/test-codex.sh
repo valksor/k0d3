@@ -79,14 +79,13 @@ AUTH=$(jq -r '.plugins[0].policy.authentication' .agents/plugins/marketplace.jso
 case "$AUTH" in ON_INSTALL | ON_USE) pass "marketplace auth variant ($AUTH)" ;; *) fail "invalid auth variant: $AUTH" ;; esac
 
 # 5. Generated Codex hooks (hooks/hooks.codex.json): in sync, valid, Codex-unsupported
-#    events/keys dropped, Stop/SubagentStop kept, codegraph retained, every command shimmed.
+#    events/keys dropped, Stop/SubagentStop kept, every command shimmed.
 HJ="hooks/hooks.codex.json"
 if jq empty "$HJ" 2> /dev/null; then pass "hooks.codex.json parses"; else fail "hooks.codex.json invalid JSON"; fi
 bash scripts/generate-codex-hooks.sh --check > /dev/null && pass "hooks.codex.json in sync with generator" || fail "hooks.codex.json stale/errored — run scripts/generate-codex-hooks.sh"
 jq -e '.hooks.PostToolUseFailure == null' "$HJ" > /dev/null && pass "PostToolUseFailure dropped" || fail "PostToolUseFailure present (no such Codex event)"
 jq -e '[.hooks.PreToolUse[].matcher] | index("ExitPlanMode") == null' "$HJ" > /dev/null && pass "ExitPlanMode dropped" || fail "ExitPlanMode present"
 jq -e '.hooks.Stop != null and .hooks.SubagentStop != null' "$HJ" > /dev/null && pass "Stop/SubagentStop present" || fail "Stop/SubagentStop missing from Codex hooks"
-jq -e '[.hooks.PreToolUse[].matcher] | index("mcp__codegraph__.*") != null' "$HJ" > /dev/null && pass "allow-codegraph retained" || fail "codegraph matcher dropped"
 ASYNC=$(jq -r '[.. | objects | select(has("async"))] | length' "$HJ")
 [ "$ASYNC" = "0" ] && pass "no async keys remain" || fail "$ASYNC async hooks present (Codex has no async support)"
 UNSHIMMED=$(jq -r '[.. | objects | select(has("command")) | .command | select(contains("codex-hooks-shim.sh") | not)] | length' "$HJ")

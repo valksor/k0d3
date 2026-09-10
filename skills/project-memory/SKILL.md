@@ -91,8 +91,8 @@ The moment a fact becomes durable — don't wait for end of session:
 - **Before re-deciding** something — search first; the answer may already be stored.
 - After recall, act on what you find. If a stored fact is now wrong, correct it (below).
 
-**Recall for the task, not just a keyword.** The server has no single "give me context" call (unlike
-`codegraph_context`), so compose one from the primitives:
+**Recall for the task, not just a keyword.** The server has no single "give me context" call, so compose
+one from the primitives:
 
 1. `search_nodes "<task keywords>"` broadly to find the relevant entities.
 2. `open_nodes` the top hits to pull their full observations and relations.
