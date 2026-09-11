@@ -1,7 +1,7 @@
 {
   "name": "k0d3",
   "description": "valksor's consolidated Claude Code skills, agents, commands, and hooks — single source of truth.",
-  "version": "0.1.33",
+  "version": "0.1.34",
   "author": {
     "name": "valksor",
     "email": "no-reply@valksor.com"
@@ -40,5 +40,7 @@
     "memory",
     "reasoning"
   ],
-  "dependencies": ["watermarks-remover"]
+  "dependencies": [
+    "watermarks-remover"
+  ]
 }
