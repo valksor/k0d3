@@ -64,10 +64,15 @@ which is a security finding, not a maintainability one.
   lockfiles are fed in full for supply-chain inspection. Vendored / build / codegen content stays
   excluded here too, but the **spoofable** signals are not trusted to hide a change from security:
   a filename glob (§1.3) and an in-file `@generated` / `DO NOT EDIT` marker (§1.5) can both be
-  forged by renaming or header-stamping a hand-written payload. So the security profile **directs**
-  the reviewer to `Read` every manifest entry that is a **new or renamed** file excluded _only_ by
-  a glob or content marker — not lockfiles (already fed in full) and not bulk vendored/build trees
-  (manifest-only; `Read` a specific path on demand if a lockfile bump points at one).
+  forged by renaming or header-stamping a hand-written payload — and a **repo-declared**
+  classification (§1.1) is equally forgeable **when the `.gitattributes` rule that produces it was
+  itself added or modified in the diff under review** (an attacker marking a hand-written payload
+  `linguist-generated=true` in the same PR). A *pre-existing* `linguist-generated` declaration is
+  trusted; only a same-diff one is suspect. So the security profile **directs** the reviewer to
+  `Read` every manifest entry that is a **new or renamed** file excluded _only_ by a glob, a
+  content marker, or a `.gitattributes` rule that is itself changed in this diff — not lockfiles
+  (already fed in full) and not bulk vendored/build trees (manifest-only; `Read` a specific path on
+  demand if a lockfile bump points at one).
 
 ## 3. Build the reviewer diff
 

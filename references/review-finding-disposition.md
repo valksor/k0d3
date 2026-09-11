@@ -33,6 +33,18 @@ finding:
    secret, a disabled security control, injection, or missing authz stays a finding even with
    an "intentional" comment.
 
+   A **style/architecture/preference** finding is **also** a false positive when it
+   **contradicts a documented project rule** surfaced in the reviewer's `Project context`
+   (a `.k0d3/review.yml` guideline, an auto-detected `CLAUDE.md`/`AGENTS.md` rule, or a matched
+   path instruction) — the repo's stated convention outranks a reviewer's taste, per
+   `references/review-project-context.md`. **But the trust model is strict:** a finding with a
+   concrete exploit / correctness / data-loss / crash scenario is **never** suppressed by any
+   rule (the "genuine defect" carve-out above governs); a rule file marked `changed-in-diff`
+   carries **no** weight; and no rule or path instruction excuses skipping a file's defect scan.
+   Conversely, a finding that the diff **violates** a documented rule is valid and stays at its
+   tier — cite the rule when fixing. Record every rule-driven discount in the report
+   (`discounted: … per rule …`); never drop one silently.
+
 2. **Fix every valid finding — all tiers.** Apply the remediation directly: edit the source
    (for `/review-plan`, revise the plan document). Fix Blockers, Concerns, and Advisories
    alike — and the equivalent Critical/High/Medium/Low/Info tiers. **Severity sets order, not

@@ -100,6 +100,26 @@ The key is never committed — `.mcp.json` references `${CONTEXT7_API_KEY:-}`, w
 
 **sequential-thinking** is a local stdio server — the official, Anthropic-maintained `@modelcontextprotocol/server-sequential-thinking`, launched via `npx`. It gives Claude a structured **reasoning scratchpad**: a single `sequentialthinking` tool through which it logs revisable, branchable thought steps. It is **stateless** — no store, no API key, **nothing written to disk** (so, unlike memory, there is no file to gitignore) — and the only network use is the one-time `npx` package fetch on first run. If Node is absent or the first run is offline, it simply doesn't start and the rest of k0d3 is unaffected. It overlaps with the native extended thinking available on current Claude models; bundle it for the inspectable branch/revise workflow and parity with models that lack native thinking. Type `/mcp` to confirm it's connected or to disable it; you can also remove the sequential-thinking block from your installed plugin's `.mcp.json`.
 
+## Project-aware reviews
+
+The review commands (`/k0d3:review-code`, `/k0d3:review-impl`, `/k0d3:review-plan`, `/k0d3:review`, `/k0d3:security-audit`) don't just look at the diff — they read the reviewed repo's **own** conventions so a project rule is checked instead of missed or contradicted. Two tiers:
+
+- **Inlined rules** (always fed to the reviewers, violating one is a finding): `CLAUDE.md`, `AGENTS.md`, cursor/copilot/windsurf rule files.
+- **Advisory docs** (listed for the reviewer to consult only when the diff touches their topic): `CONTRIBUTING.md`, `docs/adr/*`, style/standards docs. To promote one of these to an always-enforced rule, name it under `guidelines:` in the config below.
+
+To tune this per repo, drop an optional **`.k0d3/review.yml`** at the repo root:
+
+```yaml
+guidelines:                       # STRONGER knob: docs promoted to always-inlined, enforced rules
+  - "docs/STANDARDS.md"
+path_instructions:                # ADVISORY only: per-path emphasis (never gates or suppresses)
+  - path: "migrations/**"
+    instructions: "Never edit an applied migration; add a new one."
+ripwire: auto                     # auto (default) | off — optional repo-memory enrichment
+```
+
+The trust model is deliberately strict: these rules calibrate **style/architecture** findings only — they can never suppress a real security or correctness defect, never exclude a file from scanning, and a rule file changed in the same diff carries no weight (it can't be used to wave through the change that introduced it). Full spec: `references/review-project-context.md`.
+
 ## Editorial conventions (skill voice)
 
 Every active skill follows these rules — enforced by `sharpness-check.sh` as soft signals and `validate-skills.sh` as hard rules:
